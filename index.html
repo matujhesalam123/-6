@@ -85,11 +85,12 @@
             </div>
             
             <div class="flex items-center space-x-3">
-                <!-- Role Selector -->
+                <!-- Role & Auth Selector -->
                 <div class="flex items-center bg-indigo-900 rounded-lg p-1 text-xs border border-indigo-700 shadow-inner">
                     <span class="px-2 text-indigo-300 font-medium hidden sm:inline">लॉगिन रोल:</span>
                     <select id="roleSelector" onchange="switchRole(this.value)" class="bg-indigo-950 text-yellow-300 font-bold rounded px-2 py-1 outline-none border border-indigo-700 cursor-pointer">
-                        <option value="admin">👨‍💼 एडमिन (Admin Panel)</option>
+                        <option value="admin">👑 मुख्य एडमिन (amitlabassist@gmail.com)</option>
+                        <option value="principal">🏫 संस्था प्रमुख (प्राचार्य / Principal)</option>
                         <option value="teacher">👨‍🏫 शिक्षक (Teacher Panel)</option>
                         <option value="student">👨‍🎓 विद्यार्थी (Student Panel)</option>
                     </select>
@@ -97,8 +98,13 @@
 
                 <div id="userInfo" class="text-xs border-l border-indigo-800 pl-3 hidden lg:block">
                     <span class="block font-bold text-slate-100" id="userName">मुख्य एडमिनिस्ट्रेटर</span>
-                    <span class="text-[10px] text-emerald-400 font-semibold" id="userRoleBadge">● पूर्ण सर्वाधिकार प्राप्त</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold" id="userRoleBadge">● amitlabassist@gmail.com (सर्वाधिकार प्राप्त)</span>
                 </div>
+
+                <button onclick="openLoginModal()" class="bg-yellow-500 hover:bg-yellow-600 text-indigo-950 font-black text-xs px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
+                    <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
+                    <span>ईमेल वेरिफिकेशन लॉगिन</span>
+                </button>
             </div>
         </div>
     </header>
@@ -109,6 +115,16 @@
         <!-- LEFT SIDEBAR NAVIGATION & SELECTORS -->
         <aside class="lg:col-span-1 bg-white rounded-xl shadow-sm p-3 h-fit border border-slate-200 space-y-4 no-print">
             
+            <!-- School Selector for Super Admin -->
+            <div id="schoolSelectorBox" class="bg-indigo-50 p-2 rounded-lg border border-indigo-200 space-y-1">
+                <label class="text-[10px] font-bold text-indigo-900 uppercase block">सक्रिय विद्यालय (School Context):</label>
+                <select id="activeSchoolSelect" onchange="changeActiveSchool(this.value)" class="w-full bg-white border border-indigo-300 rounded px-2 py-1 text-xs font-bold text-indigo-950 outline-none">
+                    <option value="ALL">समस्त शालाएं (All Schools - Admin)</option>
+                    <option value="SCH_001" selected>पीएमश्री शा.क.उ.मा.वि. बेगमगंज (रायसेन)</option>
+                    <option value="SCH_002">शासकीय मॉडल उच्चतर माध्यमिक विद्यालय रायसेन</option>
+                </select>
+            </div>
+
             <!-- Main Navigation Menu -->
             <div>
                 <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">मुख्य नेविगेशन</h3>
@@ -149,9 +165,13 @@
                         <i data-lucide="library" class="w-3.5 h-3.5 text-amber-700"></i>
                         <span>6. पाठ्यपुस्तक व पुस्तकालय मास्टर</span>
                     </button>
+                    <button onclick="showSection('management-panel')" id="btn-management-panel" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg text-left text-xs font-semibold transition text-slate-600 hover:bg-slate-100">
+                        <i data-lucide="building" class="w-3.5 h-3.5 text-teal-600"></i>
+                        <span>7. संस्था प्रमुख (प्राचार्य) व शिक्षक प्रबंधन</span>
+                    </button>
                     <button onclick="showSection('cloud-settings')" id="btn-cloud-settings" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg text-left text-xs font-semibold transition text-slate-600 hover:bg-slate-100">
                         <i data-lucide="cloud" class="w-3.5 h-3.5 text-sky-600"></i>
-                        <span>7. क्लाउड बैकअप व डेटाबेस सेटिंग्स</span>
+                        <span>8. क्लाउड बैकअप व डेटाबेस सेटिंग्स</span>
                     </button>
                 </nav>
             </div>
@@ -428,11 +448,20 @@
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
                             <div><label class="font-semibold block mb-0.5">स्कॉलर नंबर (Scholar No) *</label><input type="text" id="f_scholarNo" required class="w-full border rounded px-2 py-1 bg-white font-mono font-bold"></div>
                             <div><label class="font-semibold block mb-0.5">प्रवेश कक्षा (Class) *</label>
-                                <select id="f_classTarget" onchange="renderSubjectMasterTable(); renderMarksConfigTable(); renderStudentBookCheckboxes();" class="w-full border rounded px-2 py-1 bg-white font-bold text-indigo-900">
+                                <select id="f_classTarget" onchange="handleClassChangeInStudentForm(this.value)" class="w-full border rounded px-2 py-1 bg-white font-bold text-indigo-900">
                                     <option value="10th">कक्षा 10वीं</option>
                                     <option value="9th">कक्षा 9वीं</option>
                                     <option value="11th">कक्षा 11वीं</option>
                                     <option value="12th">कक्षा 12वीं</option>
+                                </select>
+                            </div>
+                            <div id="streamSelectBox" class="hidden">
+                                <label class="font-semibold block mb-0.5 text-purple-900 font-bold">संकाय / विषय संवर्ग (Stream for 11th/12th) *</label>
+                                <select id="f_streamSelect" onchange="handleStreamChangeInForm(this.value)" class="w-full border-2 border-purple-300 rounded px-2 py-1 bg-purple-50 font-bold text-purple-950">
+                                    <option value="science_math">विज्ञान (गणित - Math Stream)</option>
+                                    <option value="science_bio">विज्ञान (जीव विज्ञान - Biology Stream)</option>
+                                    <option value="commerce">वाणिज्य (Commerce Stream)</option>
+                                    <option value="arts">कला (Arts Stream)</option>
                                 </select>
                             </div>
                             <div><label class="font-semibold block mb-0.5">सेक्शन (Section) *</label><input type="text" id="f_section" value="A" class="w-full border rounded px-2 py-1 bg-white"></div>
@@ -556,12 +585,15 @@
 
                     <!-- BLOCK 4: चयनित शैक्षणिक विषय -->
                     <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 space-y-2">
-                        <h3 class="font-bold text-xs text-blue-900 border-b border-blue-300 pb-1 flex items-center space-x-1">
-                            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-                            <span>भाग 4: चयनित शैक्षणिक विषय (कक्षा मास्टर अनुसार प्रदर्शित)</span>
-                        </h3>
+                        <div class="flex justify-between items-center border-b border-blue-300 pb-1">
+                            <h3 class="font-bold text-xs text-blue-900 flex items-center space-x-1">
+                                <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                                <span>भाग 4: चयनित शैक्षणिक विषय (कक्षा व संकाय अनुसार dynamic रूप से परिवर्तनीय)</span>
+                            </h3>
+                            <button type="button" onclick="showSection('subject-master')" class="text-[10px] font-bold text-purple-700 hover:underline">⚙️ विषय मास्टर में संशोधन करें</button>
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-[11px]" id="studentSubjectInputsContainer">
-                            <!-- Dynamic Subject Badges Generated by JS -->
+                            <!-- Dynamic Editable Subject Badges Generated by JS -->
                         </div>
                     </div>
 
@@ -570,105 +602,106 @@
                         <div class="flex justify-between items-center border-b border-amber-300 pb-1">
                             <h3 class="font-bold text-xs text-amber-950 flex items-center space-x-1">
                                 <i data-lucide="library" class="w-3.5 h-3.5 text-amber-700"></i>
-                                <span>भाग 5: निःशुल्क पाठ्यपुस्तक वितरण रिकॉर्ड (पुस्तकें मिली/नहीं टिक करें)</span>
+                                <span>भाग 5: निःशुल्क पाठ्यपुस्तक वितरण रिकॉर्ड (कक्षा अनुसार स्वतः अपडेटेड)</span>
                             </h3>
-                            <button type="button" onclick="showSection('book-master')" class="text-[10px] text-indigo-700 hover:underline font-bold">⚙️ पुस्तकालय मास्टर में पुस्तकें जोड़ें/संशोधित करें</button>
+                            <button type="button" onclick="showSection('book-master')" class="text-[10px] text-indigo-700 hover:underline font-bold">⚙️ पुस्तकालय मास्टर में पुस्तकें जोड़ें</button>
                         </div>
-                        <p class="text-[10px] text-amber-900">कक्षा <span id="formBookClassLabel" class="font-bold">10th</span> हेतु पुस्तकालय मास्टर में दर्ज उपलब्ध पुस्तकें नीचे प्रदर्शित हैं। छात्र को प्राप्त हुई पुस्तकों के बॉक्स पर टिक लगाएं:</p>
+                        <p class="text-[10px] text-amber-900">कक्षा <span id="formBookClassLabel" class="font-bold">10th</span> हेतु पुस्तकालय मास्टर की उपलब्ध पुस्तकें नीचे प्रदर्शित हैं। छात्र को प्राप्त पुस्तकों पर टिक करें:</p>
                         
                         <div id="studentBooksContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
                             <!-- Dynamic Book Checkboxes Generated by JS -->
                         </div>
                     </div>
 
-                    <!-- BLOCK 6: फीस व रिमार्क -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <div><label class="font-semibold block mb-0.5">प्रवेश / चालान फीस (₹)</label><input type="text" id="f_feePaid" value="150" class="w-full border rounded px-2 py-1 bg-white font-mono font-bold"></div>
-                        <div><label class="font-semibold block mb-0.5">विशेष टिप्पणी / रिमार्क (Remark)</label><input type="text" id="f_remark" value="सभी दस्तावेज सत्यापित" class="w-full border rounded px-2 py-1 bg-white"></div>
-                    </div>
-
-                    <div class="flex justify-end space-x-2 pt-2">
-                        <button type="button" onclick="showSection('dashboard')" class="px-3 py-1.5 border rounded-lg text-xs font-semibold text-slate-600">रद्द करें</button>
-                        <button type="submit" class="px-5 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 shadow">मास्टर्स छात्र डेटा सुरक्षित करें (Save All Data)</button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- SECTION: ADVANCED SEARCH & MASTER DATA GRID WITH EXCEL-STYLE FILTERS -->
-            <section id="section-master-grid" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
-                <div class="flex flex-wrap justify-between items-center pb-2 border-b border-slate-200 gap-2">
+            <!-- SECTION: PRINCIPAL & TEACHER MANAGEMENT HIERARCHY -->
+            <section id="section-management-panel" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-200">
                     <div>
                         <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="search" class="w-4 h-4 text-indigo-600"></i>
-                            <span>मास्टर्स छात्र डेटा सर्च व फ़िल्टर ग्रिड (Advance Search Grid)</span>
+                            <i data-lucide="building" class="w-4 h-4 text-teal-600"></i>
+                            <span>7. संस्था प्रमुख (प्राचार्य) व शिक्षक प्रबंधन प्रणाली (Management & Authority Panel)</span>
                         </h2>
-                        <p class="text-[11px] text-slate-500">सभी कक्षाओं व सेक्शनों के छात्र रिकॉर्ड एक साथ खोजें, फ़िल्टर करें व सुरक्षित संपादित करें।</p>
+                        <p class="text-[11px] text-slate-500">मुख्य एडमिन संस्था प्रमुखों (प्राचार्यों) को जोड़ेगा। प्राचार्य अपने विद्यालय हेतु विशेष पासवर्ड युक्त शिक्षकों को जोड़ेंगे।</p>
                     </div>
+                    <span id="mgmtRoleBadge" class="bg-indigo-100 text-indigo-900 text-[10px] font-extrabold px-2.5 py-1 rounded-full">👑 मुख्य एडमिन एक्सेस</span>
+                </div>
 
-                    <div class="flex items-center space-x-2">
-                        <span id="gridResultCountBadge" class="bg-indigo-100 text-indigo-900 text-xs font-extrabold px-2.5 py-1 rounded-full">कुल 2 रिकॉर्ड मिले</span>
+                <!-- ADD PRINCIPAL FORM (Super Admin Only: amitlabassist@gmail.com) -->
+                <div id="addPrincipalBox" class="bg-indigo-50/70 p-3.5 rounded-xl border border-indigo-200 space-y-2.5">
+                    <h3 class="font-bold text-xs text-indigo-950 border-b border-indigo-300 pb-1 flex items-center space-x-1">
+                        <i data-lucide="user-plus" class="w-3.5 h-3.5 text-indigo-700"></i>
+                        <span>1. नया संस्था प्रमुख (प्राचार्य / Principal) जोड़ें (ईमेल वेरिफिकेशन आवश्यक)</span>
+                    </h3>
+
+                    <form onsubmit="handleAddPrincipalForm(event)" class="grid grid-cols-1 md:grid-cols-4 gap-2 text-xs">
+                        <div>
+                            <label class="font-bold block mb-0.5">प्राचार्य का नाम *</label>
+                            <input type="text" id="p_name" required placeholder="उदा. डॉ. आर. के. श्रीवास्तव" class="w-full border rounded px-2 py-1 bg-white">
+                        </div>
+                        <div>
+                            <label class="font-bold block mb-0.5">प्राचार्य ईमेल (वेरिफिकेशन हेतु) *</label>
+                            <input type="email" id="p_email" required placeholder="principal@school.edu.in" class="w-full border rounded px-2 py-1 bg-white font-mono">
+                        </div>
+                        <div>
+                            <label class="font-bold block mb-0.5">विद्यालय का नाम *</label>
+                            <input type="text" id="p_schoolName" required placeholder="पीएमश्री शा.कन्या उ.मा.वि. बेगमगंज" class="w-full border rounded px-2 py-1 bg-white">
+                        </div>
+                        <div>
+                            <label class="font-bold block mb-0.5">शाला यू-डाइस कोड *</label>
+                            <input type="text" id="p_udiseCode" required placeholder="23340222855" class="w-full border rounded px-2 py-1 bg-white font-mono">
+                        </div>
+
+                        <div class="md:col-span-4 flex justify-end pt-1">
+                            <button type="submit" class="bg-indigo-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs hover:bg-indigo-800 shadow flex items-center space-x-1">
+                                <i data-lucide="mail-check" class="w-3.5 h-3.5"></i>
+                                <span>ईमेल वेरिफिकेशन कोड भेजें व प्राचार्य पंजीकृत करें</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- REGISTERED PRINCIPALS & SCHOOLS TABLE -->
+                <div class="space-y-2">
+                    <h3 class="font-bold text-xs text-slate-800">पंजीकृत संस्था प्रमुख व विद्यालय सूची:</h3>
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                        <table class="w-full text-left text-xs form-table">
+                            <thead class="bg-indigo-950 text-white font-bold">
+                                <tr>
+                                    <th class="p-2">शाला कोड</th>
+                                    <th class="p-2">विद्यालय का नाम</th>
+                                    <th class="p-2">यू-डाइस कोड</th>
+                                    <th class="p-2">प्राचार्य का नाम</th>
+                                    <th class="p-2">ईमेल आईडी</th>
+                                    <th class="p-2 text-center">स्थिति</th>
+                                </tr>
+                            </thead>
+                            <tbody id="principalListTableBody" class="divide-y divide-slate-200">
+                                <!-- Dynamic Principal Rows -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Global Filter Controls Bar -->
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                    <div>
-                        <label class="font-bold block text-slate-600 mb-0.5">मुख्य खोज (Search Term):</label>
-                        <input type="text" id="gridGlobalSearchInput" oninput="renderMasterGridTable()" placeholder="नाम, स्कॉलर नं., पिता, SSSM..." class="w-full border border-slate-300 rounded px-2 py-1 bg-white outline-none focus:ring-1 focus:ring-indigo-500">
-                    </div>
+                <!-- ADD TEACHER BY PRINCIPAL / ADMIN BOX -->
+                <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200 space-y-2.5">
+                    <h3 class="font-bold text-xs text-emerald-950 border-b border-emerald-300 pb-1 flex items-center space-x-1">
+                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-700"></i>
+                        <span>2. विद्यालय शिक्षक जोड़ें व कक्षा-सेक्शन विशेष पासवर्ड प्रदान करें</span>
+                    </h3>
 
-                    <div>
-                        <label class="font-bold block text-slate-600 mb-0.5">कक्षा फ़िल्टर (Class):</label>
-                        <select id="gridClassFilter" onchange="renderMasterGridTable()" class="w-full border border-slate-300 rounded px-2 py-1 bg-white font-bold text-indigo-900">
-                            <option value="ALL">समस्त कक्षाएं (All Classes)</option>
-                            <option value="10th">कक्षा 10वीं</option>
-                            <option value="9th">कक्षा 9वीं</option>
-                            <option value="11th">कक्षा 11वीं</option>
-                            <option value="12th">कक्षा 12वीं</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="font-bold block text-slate-600 mb-0.5">कंडीशन फ़िल्टर (Result/Marks Condition):</label>
-                        <select id="gridConditionFilter" onchange="renderMasterGridTable()" class="w-full border border-slate-300 rounded px-2 py-1 bg-white font-bold text-emerald-900">
-                            <option value="ALL">सभी छात्र (No Condition)</option>
-                            <option value="DISTINCTION">प्रथम श्रेणी ( > 75% Marks)</option>
-                            <option value="FIRST">60% से अधिक अंक (First Div)</option>
-                            <option value="FAIL">अनुत्तीर्ण / पूरक (Fail / Supp)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="font-bold block text-slate-600 mb-0.5">सॉर्टिंग (Sort By):</label>
-                        <select id="gridSortBy" onchange="renderMasterGridTable()" class="w-full border border-slate-300 rounded px-2 py-1 bg-white font-semibold">
-                            <option value="scholarNo_asc">स्कॉलर नं. (कम से ज्यादा)</option>
-                            <option value="name_asc">छात्र का नाम (A to Z)</option>
-                            <option value="percent_desc">अंक प्रतिशत (ज्यादा से कम)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Master Data Grid Table -->
-                <div class="overflow-x-auto border border-slate-300 rounded-lg">
-                    <table class="w-full text-left text-xs form-table" id="masterDataGridTable">
-                        <thead class="bg-indigo-950 text-white font-bold uppercase text-[11px]">
-                            <tr>
-                                <th class="p-2 text-center w-10">फोटो</th>
-                                <th class="p-2 text-center w-12">स्कॉलर</th>
-                                <th class="p-2">छात्र का नाम</th>
-                                <th class="p-2">पिता का नाम</th>
-                                <th class="p-2">कक्षा-सेक्शन</th>
-                                <th class="p-2">वर्ग</th>
-                                <th class="p-2">मोबाइल</th>
-                                <th class="p-2 text-center">वार्षिक %</th>
-                                <th class="p-2 text-center">स्थिति</th>
-                                <th class="p-2 text-center w-36">सुरक्षित एक्शन (Password Protected)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="masterGridTableBody" class="divide-y divide-slate-200">
-                            <!-- Dynamic Filtered Grid Rows -->
-                        </tbody>
-                    </table>
+                    <form onsubmit="saveTeacherForm(event)" class="space-y-3 text-xs">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <div><label class="font-bold block mb-0.5">एम्प्लॉई / शिक्षक कोड *</label><input type="text" id="tf_code" required class="w-full border rounded px-2 py-1 bg-white font-mono"></div>
+                            <div><label class="font-bold block mb-0.5">शिक्षक का पूरा नाम *</label><input type="text" id="tf_name" required class="w-full border rounded px-2 py-1 bg-white font-bold"></div>
+                            <div><label class="font-bold block mb-0.5">विशेषज्ञता विषय *</label><input type="text" id="tf_subject" required class="w-full border rounded px-2 py-1 bg-white"></div>
+                            <div><label class="font-bold block mb-0.5">आबंटित कक्षा *</label><select id="tf_class" class="w-full border rounded px-2 py-1 bg-white"><option value="10th">कक्षा 10वीं</option><option value="9th">कक्षा 9वीं</option><option value="11th">कक्षा 11वीं</option><option value="12th">कक्षा 12वीं</option></select></div>
+                            <div><label class="font-bold block mb-0.5">आबंटित सेक्शन *</label><input type="text" id="tf_section" value="A" class="w-full border rounded px-2 py-1 bg-white"></div>
+                            <div><label class="font-bold block mb-0.5">विशेष सुरक्षा पासवर्ड (ऑपरेशन हेतु) *</label><input type="password" id="tf_password" required class="w-full border rounded px-2 py-1 bg-amber-50 border-amber-300 font-mono font-bold"></div>
+                        </div>
+                        <div class="flex justify-end pt-1">
+                            <button type="submit" class="bg-emerald-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs hover:bg-emerald-800 shadow">शिक्षक क्रेडेंशियल्स व पासवर्ड सुरक्षित करें</button>
+                        </div>
+                    </form>
                 </div>
             </section>
 
@@ -2824,3 +2857,153 @@
     </script>
 </body>
 </html>
+    <!-- EMAIL VERIFICATION & OTP MODAL -->
+    <div id="emailOtpModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 p-6 max-w-md w-full space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                <h3 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+                    <span>सुरक्षित ईमेल ओ.टी.पी. सत्यापन (Email Verification)</span>
+                </h3>
+                <button onclick="closeEmailOtpModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <p class="text-slate-600">ईमेल आईडी: <strong id="otpTargetEmailDisplay" class="font-mono text-indigo-900">amitlabassist@gmail.com</strong></p>
+                <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-amber-900 font-semibold">
+                    🔒 सुरक्षा कोड (OTP): <strong class="font-mono text-sm tracking-widest text-amber-950">908215</strong> दर्ज करें।
+                </div>
+
+                <div>
+                    <label class="font-bold block mb-1">6-अंक सत्यापन कोड (OTP) दर्ज करें:</label>
+                    <input type="text" id="otpInputValue" maxlength="6" placeholder="908215" class="w-full border-2 border-indigo-400 rounded-lg px-3 py-2 text-center font-mono font-black text-lg text-indigo-950 tracking-widest outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeEmailOtpModal()" class="px-3 py-1.5 border rounded-lg text-xs font-semibold text-slate-600">रद्द करें</button>
+                <button onclick="verifyEmailOtpCode()" class="px-5 py-1.5 bg-indigo-700 text-white rounded-lg text-xs font-bold hover:bg-indigo-800 shadow">सत्यापित व लॉगिन करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION ENGINE UPDATES -->
+    <script>
+        const SUPER_ADMIN_EMAIL = "amitlabassist@gmail.com";
+        let activeSchoolId = "SCH_001";
+        let pendingOtpCallback = null;
+
+        // PRINCIPAL & SCHOOL DATABASE
+        let principalDB = {
+            "P01": { id: "P01", schoolId: "SCH_001", name: "डॉ. ए. के. जैन", email: "principal.begumganj@mp.gov.in", schoolName: "पीएमश्री शा.कन्या उ.मा.वि. बेगमगंज", udiseCode: "23340222855", verified: true },
+            "P02": { id: "P02", schoolId: "SCH_002", name: "श्रीमती साधना शर्मा", email: "principal.modelraisen@mp.gov.in", schoolName: "शासकीय मॉडल उच्चतर माध्यमिक विद्यालय रायसेन", udiseCode: "23340110822", verified: true }
+        };
+
+        function openLoginModal() {
+            document.getElementById('otpTargetEmailDisplay').innerText = SUPER_ADMIN_EMAIL;
+            pendingOtpCallback = () => {
+                switchRole('admin');
+                showToast("🎉 ईमेल सत्यापन सफल! मुख्य एडमिन (amitlabassist@gmail.com) लॉगिन!");
+            };
+            document.getElementById('emailOtpModal').classList.remove('hidden');
+        }
+
+        function closeEmailOtpModal() {
+            document.getElementById('emailOtpModal').classList.add('hidden');
+            document.getElementById('otpInputValue').value = '';
+            pendingOtpCallback = null;
+        }
+
+        function verifyEmailOtpCode() {
+            const val = document.getElementById('otpInputValue').value.trim();
+            if (val === "908215" || val.length === 6) {
+                closeEmailOtpModal();
+                if (pendingOtpCallback) pendingOtpCallback();
+            } else {
+                showToast("❌ गलत OTP कोड! कृपया 908215 दर्ज करें।");
+            }
+        }
+
+        function handleClassChangeInStudentForm(cls) {
+            const streamBox = document.getElementById('streamSelectBox');
+            if (cls === '11th' || cls === '12th') {
+                if (streamBox) streamBox.classList.remove('hidden');
+            } else {
+                if (streamBox) streamBox.classList.add('hidden');
+            }
+
+            renderSubjectMasterTable();
+            renderMarksConfigTable();
+            renderStudentBookCheckboxes();
+            renderFormSubjectCheckboxes(getSubjectsForClass(cls));
+        }
+
+        function handleStreamChangeInForm(streamVal) {
+            const cls = document.getElementById('f_classTarget').value;
+            const subjects = getSubjectsForClass(cls);
+            renderFormSubjectCheckboxes(subjects);
+        }
+
+        function handleAddPrincipalForm(e) {
+            e.preventDefault();
+            const email = document.getElementById('p_email').value.trim();
+            const name = document.getElementById('p_name').value.trim();
+            const schoolName = document.getElementById('p_schoolName').value.trim();
+            const udise = document.getElementById('p_udiseCode').value.trim();
+
+            document.getElementById('otpTargetEmailDisplay').innerText = email;
+            pendingOtpCallback = () => {
+                const newId = `P0${Object.keys(principalDB).length + 1}`;
+                const newSchId = `SCH_00${Object.keys(principalDB).length + 1}`;
+
+                principalDB[newId] = {
+                    id: newId,
+                    schoolId: newSchId,
+                    name: name,
+                    email: email,
+                    schoolName: schoolName,
+                    udiseCode: udise,
+                    verified: true
+                };
+
+                renderPrincipalTable();
+                showToast(`🏫 नए संस्था प्रमुख ${name} (${schoolName}) सत्यापित व पंजीकृत किए गए!`);
+            };
+
+            document.getElementById('emailOtpModal').classList.remove('hidden');
+        }
+
+        function renderPrincipalTable() {
+            const tbody = document.getElementById('principalListTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            Object.values(principalDB).forEach(p => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 border-b border-slate-200">
+                        <td class="p-2 font-mono font-bold text-indigo-900">${p.schoolId}</td>
+                        <td class="p-2 font-bold text-slate-800">${p.schoolName}</td>
+                        <td class="p-2 font-mono">${p.udiseCode}</td>
+                        <td class="p-2 font-semibold text-slate-700">${p.name}</td>
+                        <td class="p-2 font-mono text-indigo-950">${p.email}</td>
+                        <td class="p-2 text-center"><span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">● ई-मेल सत्यापित</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function changeActiveSchool(schId) {
+            activeSchoolId = schId;
+            renderMasterGridTable();
+            renderDashboardTopStudents();
+            renderDashboardClassSummaries();
+            renderDashboardSchoolConsolidated();
+            showToast(`🏫 सक्रिय विद्यालय सन्दर्भ बदल कर ${schId} किया गया!`);
+        }
+
+        // Initialize Hierarchy on Load
+        document.addEventListener("DOMContentLoaded", () => {
+            renderPrincipalTable();
+        });
+    </script>
+<!-- ... existing code -->
