@@ -108,1902 +108,402 @@
     </header>
 
     <div class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 md:p-5 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            <!-- SECTION: STUDENT PROFILE CARDS (SINGLE & BATCH PRINT) -->
-            <section id="section-profile-card" class="content-section hidden space-y-4">
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 no-print space-y-2">
-                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="id-card" class="w-4 h-4 text-indigo-600"></i>
-                            <h2 class="text-xs font-bold text-slate-800">विद्यार्थी प्रोफाइल पहचान पत्र (Single / Batch Profile Cards)</h2>
-                        </div>
-                        <span id="profileCardCountBadge" class="bg-indigo-100 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded-full">2 छात्र चयनित</span>
-                    </div>
 
-                    <!-- PROFILE CARD FILTER TOOLBAR -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs">
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">कक्षा फ़िल्टर:</label>
-                            <select id="pcardClassFilter" onchange="renderProfileCardsSection()" class="w-full border rounded px-2 py-1 font-bold bg-indigo-50 border-indigo-200">
-                                <option value="ALL">समस्त कक्षाएं</option>
-                                <option value="10th">कक्षा 10वीं</option>
-                                <option value="9th">कक्षा 9वीं</option>
-                                <option value="11th">कक्षा 11वीं</option>
-                                <option value="12th">कक्षा 12वीं</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">सेक्शन फ़िल्टर:</label>
-                            <select id="pcardSectionFilter" onchange="renderProfileCardsSection()" class="w-full border rounded px-2 py-1 font-bold bg-indigo-50 border-indigo-200">
-                                <option value="ALL">समस्त सेक्शन</option>
-                                <option value="A">सेक्शन A</option>
-                                <option value="B">सेक्शन B</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">त्वरित खोज (Search):</label>
-                            <input type="text" id="pcardSearchInput" oninput="renderProfileCardsSection()" placeholder="नाम, स्कॉलर या मोबाईल..." class="w-full border rounded px-2 py-1 font-semibold outline-none focus:ring-1 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">कंडीशन फ़िल्टर:</label>
-                            <select id="pcardConditionFilter" onchange="renderProfileCardsSection()" class="w-full border rounded px-2 py-1 font-bold bg-indigo-50 border-indigo-200">
-                                <option value="ALL">समस्त छात्र</option>
-                                <option value="FIRST">प्रथम श्रेणी (> 60%)</option>
-                                <option value="DISTINCTION">विशेष योग्यता (> 75%)</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end space-x-1">
-                            <label class="flex items-center space-x-1 cursor-pointer bg-slate-100 border border-slate-300 rounded px-2 py-1 text-[11px] font-bold w-full justify-center">
-                                <input type="checkbox" id="pcardSelectAll" onchange="toggleSelectAllProfileCards(this.checked)" checked class="w-3.5 h-3.5">
-                                <span>कक्षा के सभी चुनें</span>
-                            </label>
-                        </div>
-                    </div>
+        <!-- SIDEBAR NAVIGATION PANEL (LEFT) -->
+        <aside class="md:col-span-1 bg-white rounded-xl shadow-sm p-3 border border-slate-200 no-print flex flex-col space-y-3 sticky top-16 h-fit">
+            
+            <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-2 space-y-1.5">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-indigo-900 block flex items-center justify-between">
+                    <span>🔍 त्वरित छात्र खोजें:</span>
+                    <span id="quickStudentCountBadge" class="text-[9px] bg-indigo-200 text-indigo-950 px-1.5 py-0.2 rounded-full">3 छात्र</span>
+                </label>
+                <input type="text" id="sidebarSearchInput" oninput="filterSidebarStudentDropdown(this.value)" placeholder="नाम, स्कॉलर या रोल नंबर..." class="w-full text-xs px-2 py-1 border border-indigo-300 rounded outline-none focus:ring-1 focus:ring-indigo-600 font-semibold">
+                
+                <select id="sidebarStudentSelect" onchange="loadStudentData(this.value)" class="w-full bg-white border border-indigo-300 rounded px-2 py-1 text-xs font-bold text-indigo-950 outline-none">
+                    <option value="101">राहुल शर्मा (Scholar: 101, 10th-A)</option>
+                    <option value="102">प्रिया वर्मा (Scholar: 102, 10th-A)</option>
+                    <option value="103">अमित कुमार (Scholar: 103, 12th-A)</option>
+                </select>
+            </div>
 
-                    <!-- EXPORT ACTIONS FOR PROFILE CARDS -->
-                    <div class="flex flex-wrap items-center justify-end gap-1.5 pt-1 border-t border-slate-100">
-                        <button onclick="globalPrintCurrentSection()" class="bg-indigo-900 text-white font-bold text-[11px] px-3 py-1 rounded shadow hover:bg-indigo-950 flex items-center space-x-1">
-                            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-                            <span>चयनित प्रोफाइल कार्ड प्रिंट (Print All Selected)</span>
-                        </button>
-                        <button onclick="globalExportPDF()" class="bg-rose-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-rose-700">PDF</button>
-                        <button onclick="globalExportExcel()" class="bg-emerald-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-emerald-700">Excel</button>
-                        <button onclick="globalExportDoc()" class="bg-blue-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-blue-700">Doc</button>
-                        <button onclick="globalExportImage()" class="bg-amber-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-amber-700">Image</button>
-                    </div>
+            <nav class="space-y-1 text-xs font-bold" id="sidebarMenu">
+                <button onclick="showSection('dashboard')" id="btn-dashboard" class="tab-btn active w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 text-amber-500"></i>
+                    <span>मुख्य डैशबोर्ड</span>
+                </button>
+                <button onclick="showSection('student-entry')" id="btn-student-entry" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="user-plus" class="w-4 h-4 text-indigo-600"></i>
+                    <span>मास्टर्स छात्र ऑनलाइन फ़ॉर्म</span>
+                </button>
+                <button onclick="showSection('master-grid')" id="btn-master-grid" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="search-code" class="w-4 h-4 text-blue-600"></i>
+                    <span>मास्टर्स छात्र सर्च ग्रिड</span>
+                </button>
+                <button onclick="showSection('combined-forms')" id="btn-combined-forms" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="files" class="w-4 h-4 text-rose-600"></i>
+                    <span>तीनों फ़ॉर्म्स (1, 2 व 3 संयुक्त)</span>
+                </button>
+                <button onclick="showSection('profile-card')" id="btn-profile-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="id-card" class="w-4 h-4 text-purple-600"></i>
+                    <span>छात्र प्रोफाइल आईकार्ड</span>
+                </button>
+                <button onclick="showSection('admit-card')" id="btn-admit-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="ticket" class="w-4 h-4 text-rose-500"></i>
+                    <span>वार्षिक परीक्षा एडमिट कार्ड</span>
+                </button>
+                <button onclick="showSection('marksheet')" id="btn-marksheet" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
+                    <span>समेकित अंकसूची (Marksheet)</span>
+                </button>
+                <button onclick="showSection('teacher-card')" id="btn-teacher-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="user-check" class="w-4 h-4 text-teal-600"></i>
+                    <span>शिक्षक पहचान पत्र (ID Card)</span>
+                </button>
+                <button onclick="showSection('management-panel')" id="btn-management-panel" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="building" class="w-4 h-4 text-cyan-600"></i>
+                    <span>संस्था प्रमुख व शिक्षक प्रबंधन</span>
+                </button>
+                <button onclick="showSection('subject-master')" id="btn-subject-master" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="book-open" class="w-4 h-4 text-purple-600"></i>
+                    <span>1. विषय व विषय कोड मास्टर</span>
+                </button>
+                <button onclick="showSection('marks-config')" id="btn-marks-config" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="sliders" class="w-4 h-4 text-emerald-600"></i>
+                    <span>2. कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स</span>
+                </button>
+                <button onclick="showSection('exam-marks')" id="btn-exam-marks" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="pen-tool" class="w-4 h-4 text-rose-600"></i>
+                    <span>3. 5-स्तरीय परीक्षा अंक प्रविष्टि</span>
+                </button>
+                <button onclick="showSection('consolidated-report')" id="btn-consolidated-report" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-600"></i>
+                    <span>4. एकजाई शाला परिणाम रिपोर्ट</span>
+                </button>
+                <button onclick="showSection('class-exam-report')" id="btn-class-exam-report" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-600"></i>
+                    <span>5. कक्षा-सेक्शन विस्तृत रिपोर्ट</span>
+                </button>
+                <button onclick="showSection('book-master')" id="btn-book-master" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="library" class="w-4 h-4 text-amber-700"></i>
+                    <span>6. पुस्तकालय व पाठ्यपुस्तक मास्टर</span>
+                </button>
+                <button onclick="showSection('cloud-settings')" id="btn-cloud-settings" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="cloud" class="w-4 h-4 text-sky-600"></i>
+                    <span>8. क्लाउड व बैकअप सेटिंग्स</span>
+                </button>
+            </nav>
+
+            <div class="border-t border-slate-200 pt-2 text-[10px] text-slate-500 font-bold space-y-1">
+                <p class="text-indigo-900 uppercase tracking-wider font-extrabold">आधिकारिक प्रिंट फ़ॉर्म्स:</p>
+                <button onclick="showSection('form-mp-board')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">1. म.प्र. बोर्ड हाईस्कूल फॉर्म</button>
+                <button onclick="showSection('form-sssm')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">2. समग्र छात्रवृत्ति योजना फॉर्म</button>
+                <button onclick="showSection('form-pm-shri')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">3. पीएमश्री बेगमगंज प्रवेश फॉर्म</button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT CONTAINER AREA -->
+        <main class="md:col-span-3 lg:col-span-4 space-y-4">
+
+            <!-- GLOBAL EXPORT TOOLBAR FOR ALL SECTIONS -->
+            <div class="bg-white p-2.5 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-2 no-print">
+                <div class="flex items-center space-x-1.5 text-xs font-bold text-slate-700">
+                    <i data-lucide="download" class="w-4 h-4 text-indigo-600"></i>
+                    <span id="currentActiveSectionTitle">ग्लोबल एक्सपोर्ट एवं शेयर टूलबार</span>
                 </div>
 
-                <!-- CARDS DISPLAY CONTAINER -->
-                <div id="exportable-profile-card" class="space-y-6">
-                    <div id="profileCardsBatchContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Dynamic Cards Rendered Here -->
-                    </div>
+                <div class="flex flex-wrap items-center gap-1.5">
+                    <button onclick="globalPrintCurrentSection()" class="bg-slate-800 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-slate-900 shadow flex items-center space-x-1">
+                        <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                        <span>प्रिंट (Print)</span>
+                    </button>
+                    <button onclick="globalExportPDF()" class="bg-rose-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-rose-700 shadow flex items-center space-x-1">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                        <span>PDF</span>
+                    </button>
+                    <button onclick="globalExportExcel()" class="bg-emerald-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-emerald-700 shadow flex items-center space-x-1">
+                        <i data-lucide="sheet" class="w-3.5 h-3.5"></i>
+                        <span>Excel</span>
+                    </button>
+                    <button onclick="globalExportDoc()" class="bg-blue-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-blue-700 shadow flex items-center space-x-1">
+                        <i data-lucide="file-code" class="w-3.5 h-3.5"></i>
+                        <span>Doc</span>
+                    </button>
+                    <button onclick="globalExportImage()" class="bg-amber-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-amber-700 shadow flex items-center space-x-1">
+                        <i data-lucide="image" class="w-3.5 h-3.5"></i>
+                        <span>Image</span>
+                    </button>
+                    <button onclick="shareOnlineLinkToken()" class="bg-indigo-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-indigo-800 shadow flex items-center space-x-1">
+                        <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+                        <span>शेयर लिंक</span>
+                    </button>
                 </div>
-            </section>
+            </div>
 
-            <!-- SECTION: ADMIT CARDS (SINGLE & BATCH PRINT) -->
-            <section id="section-admit-card" class="content-section hidden space-y-4">
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 no-print space-y-2">
-                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="ticket" class="w-4 h-4 text-rose-600"></i>
-                            <h2 class="text-xs font-bold text-slate-800">वार्षिक परीक्षा एडमिट कार्ड (Single / Batch Admit Cards)</h2>
+            <section id="section-dashboard" class="content-section space-y-4">
+                
+                <!-- OVERALL SCHOOL TOPPER SPOTLIGHT BANNER -->
+                <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-slate-950 p-4 rounded-2xl shadow-xl border-2 border-yellow-300 gold-glow relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img id="dashTopperPhoto" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-24 h-28 object-cover rounded-xl border-4 border-white shadow-2xl bg-white">
+                            <span class="absolute -top-3 -right-3 bg-red-600 text-white font-black text-xs px-2 py-0.5 rounded-full shadow border-2 border-white flex items-center space-x-1">
+                                <span>👑 #1 ओवरऑल स्कूल टॉपर</span>
+                            </span>
                         </div>
-                        <span id="admitCardCountBadge" class="bg-rose-100 text-rose-900 text-[10px] font-bold px-2 py-0.5 rounded-full">2 एडमिट कार्ड चयनित</span>
-                    </div>
-
-                    <!-- ADMIT CARD FILTER TOOLBAR -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs">
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">कक्षा फ़िल्टर:</label>
-                            <select id="admitClassFilter" onchange="renderAdmitCardsSection()" class="w-full border rounded px-2 py-1 font-bold bg-rose-50 border-rose-200">
-                                <option value="ALL">समस्त कक्षाएं</option>
-                                <option value="10th">कक्षा 10वीं</option>
-                                <option value="9th">कक्षा 9वीं</option>
-                                <option value="11th">कक्षा 11वीं</option>
-                                <option value="12th">कक्षा 12वीं</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">सेक्शन फ़िल्टर:</label>
-                            <select id="admitSectionFilter" onchange="renderAdmitCardsSection()" class="w-full border rounded px-2 py-1 font-bold bg-rose-50 border-rose-200">
-                                <option value="ALL">समस्त सेक्शन</option>
-                                <option value="A">सेक्शन A</option>
-                                <option value="B">सेक्शन B</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">छात्र खोजें (Search):</label>
-                            <input type="text" id="admitSearchInput" oninput="renderAdmitCardsSection()" placeholder="नाम, स्कॉलर या रोल..." class="w-full border rounded px-2 py-1 font-semibold outline-none focus:ring-1 focus:ring-rose-500">
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">कंडीशन फ़िल्टर:</label>
-                            <select id="admitConditionFilter" onchange="renderAdmitCardsSection()" class="w-full border rounded px-2 py-1 font-bold bg-rose-50 border-rose-200">
-                                <option value="ALL">समस्त छात्र</option>
-                                <option value="REGULAR">नियमित परीक्षार्थी</option>
-                                <option value="PRIVATE">स्वाध्यायी परीक्षार्थी</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <label class="flex items-center space-x-1 cursor-pointer bg-slate-100 border border-slate-300 rounded px-2 py-1 text-[11px] font-bold w-full justify-center">
-                                <input type="checkbox" id="admitSelectAll" onchange="toggleSelectAllAdmitCards(this.checked)" checked class="w-3.5 h-3.5">
-                                <span>कक्षा के सभी एडमिट कार्ड चुनें</span>
-                            </label>
+                        <div class="space-y-1">
+                            <span class="bg-slate-950 text-yellow-400 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest shadow">सत्र 2025-2026 सर्वोच्च अंकधारक</span>
+                            <h2 class="text-xl font-black text-slate-950 tracking-wide" id="dashTopperName">राहुल शर्मा</h2>
+                            <p class="text-xs font-bold text-slate-900" id="dashTopperDetails">पिता: श्री राम शर्मा | कक्षा: 10th - A | स्कॉलर क्र.: 101</p>
+                            <p class="text-xs font-semibold text-slate-800">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज (रायसेन)</p>
                         </div>
                     </div>
 
-                    <!-- EXPORT ACTIONS FOR ADMIT CARDS -->
-                    <div class="flex flex-wrap items-center justify-end gap-1.5 pt-1 border-t border-slate-100">
-                        <button onclick="globalPrintCurrentSection()" class="bg-rose-700 text-white font-bold text-[11px] px-3 py-1 rounded shadow hover:bg-rose-800 flex items-center space-x-1">
-                            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-                            <span>चयनित एडमिट कार्ड प्रिंट (Print All Selected)</span>
-                        </button>
-                        <button onclick="globalExportPDF()" class="bg-rose-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-rose-700">PDF</button>
-                        <button onclick="globalExportExcel()" class="bg-emerald-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-emerald-700">Excel</button>
-                        <button onclick="globalExportDoc()" class="bg-blue-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-blue-700">Doc</button>
-                        <button onclick="globalExportImage()" class="bg-amber-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-amber-700">Image</button>
-                    </div>
-                </div>
-
-                <!-- ADMIT CARDS CONTAINER -->
-                <div id="exportable-admit-card" class="space-y-6">
-                    <div id="admitCardsBatchContainer" class="space-y-6">
-                        <!-- Dynamic Admit Cards Rendered Here -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION: MARKSHEETS (SINGLE & BATCH PRINT) -->
-            <section id="section-marksheet" class="content-section hidden space-y-4">
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 no-print space-y-2">
-                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
-                            <h2 class="text-xs font-bold text-slate-800">समेकित अंकसूची (Single / Batch Marksheets)</h2>
-                        </div>
-                        <span id="marksheetCountBadge" class="bg-amber-100 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded-full">2 अंकसूची चयनित</span>
-                    </div>
-
-                    <!-- MARKSHEET FILTER TOOLBAR -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs">
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">कक्षा फ़िल्टर:</label>
-                            <select id="marksheetClassFilter" onchange="renderMarksheetsSection()" class="w-full border rounded px-2 py-1 font-bold bg-amber-50 border-amber-200">
-                                <option value="ALL">समस्त कक्षाएं</option>
-                                <option value="10th">कक्षा 10वीं</option>
-                                <option value="9th">कक्षा 9वीं</option>
-                                <option value="11th">कक्षा 11वीं</option>
-                                <option value="12th">कक्षा 12वीं</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">सेक्शन फ़िल्टर:</label>
-                            <select id="marksheetSectionFilter" onchange="renderMarksheetsSection()" class="w-full border rounded px-2 py-1 font-bold bg-amber-50 border-amber-200">
-                                <option value="ALL">समस्त सेक्शन</option>
-                                <option value="A">सेक्शन A</option>
-                                <option value="B">सेक्शन B</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">छात्र खोजें (Search):</label>
-                            <input type="text" id="marksheetSearchInput" oninput="renderMarksheetsSection()" placeholder="नाम, स्कॉलर या रोल..." class="w-full border rounded px-2 py-1 font-semibold outline-none focus:ring-1 focus:ring-amber-500">
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">कंडीशन फ़िल्टर:</label>
-                            <select id="marksheetConditionFilter" onchange="renderMarksheetsSection()" class="w-full border rounded px-2 py-1 font-bold bg-amber-50 border-amber-200">
-                                <option value="ALL">समस्त परिणाम</option>
-                                <option value="FIRST">प्रथम श्रेणी (> 60%)</option>
-                                <option value="DISTINCTION">विशेष योग्यता (> 75%)</option>
-                                <option value="FAIL">अनुत्तीर्ण / पूरक (Fail)</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <label class="flex items-center space-x-1 cursor-pointer bg-slate-100 border border-slate-300 rounded px-2 py-1 text-[11px] font-bold w-full justify-center">
-                                <input type="checkbox" id="marksheetSelectAll" onchange="toggleSelectAllMarksheets(this.checked)" checked class="w-3.5 h-3.5">
-                                <span>कक्षा की सभी अंकसूची चुनें</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- EXPORT ACTIONS FOR MARKSHEETS -->
-                    <div class="flex flex-wrap items-center justify-end gap-1.5 pt-1 border-t border-slate-100">
-                        <button onclick="globalPrintCurrentSection()" class="bg-amber-700 text-white font-bold text-[11px] px-3 py-1 rounded shadow hover:bg-amber-800 flex items-center space-x-1">
-                            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-                            <span>चयनित अंकसूची प्रिंट (Print All Marksheets)</span>
-                        </button>
-                        <button onclick="globalExportPDF()" class="bg-rose-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-rose-700">PDF</button>
-                        <button onclick="globalExportExcel()" class="bg-emerald-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-emerald-700">Excel</button>
-                        <button onclick="globalExportDoc()" class="bg-blue-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-blue-700">Doc</button>
-                        <button onclick="globalExportImage()" class="bg-amber-600 text-white font-bold text-[11px] px-2.5 py-1 rounded shadow hover:bg-amber-700">Image</button>
-                    </div>
-                </div>
-
-                <!-- MARKSHEETS BATCH CONTAINER -->
-                <div id="exportable-marksheet" class="space-y-6">
-                    <div id="marksheetsBatchContainer" class="space-y-6">
-                        <!-- Dynamic Marksheets Rendered Here -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION: TEACHER CARDS (SINGLE & BATCH PRINT) -->
-            <section id="section-teacher-card" class="content-section hidden space-y-4">
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 no-print space-y-2">
-                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="user-check" class="w-4 h-4 text-teal-600"></i>
-                            <h2 class="text-xs font-bold text-slate-800">शिक्षक पहचान पत्र (Teacher ID Cards)</h2>
-                        </div>
-                        <span id="teacherCardCountBadge" class="bg-teal-100 text-teal-900 text-[10px] font-bold px-2 py-0.5 rounded-full">1 शिक्षक चयनित</span>
-                    </div>
-
-                    <!-- TEACHER CARD FILTER TOOLBAR -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">शिक्षक खोजें (Search Name/Code):</label>
-                            <input type="text" id="tcardSearchInput" oninput="renderTeacherCardsSection()" placeholder="नाम, शिक्षक कोड या विषय..." class="w-full border rounded px-2 py-1 font-semibold outline-none focus:ring-1 focus:ring-teal-500">
-                        </div>
-                        <div>
-                            <label class="font-bold text-[10px] text-slate-500 block mb-0.5">आबंटित कक्षा फ़िल्टर:</label>
-                            <select id="tcardClassFilter" onchange="renderTeacherCardsSection()" class="w-full border rounded px-2 py-1 font-bold bg-teal-50 border-teal-200">
-                                <option value="ALL">समस्त कक्षाएं</option>
-                                <option value="10th">कक्षा 10वीं</option>
-                                <option value="9th">कक्षा 9वीं</option>
-                                <option value="11th">कक्षा 11वीं</option>
-                                <option value="12th">कक्षा 12वीं</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <label class="flex items-center space-x-1 cursor-pointer bg-slate-100 border border-slate-300 rounded px-2 py-1 text-[11px] font-bold w-full justify-center">
-                                <input type="checkbox" id="tcardSelectAll" onchange="toggleSelectAllTeacherCards(this.checked)" checked class="w-3.5 h-3.5">
-                                <span>समस्त शिक्षकों के आईकार्ड चुनें</span>
-                            </label>
-                        </div>
-                        <div class="flex items-end justify-end space-x-1">
-                            <button onclick="globalPrintCurrentSection()" class="bg-teal-700 text-white font-bold text-[11px] px-3 py-1 rounded shadow hover:bg-teal-800 flex items-center space-x-1">
-                                <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-                                <span>शिक्षक आईकार्ड प्रिंट</span>
-                            </button>
+                    <div class="bg-slate-950/90 text-white p-3.5 rounded-xl border border-yellow-400 text-center min-w-[160px] shadow-2xl">
+                        <span class="text-[10px] text-yellow-300 font-bold block uppercase">कुल प्राप्त प्राप्तांक:</span>
+                        <span class="text-2xl font-black text-yellow-400 block font-mono" id="dashTopperMarks">424 / 500</span>
+                        <div class="mt-1 pt-1 border-t border-slate-800 flex justify-between items-center text-xs">
+                            <span class="text-emerald-400 font-bold" id="dashTopperPercent">84.8%</span>
+                            <span class="bg-yellow-500 text-slate-950 font-black px-2 py-0.5 rounded text-[10px]" id="dashTopperGrade">A+ GRADE</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- TEACHER CARDS DISPLAY CONTAINER -->
-                <div id="exportable-teacher-card" class="space-y-6">
-                    <div id="teacherCardsBatchContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Dynamic Teacher Cards Rendered Here -->
-                    </div>
-                </div>
-            </section>
-
-            <section id="section-student-entry" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-                <div class="flex justify-between items-center pb-2.5 border-b border-slate-200 mb-3">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800">मास्टर्स ऑनलाइन छात्र डेटा एंट्री फ़ॉर्म</h2>
-                        <p class="text-[11px] text-slate-500">यहाँ भरा गया डेटा बोर्ड फॉर्म, छात्रवृत्ति फॉर्म, प्रवेश फॉर्म, पाठ्यपुस्तक वितरण, एडमिट कार्ड व अंकसूची में स्वतः अपडेट होगा।</p>
-                    </div>
-                    <span id="studentFormBadge" class="bg-indigo-100 text-indigo-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">डेटा मोड</span>
-                </div>
-
-                <form id="dataEntryForm" onsubmit="saveStudentForm(event)" class="space-y-3 text-xs">
-                    
-                    <!-- PHOTO UPLOAD BLOCK -->
-                    <div class="bg-amber-50/80 p-3 rounded-xl border border-amber-300 space-y-2">
-                        <h3 class="font-bold text-xs text-amber-950 border-b border-amber-300 pb-1 flex items-center space-x-1">
-                            <i data-lucide="camera" class="w-3.5 h-3.5 text-amber-700"></i>
-                            <span>विद्यार्थी पासपोर्ट फ़ोटो अपलोड व यूआरएल (Student Photo)</span>
+                <!-- TOP 10 MERIT CARDS FILTER TOOLBAR -->
+                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 space-y-2">
+                    <div class="flex flex-wrap items-center justify-between border-b border-slate-200 pb-2">
+                        <h3 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
+                            <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i>
+                            <span>टॉप 10 मेधावी छात्र सूची (Top 10 Performers Grid)</span>
                         </h3>
 
-                        <div class="flex flex-wrap items-center gap-4">
-                            <div class="text-center">
-                                <img id="f_photoPreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-24 h-28 object-cover rounded-lg border-2 border-slate-400 shadow bg-white">
-                                <span class="text-[9px] text-slate-500 block mt-1">फ़ोटो पूर्वावलोकन</span>
-                            </div>
-
-                            <div class="flex-1 space-y-2 min-w-[200px]">
-                                <div>
-                                    <label class="font-semibold block mb-0.5">फ़ोटो फ़ाइल चुनें (File Upload):</label>
-                                    <input type="file" id="f_photoFile" accept="image/*" onchange="previewStudentPhoto(event)" class="w-full bg-white border border-slate-300 rounded px-2 py-1 text-xs">
-                                </div>
-                                <div>
-                                    <label class="font-semibold block mb-0.5">या डायरेक्ट फोटो वेब/ऑनलाइन URL (Photo URL):</label>
-                                    <input type="text" id="f_photoUrl" oninput="previewPhotoFromUrl(this.value)" placeholder="https://example.com/photo.jpg" class="w-full border rounded px-2 py-1 bg-white font-mono text-xs">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- BLOCK 1: ADMISSION & REGISTRATION -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
-                        <h3 class="font-bold text-xs text-slate-800 border-b border-slate-300 pb-1 flex items-center space-x-1">
-                            <i data-lucide="file-check" class="w-3.5 h-3.5 text-indigo-600"></i>
-                            <span>भाग 1: प्रवेश, पंजीयन व प्रवेश प्रकार विवरण</span>
-                        </h3>
-
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
-                            <div><label class="font-semibold block mb-0.5">स्कॉलर नंबर (Scholar No) *</label><input type="text" id="f_scholarNo" required class="w-full border rounded px-2 py-1 bg-white font-mono font-bold"></div>
-                            <div><label class="font-semibold block mb-0.5">प्रवेश कक्षा (Class) *</label>
-                                <select id="f_classTarget" onchange="handleClassChangeInStudentForm(this.value)" class="w-full border rounded px-2 py-1 bg-white font-bold text-indigo-900">
+                        <div class="flex flex-wrap items-center gap-2 text-xs">
+                            <div>
+                                <select id="dashClassFilter" onchange="renderDashboardTop10Cards()" class="border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
+                                    <option value="ALL">समस्त कक्षाएं</option>
                                     <option value="10th">कक्षा 10वीं</option>
                                     <option value="9th">कक्षा 9वीं</option>
                                     <option value="11th">कक्षा 11वीं</option>
                                     <option value="12th">कक्षा 12वीं</option>
                                 </select>
                             </div>
-                            <div id="streamSelectBox" class="hidden">
-                                <label class="font-semibold block mb-0.5 text-purple-900 font-bold">संकाय / विषय संवर्ग (Stream) *</label>
-                                <select id="f_streamSelect" onchange="handleStreamChangeInForm(this.value)" class="w-full border-2 border-purple-300 rounded px-2 py-1 bg-purple-50 font-bold text-purple-950">
-                                    <option value="science_math">विज्ञान (गणित)</option>
-                                    <option value="science_bio">विज्ञान (जीव विज्ञान)</option>
-                                    <option value="commerce">वाणिज्य (Commerce)</option>
-                                    <option value="arts">कला (Arts)</option>
-                                </select>
-                            </div>
-                            <div><label class="font-semibold block mb-0.5">सेक्शन (Section) *</label><input type="text" id="f_section" value="A" class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">क्रमांक (Sr. No.)</label><input type="text" id="f_srNo" value="1" class="w-full border rounded px-2 py-1 bg-white font-mono"></div>
-                            
-                            <div><label class="font-semibold block mb-0.5">आवेदक का प्रकार *</label>
-                                <select id="f_applicantType" class="w-full border rounded px-2 py-1 bg-white">
-                                    <option value="1">नियमित - 1 (Regular)</option>
-                                    <option value="2">स्वाध्यायी - 2 (Private)</option>
-                                </select>
-                            </div>
-                            <div><label class="font-semibold block mb-0.5">प्रवेश प्रकार 1</label>
-                                <select id="f_pravesh1" class="w-full border rounded px-2 py-1 bg-white">
-                                    <option value="संस्थागत">संस्थागत</option>
-                                    <option value="नवीन">नवीन</option>
-                                </select>
-                            </div>
-                            <div><label class="font-semibold block mb-0.5">प्रवेश प्रकार 2</label>
-                                <select id="f_pravesh2" class="w-full border rounded px-2 py-1 bg-white">
-                                    <option value="सामान्य">सामान्य</option>
-                                    <option value="पुनः प्रवेशी">पुनः प्रवेशी</option>
-                                    <option value="रुकजाना नहीं">रुकजाना नहीं</option>
-                                </select>
-                            </div>
-                            <div><label class="font-semibold block mb-0.5">प्रवेश प्रकार 3</label>
-                                <select id="f_pravesh3" class="w-full border rounded px-2 py-1 bg-white">
-                                    <option value="स्थाई">स्थाई</option>
-                                    <option value="अस्थाई">अस्थाई</option>
-                                </select>
-                            </div>
-
-                            <div><label class="font-semibold block mb-0.5">अस्थाई रिजल्ट स्थिति</label>
-                                <select id="f_asthayiResult" class="w-full border rounded px-2 py-1 bg-white">
-                                    <option value="Pass">Pass</option>
-                                    <option value="Fail">Fail</option>
-                                    <option value="Awaited">Awaited</option>
-                                </select>
-                            </div>
-                            <div><label class="font-semibold block mb-0.5">T.C. जमा?</label>
-                                <select id="f_tcIssued" class="w-full border rounded px-2 py-1 bg-white font-bold">
-                                    <option value="YES">YES (हाँ)</option>
-                                    <option value="NO">NO (नहीं)</option>
-                                </select>
-                            </div>
-                            <div><label class="font-semibold block mb-0.5">गैप सर्टिफिकेट?</label>
-                                <select id="f_gapCertificate" class="w-full border rounded px-2 py-1 bg-white font-bold">
-                                    <option value="NO">NO (नहीं)</option>
-                                    <option value="YES">YES (हाँ)</option>
-                                </select>
-                            </div>
-                            <div><label class="font-semibold block mb-0.5">प्रवेश दिनांक</label><input type="date" id="f_admissionDate" class="w-full border rounded px-2 py-1 bg-white"></div>
-                        </div>
-                    </div>
-
-                    <!-- BLOCK 2: PERSONAL IDENTIFICATION -->
-                    <div class="bg-indigo-50/60 p-3 rounded-xl border border-indigo-200 space-y-2.5">
-                        <h3 class="font-bold text-xs text-indigo-900 border-b border-indigo-300 pb-1 flex items-center space-x-1">
-                            <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
-                            <span>भाग 2: छात्र का व्यक्तिगत विवरण, APAAR ID व डिजिटल आईडी</span>
-                        </h3>
-
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
-                            <div><label class="font-semibold block mb-0.5">विद्यार्थी नाम (हिन्दी) *</label><input type="text" id="f_nameHindi" required class="w-full border rounded px-2 py-1 bg-white font-semibold"></div>
-                            <div><label class="font-semibold block mb-0.5">विद्यार्थी नाम (ENGLISH) *</label><input type="text" id="f_nameEng" required class="w-full border rounded px-2 py-1 bg-white font-mono uppercase"></div>
-                            <div><label class="font-semibold block mb-0.5">पिता का नाम श्री *</label><input type="text" id="f_fatherName" required class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">माता का नाम श्रीमती *</label><input type="text" id="f_motherName" required class="w-full border rounded px-2 py-1 bg-white"></div>
-
-                            <div><label class="font-semibold block mb-0.5 text-indigo-950 font-bold">अपार आईडी (APAAR ID) *</label><input type="text" id="f_apaarId" maxlength="12" placeholder="12-अंक APAAR ID" class="w-full border-2 border-indigo-300 rounded px-2 py-1 font-mono font-bold bg-amber-50"></div>
-                            <div><label class="font-semibold block mb-0.5">ई-मेल आईडी (Email ID)</label><input type="email" id="f_email" placeholder="student@gmail.com" class="w-full border rounded px-2 py-1 font-mono bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">Child SSSM ID (9 अंक) *</label><input type="text" id="f_childId" maxlength="9" class="w-full border rounded px-2 py-1 font-mono font-bold bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">परिवार ID (8 अंक)</label><input type="text" id="f_familyId" maxlength="8" class="w-full border rounded px-2 py-1 font-mono font-bold bg-white"></div>
-
-                            <div><label class="font-semibold block mb-0.5">आधार कार्ड नंबर (12 अंक)</label><input type="text" id="f_aadhaar" maxlength="12" class="w-full border rounded px-2 py-1 font-mono bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">जन्म तिथि *</label><input type="date" id="f_dob" required class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">लिंग (Gender)</label><select id="f_gender" class="w-full border rounded px-2 py-1 bg-white"><option value="FEMALE">FEMALE (महिला)</option><option value="MALE">MALE (पुरुष)</option><option value="OTHER">OTHER</option></select></div>
-                            <div><label class="font-semibold block mb-0.5">संवर्ग (Category)</label><select id="f_category" class="w-full border rounded px-2 py-1 bg-white"><option value="OBC">OBC</option><option value="SC">SC</option><option value="ST">ST</option><option value="GEN">GEN</option></select></div>
-
-                            <div><label class="font-semibold block mb-0.5">जाति (Caste)</label><input type="text" id="f_caste" value="कुर्मी" class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">मोबाईल नंबर *</label><input type="tel" id="f_mobile" required class="w-full border rounded px-2 py-1 bg-white font-mono"></div>
-                            <div><label class="font-semibold block mb-0.5">माध्यम (Medium)</label><select id="f_medium" class="w-full border rounded px-2 py-1 bg-white"><option value="HINDI">HINDI (हिंदी)</option><option value="ENGLISH">ENGLISH (अंग्रेजी)</option></select></div>
-                            <div><label class="font-semibold block mb-0.5">ब्लड ग्रुप (Blood Group)</label><input type="text" id="f_bloodGroup" value="O+" class="w-full border rounded px-2 py-1 bg-white"></div>
-                        </div>
-                    </div>
-
-                    <!-- BLOCK 3: BANK & SCHOLARSHIP SCHEMES -->
-                    <div class="bg-emerald-50/60 p-3 rounded-xl border border-emerald-200 space-y-2.5">
-                        <h3 class="font-bold text-xs text-emerald-900 border-b border-emerald-300 pb-1 flex items-center space-x-1">
-                            <i data-lucide="award" class="w-3.5 h-3.5"></i>
-                            <span>भाग 3: बोर्ड संस्था कोड, छात्रवृत्ति योजनाएं व बैंक विवरण</span>
-                        </h3>
-
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
-                            <div><label class="font-semibold block mb-0.5">बैंक IFSC कोड</label><input type="text" id="f_bankIfsc" value="SBIN0001082" class="w-full border rounded px-2 py-1 bg-white font-mono uppercase"></div>
-                            <div><label class="font-semibold block mb-0.5">बैंक खाता क्रमांक</label><input type="text" id="f_bankAccount" value="398201928371" class="w-full border rounded px-2 py-1 bg-white font-mono"></div>
-                            <div><label class="font-semibold block mb-0.5">वार्षिक आय (₹)</label><input type="text" id="f_annualIncome" value="48000" class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">क्षेत्र (Area)</label><select id="f_area" class="w-full border rounded px-2 py-1 bg-white"><option value="ग्रामीण">ग्रामीण</option><option value="शहरी">शहरी</option></select></div>
-
-                            <div><label class="font-semibold block mb-0.5">संबल कार्ड क्र.</label><input type="text" id="f_sambal" value="198273641" class="w-full border rounded px-2 py-1 bg-white font-mono"></div>
-                            <div><label class="font-semibold block mb-0.5">लाड़ली लक्ष्मी योजना?</label><select id="f_lLaxmi" class="w-full border rounded px-2 py-1 bg-white"><option value="YES">YES</option><option value="NO">NO</option></select></div>
-                            <div><label class="font-semibold block mb-0.5">लाड़ली लक्ष्मी क्रमांक</label><input type="text" id="f_lLaxmiNo" placeholder="क्रमांक यदि लागू हो" class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">BPL कार्डधारी?</label><select id="f_bpl" class="w-full border rounded px-2 py-1 bg-white"><option value="NO">NO</option><option value="YES">YES</option></select></div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1 border-t border-emerald-200">
-                            <div><label class="font-semibold block mb-0.5">स्थायी पता</label><input type="text" id="f_permAddress" value="ग्राम सिविल लाइन्स, पोस्ट बेगमगंज, रायसेन - 464881" class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div><label class="font-semibold block mb-0.5">वर्तमान पता</label><input type="text" id="f_currAddress" value="ग्राम सिविल लाइन्स, पोस्ट बेगमगंज, रायसेन - 464881" class="w-full border rounded px-2 py-1 bg-white"></div>
-                        </div>
-                    </div>
-
-                    <!-- BLOCK 4: CUSTOMIZABLE SUBJECTS -->
-                    <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 space-y-2">
-                        <div class="flex justify-between items-center border-b border-blue-300 pb-1">
-                            <h3 class="font-bold text-xs text-blue-900 flex items-center space-x-1">
-                                <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-                                <span>भाग 4: चयनित शैक्षणिक विषय (प्रति छात्र व्यक्तिगत संपादन योग्य)</span>
-                            </h3>
-                            <span class="text-[10px] font-bold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full">अंग्रेजी, उर्दू, संस्कृत, ब्यूटी व वेलनेस, हेल्थ केयर आदि चुनें</span>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-[11px]" id="studentSubjectInputsContainer">
-                        </div>
-                    </div>
-
-                    <!-- BLOCK 5: FREE TEXTBOOK DISTRIBUTION -->
-                    <div class="bg-amber-50/70 p-3 rounded-xl border border-amber-300 space-y-2">
-                        <div class="flex justify-between items-center border-b border-amber-300 pb-1">
-                            <h3 class="font-bold text-xs text-amber-950 flex items-center space-x-1">
-                                <i data-lucide="library" class="w-3.5 h-3.5 text-amber-700"></i>
-                                <span>भाग 5: निःशुल्क पाठ्यपुस्तक वितरण रिकॉर्ड</span>
-                            </h3>
-                            <button type="button" onclick="showSection('book-master')" class="text-[10px] text-indigo-700 hover:underline font-bold">⚙️ पुस्तकालय मास्टर में पुस्तकें जोड़ें</button>
-                        </div>
-                        <p class="text-[10px] text-amber-900">कक्षा <span id="formBookClassLabel" class="font-bold">10th</span> हेतु पुस्तकालय मास्टर की पुस्तकें नीचे प्रदर्शित हैं। छात्र को प्राप्त पुस्तकों पर टिक करें:</p>
-                        
-                        <div id="studentBooksContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end pt-2">
-                        <button type="submit" class="bg-indigo-700 text-white font-bold px-6 py-2 rounded-lg text-xs hover:bg-indigo-800 shadow-md">विद्यार्थी की संपूर्ण जानकारी सुरक्षित करें</button>
-                    </div>
-                </form>
-            </section>
-
-            <section id="section-master-grid" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
-                <div class="flex flex-wrap justify-between items-center pb-2 border-b border-slate-200 gap-2">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="search-code" class="w-4 h-4 text-blue-600"></i>
-                            <span>एडवांस मास्टर्स छात्र फ़िल्टर ग्रिड (Advanced Master Grid)</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">सभी कक्षाओं के सभी छात्रों की जानकारी एक साथ देखें, फ़िल्टर व सॉर्ट करें।</p>
-                    </div>
-                    <span id="gridResultCountBadge" class="bg-blue-100 text-blue-900 text-[10px] font-extrabold px-2.5 py-1 rounded-full">2 छात्र मिले</span>
-                </div>
-
-                <!-- FILTER CONTROL TOOLBAR -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-xs">
-                    <div>
-                        <label class="font-bold block text-[10px] text-slate-500 mb-0.5">गहन खोज (Global Search):</label>
-                        <input type="text" id="gridGlobalSearchInput" oninput="renderMasterGridTable()" placeholder="नाम, स्कॉलर, आधार या मोबाइल..." class="w-full border rounded px-2 py-1 font-semibold outline-none focus:ring-1 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="font-bold block text-[10px] text-slate-500 mb-0.5">कक्षा फ़िल्टर:</label>
-                        <select id="gridClassFilter" onchange="renderMasterGridTable()" class="w-full border rounded px-2 py-1 font-bold bg-white">
-                            <option value="ALL">समस्त कक्षाएं</option>
-                            <option value="10th">कक्षा 10वीं</option>
-                            <option value="9th">कक्षा 9वीं</option>
-                            <option value="11th">कक्षा 11वीं</option>
-                            <option value="12th">कक्षा 12वीं</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="font-bold block text-[10px] text-slate-500 mb-0.5">कंडीशन फ़िल्टर:</label>
-                        <select id="gridConditionFilter" onchange="renderMasterGridTable()" class="w-full border rounded px-2 py-1 font-bold bg-white">
-                            <option value="ALL">समस्त स्थितियां</option>
-                            <option value="DISTINCTION">विशेष योग्यता (> 75%)</option>
-                            <option value="FIRST">प्रथम श्रेणी (> 60%)</option>
-                            <option value="FAIL">अनुत्तीर्ण / पूरक (Fail)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="font-bold block text-[10px] text-slate-500 mb-0.5">सॉर्टिंग (Sort By):</label>
-                        <select id="gridSortBy" onchange="renderMasterGridTable()" class="w-full border rounded px-2 py-1 font-bold bg-white">
-                            <option value="scholarNo_asc">स्कॉलर क्र. (क्रमबद्ध)</option>
-                            <option value="name_asc">छात्र नाम (A-Z)</option>
-                            <option value="percent_desc">प्रतिशत % (अधिक से कम)</option>
-                        </select>
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="renderMasterGridTable()" class="w-full bg-blue-700 text-white font-bold py-1 px-2 rounded hover:bg-blue-800 transition">ग्रिड रिफ्रेश करें</button>
-                    </div>
-                </div>
-
-                <!-- MASTER TABLE -->
-                <div class="overflow-x-auto border border-slate-200 rounded-lg">
-                    <table class="w-full text-left text-xs form-table">
-                        <thead class="bg-indigo-950 text-white font-bold">
-                            <tr>
-                                <th class="p-2">फोटो</th>
-                                <th class="p-2">स्कॉलर</th>
-                                <th class="p-2">विद्यार्थी का नाम</th>
-                                <th class="p-2">पिता का नाम</th>
-                                <th class="p-2 text-center">कक्षा-सेक्शन</th>
-                                <th class="p-2 text-center">संवर्ग</th>
-                                <th class="p-2 text-center">मोबाइल</th>
-                                <th class="p-2 text-center">वार्षिक %</th>
-                                <th class="p-2 text-center">परिणाम</th>
-                                <th class="p-2 text-center">सुरक्षित एक्शन</th>
-                            </tr>
-                        </thead>
-                        <tbody id="masterGridTableBody" class="divide-y divide-slate-200">
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section id="section-management-panel" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <div class="flex justify-between items-center pb-2 border-b border-slate-200">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="building" class="w-4 h-4 text-teal-600"></i>
-                            <span>7. संस्था प्रमुख (प्राचार्य) व शिक्षक वास्तविक प्रबंधन प्रणाली</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">मुख्य एडमिन संस्था प्रमुखों (प्राचार्यों) को जोड़ेगा। प्राचार्य अपने विद्यालय हेतु विशेष क्रेडेंशियल्स व पासवर्ड युक्त शिक्षकों को जोड़ेंगे।</p>
-                    </div>
-                    <span id="mgmtRoleBadge" class="bg-indigo-100 text-indigo-900 text-[10px] font-extrabold px-2.5 py-1 rounded-full">👑 मुख्य एडमिन एक्सेस</span>
-                </div>
-
-                <div id="addPrincipalBox" class="bg-indigo-50/70 p-3.5 rounded-xl border border-indigo-200 space-y-2.5">
-                    <h3 class="font-bold text-xs text-indigo-950 border-b border-indigo-300 pb-1 flex items-center space-x-1">
-                        <i data-lucide="user-plus" class="w-3.5 h-3.5 text-indigo-700"></i>
-                        <span>1. नया संस्था प्रमुख (प्राचार्य / Principal) पंजीकृत करें (ईमेल सत्यापन आधारित)</span>
-                    </h3>
-
-                    <form onsubmit="handleAddPrincipalForm(event)" class="grid grid-cols-1 md:grid-cols-5 gap-2 text-xs">
-                        <div>
-                            <label class="font-bold block mb-0.5">प्राचार्य का नाम *</label>
-                            <input type="text" id="p_name" required placeholder="डॉ. आर. के. श्रीवास्तव" class="w-full border rounded px-2 py-1 bg-white">
-                        </div>
-                        <div>
-                            <label class="font-bold block mb-0.5">प्राचार्य ईमेल (लॉगिन हेतु) *</label>
-                            <input type="email" id="p_email" required placeholder="principal@school.edu.in" class="w-full border rounded px-2 py-1 bg-white font-mono">
-                        </div>
-                        <div>
-                            <label class="font-bold block mb-0.5">विद्यालय का नाम *</label>
-                            <input type="text" id="p_schoolName" required placeholder="पीएमश्री शा.कन्या उ.मा.वि. बेगमगंज" class="w-full border rounded px-2 py-1 bg-white">
-                        </div>
-                        <div>
-                            <label class="font-bold block mb-0.5">शाला यू-डाइस कोड *</label>
-                            <input type="text" id="p_udiseCode" required placeholder="23340222855" class="w-full border rounded px-2 py-1 bg-white font-mono">
-                        </div>
-                        <div>
-                            <label class="font-bold block mb-0.5">प्राचार्य सुरक्षित पासवर्ड *</label>
-                            <input type="password" id="p_password" required placeholder="पासवर्ड बनाएं..." class="w-full border rounded px-2 py-1 bg-amber-50 font-mono font-bold">
-                        </div>
-
-                        <div class="md:col-span-5 flex justify-end pt-1">
-                            <button type="submit" class="bg-indigo-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs hover:bg-indigo-800 shadow flex items-center space-x-1">
-                                <i data-lucide="mail-check" class="w-3.5 h-3.5"></i>
-                                <span>ईमेल रजिस्ट्रेशन सत्यापन करें व पंजीकृत करें</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="space-y-2">
-                    <h3 class="font-bold text-xs text-slate-800">पंजीकृत संस्था प्रमुख (प्राचार्य) व विद्यालय सूची:</h3>
-                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
-                        <table class="w-full text-left text-xs form-table">
-                            <thead class="bg-indigo-950 text-white font-bold">
-                                <tr>
-                                    <th class="p-2">शाला कोड</th>
-                                    <th class="p-2">विद्यालय का नाम</th>
-                                    <th class="p-2">यू-डाइस कोड</th>
-                                    <th class="p-2">प्राचार्य का नाम</th>
-                                    <th class="p-2">प्राचार्य ईमेल (लॉगिन ID)</th>
-                                    <th class="p-2 text-center">सत्यापन स्थिति</th>
-                                    <th class="p-2 text-center">एक्शन</th>
-                                </tr>
-                            </thead>
-                            <tbody id="principalListTableBody" class="divide-y divide-slate-200">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200 space-y-2.5">
-                    <h3 class="font-bold text-xs text-emerald-950 border-b border-emerald-300 pb-1 flex items-center space-x-1">
-                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-700"></i>
-                        <span>2. विद्यालय शिक्षक जोड़ें व कक्षा/सेक्शन लॉगिन क्रेडेंशियल्स प्रदान करें</span>
-                    </h3>
-
-                    <form onsubmit="saveTeacherForm(event)" class="space-y-3 text-xs">
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
-                            <div><label class="font-bold block mb-0.5">एम्प्लॉई / शिक्षक कोड *</label><input type="text" id="tf_code" required placeholder="T01" class="w-full border rounded px-2 py-1 bg-white font-mono"></div>
-                            <div><label class="font-bold block mb-0.5">शिक्षक का पूरा नाम *</label><input type="text" id="tf_name" required placeholder="डॉ. राजेश शर्मा" class="w-full border rounded px-2 py-1 bg-white font-bold"></div>
-                            <div><label class="font-bold block mb-0.5">शिक्षक आधिकारिक ईमेल *</label><input type="email" id="tf_email" required placeholder="teacher@school.edu.in" class="w-full border rounded px-2 py-1 bg-white font-mono"></div>
-                            <div><label class="font-bold block mb-0.5">विशेषज्ञता विषय *</label><input type="text" id="tf_subject" required placeholder="उच्च गणित" class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div><label class="font-bold block mb-0.5">आबंटित कक्षा *</label><select id="tf_class" class="w-full border rounded px-2 py-1 bg-white"><option value="10th">कक्षा 10वीं</option><option value="9th">कक्षा 9वीं</option><option value="11th">कक्षा 11वीं</option><option value="12th">कक्षा 12वीं</option></select></div>
-                            <div><label class="font-bold block mb-0.5">आबंटित सेक्शन *</label><input type="text" id="tf_section" value="A" class="w-full border rounded px-2 py-1 bg-white"></div>
-                            <div class="md:col-span-2"><label class="font-bold block mb-0.5">शिक्षक विशेष सुरक्षा पासवर्ड *</label><input type="password" id="tf_password" required placeholder="शिक्षक पासवर्ड दर्ज करें..." class="w-full border rounded px-2 py-1 bg-amber-50 border-amber-300 font-mono font-bold"></div>
-                        </div>
-                        <div class="flex justify-end pt-1">
-                            <button type="submit" class="bg-emerald-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs hover:bg-emerald-800 shadow">शिक्षक क्रेडेंशियल्स व पासवर्ड सुरक्षित करें</button>
-                        </div>
-                    </form>
-                </div>
-            </section>
-
-            <section id="section-subject-master" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <div class="flex flex-wrap justify-between items-center pb-2 border-b border-slate-200 gap-2">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="book-open" class="w-4 h-4 text-purple-600"></i>
-                            <span>1. विषय व विषय कोड मास्टर प्रबंधन (Subject & Subject Code Master)</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">यहाँ विषय नाम या कोड बदलने पर वह सभी फ़ॉर्म्स, एडमिट कार्ड व अंकसूची में स्वतः अपडेट होगा।</p>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <label class="text-xs font-bold text-slate-600">कक्षा का चयन:</label>
-                        <select id="subjectMasterClassSelect" onchange="renderSubjectMasterTable()" class="border rounded px-2 py-1 text-xs font-bold bg-purple-50 text-purple-900 border-purple-300">
-                            <option value="10th">कक्षा 10वीं (6 विषय)</option>
-                            <option value="9th">कक्षा 9वीं (6 विषय)</option>
-                            <option value="11th">कक्षा 11वीं (5 मुख्य + 1 अतिरिक्त)</option>
-                            <option value="12th">कक्षा 12वीं (5 मुख्य + 1 अतिरिक्त)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs form-table">
-                        <thead class="bg-purple-100 text-purple-950 font-bold">
-                            <tr>
-                                <th class="p-2 w-12 text-center">क्र.</th>
-                                <th class="p-2">विषय का नाम</th>
-                                <th class="p-2 w-32 text-center">विषय कोड</th>
-                                <th class="p-2 text-center">प्रकार</th>
-                            </tr>
-                        </thead>
-                        <tbody id="subjectMasterTableBody">
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="flex justify-end pt-2">
-                    <button onclick="saveSubjectMaster()" class="bg-purple-700 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-purple-800 shadow">विषय व कोड मास्टर सुरक्षित करें</button>
-                </div>
-            </section>
-
-            <section id="section-marks-config" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <div class="flex flex-wrap justify-between items-center pb-2 border-b border-slate-200 gap-2">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="sliders" class="w-4 h-4 text-emerald-600"></i>
-                            <span>2. कक्षावार थ्योरी व प्रैक्टिकल पूर्णांक/उत्तीर्णांक सेटिंग्स</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">कक्षावार थ्योरी व प्रैक्टिकल के अंक बदलने पर पूरी अंकसूची व ग्रेडिंग में परिणाम अपने आप अपडेट होगा।</p>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <label class="text-xs font-bold text-slate-600">कक्षा का चयन:</label>
-                        <select id="marksConfigClassSelect" onchange="renderMarksConfigTable()" class="border rounded px-2 py-1 text-xs font-bold bg-emerald-50 text-emerald-900 border-emerald-300">
-                            <option value="10th">कक्षा 10वीं</option>
-                            <option value="9th">कक्षा 9वीं</option>
-                            <option value="11th">कक्षा 11वीं</option>
-                            <option value="12th">कक्षा 12वीं</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs form-table">
-                        <thead class="bg-emerald-100 text-emerald-950 font-bold">
-                            <tr>
-                                <th class="p-2">विषय का नाम</th>
-                                <th class="p-2 w-28 text-center">थ्योरी पूर्णांक</th>
-                                <th class="p-2 w-28 text-center">थ्योरी उत्तीर्णांक</th>
-                                <th class="p-2 w-28 text-center">प्रैक्टिकल पूर्णांक</th>
-                                <th class="p-2 w-28 text-center">प्रैक्टिकल उत्तीर्णांक</th>
-                                <th class="p-2 w-28 text-center">कुल पूर्णांक</th>
-                            </tr>
-                        </thead>
-                        <tbody id="marksConfigTableBody">
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="flex justify-end pt-2">
-                    <button onclick="saveMarksConfig()" class="bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-emerald-800 shadow">पूर्णांक सेटिंग्स सुरक्षित करें</button>
-                </div>
-            </section>
-
-            <section id="section-exam-marks" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <div class="flex flex-wrap justify-between items-center pb-2 border-b border-slate-200 gap-2">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="pen-tool" class="w-4 h-4 text-rose-600"></i>
-                            <span>3. 5-स्तरीय परीक्षा परिणाम अंक प्रविष्टि</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">मासिक, त्रैमासिक, अर्द्धवार्षिक, प्री-बोर्ड व वार्षिक परीक्षा के अंक यहाँ से प्रविष्ट करें।</p>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <label class="text-xs font-bold text-slate-600">परीक्षा का चयन:</label>
-                        <select id="examMarksTypeSelect" onchange="renderExamMarksForm()" class="border rounded px-2 py-1 text-xs font-bold bg-rose-50 text-rose-900 border-rose-300">
-                            <option value="annual">वार्षिक परीक्षा (Annual Exam)</option>
-                            <option value="preboard">प्री-बोर्ड परीक्षा (Pre-Board Exam)</option>
-                            <option value="halfYearly">अर्द्धवार्षिक परीक्षा (Half-Yearly)</option>
-                            <option value="quarterly">त्रैमासिक परीक्षा (Quarterly)</option>
-                            <option value="monthly">मासिक टेस्ट (Monthly Test)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs form-table">
-                        <thead class="bg-rose-100 text-rose-950 font-bold">
-                            <tr>
-                                <th class="p-2">विषय</th>
-                                <th class="p-2 w-28 text-center">थ्योरी प्राप्तांक</th>
-                                <th class="p-2 w-28 text-center">प्रैक्टिकल प्राप्तांक</th>
-                                <th class="p-2 w-28 text-center">कुल प्राप्त</th>
-                                <th class="p-2 w-20 text-center">स्थिति</th>
-                            </tr>
-                        </thead>
-                        <tbody id="examMarksTableBody">
-                        </tbody>
-                        <tfoot id="examMarksTableFoot" class="bg-slate-100 font-bold">
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="flex justify-end pt-2">
-                    <button onclick="saveExamMarks()" class="bg-rose-700 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-rose-800 shadow">परीक्षा परिणाम सुरक्षित करें</button>
-                </div>
-            </section>
-
-            <section id="section-consolidated-report" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <div class="flex flex-wrap justify-between items-center pb-2 border-b border-slate-200 gap-2">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-600"></i>
-                            <span>4. एकजाई शाला परिणाम रिपोर्ट (School Consolidated Overall Report)</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">कक्षा 9वीं से 12वीं का संयुक्त परीक्षा विश्लेषण व तुलनात्मक रिपोर्ट।</p>
-                    </div>
-
-                    <select id="consolidatedExamSelect" onchange="renderConsolidatedReportTable()" class="border rounded px-2 py-1 text-xs font-bold bg-cyan-50 text-cyan-900 border-cyan-300">
-                        <option value="annual">वार्षिक परीक्षा रिपोर्ट</option>
-                        <option value="preboard">प्री-बोर्ड परीक्षा रिपोर्ट</option>
-                        <option value="halfYearly">अर्द्धवार्षिक परीक्षा रिपोर्ट</option>
-                        <option value="quarterly">त्रैमासिक परीक्षा रिपोर्ट</option>
-                        <option value="monthly">मासिक टेस्ट रिपोर्ट</option>
-                    </select>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs form-table">
-                        <thead class="bg-cyan-900 text-white font-bold">
-                            <tr>
-                                <th class="p-2">कक्षा व सेक्शन</th>
-                                <th class="p-2 text-center">कुल नामांकित</th>
-                                <th class="p-2 text-center">प्रविष्ट छात्र</th>
-                                <th class="p-2 text-center">प्रथम श्रेणी</th>
-                                <th class="p-2 text-center">द्वितीय श्रेणी</th>
-                                <th class="p-2 text-center">तृतीय श्रेणी</th>
-                                <th class="p-2 text-center">अनुत्तीर्ण/पूरक</th>
-                                <th class="p-2 text-center bg-cyan-950">कुल उत्तीर्ण %</th>
-                            </tr>
-                        </thead>
-                        <tbody id="consolidatedReportTableBody" class="divide-y divide-slate-200">
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section id="section-class-exam-report" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <div class="flex flex-wrap justify-between items-center pb-2 border-b border-slate-200 gap-2">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-600"></i>
-                            <span>5. कक्षा-सेक्शन एवं परीक्षावार पृथक रिपोर्ट फ़िल्टर</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">विशिष्ट कक्षा, सेक्शन व परीक्षा चुनकर परिणाम प्रिंट व एक्सपोर्ट करें।</p>
-                    </div>
-
-                    <div class="flex flex-wrap items-center gap-2 text-xs">
-                        <select id="filterReportClassSelect" onchange="renderClassExamFilterReport()" class="border rounded px-2 py-1 font-bold bg-amber-50 border-amber-300">
-                            <option value="10th">कक्षा 10वीं</option>
-                            <option value="9th">कक्षा 9वीं</option>
-                            <option value="11th">कक्षा 11वीं</option>
-                            <option value="12th">कक्षा 12वीं</option>
-                        </select>
-
-                        <select id="filterReportSectionSelect" onchange="renderClassExamFilterReport()" class="border rounded px-2 py-1 font-bold bg-amber-50 border-amber-300">
-                            <option value="ALL">समस्त सेक्शन</option>
-                            <option value="A">सेक्शन A</option>
-                            <option value="B">सेक्शन B</option>
-                        </select>
-
-                        <select id="filterReportExamSelect" onchange="renderClassExamFilterReport()" class="border rounded px-2 py-1 font-bold bg-amber-50 border-amber-300 text-amber-950">
-                            <option value="annual">वार्षिक परीक्षा</option>
-                            <option value="preboard">प्री-बोर्ड परीक्षा</option>
-                            <option value="halfYearly">अर्द्धवार्षिक परीक्षा</option>
-                            <option value="quarterly">त्रैमासिक परीक्षा</option>
-                            <option value="monthly">मासिक टेस्ट</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="filterReportStatsContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs form-table">
-                        <thead class="bg-amber-100 text-amber-950 font-bold">
-                            <tr>
-                                <th class="p-2 w-10 text-center">क्र.</th>
-                                <th class="p-2">स्कॉलर</th>
-                                <th class="p-2">विद्यार्थी नाम</th>
-                                <th class="p-2">पिता का नाम</th>
-                                <th class="p-2 text-center">कुल प्राप्तांक</th>
-                                <th class="p-2 text-center">प्रतिशत %</th>
-                                <th class="p-2 text-center">ग्रेड</th>
-                                <th class="p-2 text-center">परिणाम</th>
-                            </tr>
-                        </thead>
-                        <tbody id="filterReportTableBody" class="divide-y divide-slate-200">
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section id="section-book-master" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <div class="flex flex-wrap justify-between items-center pb-2 border-b border-slate-200 gap-2">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="library" class="w-4 h-4 text-amber-600"></i>
-                            <span>6. पुस्तकालय व कक्षावार पाठ्यपुस्तक मास्टर</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">यहाँ शिक्षक अपनी कक्षा की पुस्तकों की सूची प्रबंधित कर सकते हैं।</p>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <label class="text-xs font-bold text-amber-950">कक्षा चयन:</label>
-                        <select id="bookMasterClassSelect" onchange="renderBookMasterTable()" class="border border-amber-300 rounded px-2 py-1 text-xs font-bold bg-amber-50 text-amber-900">
-                            <option value="10th">कक्षा 10वीं पाठ्यपुस्तकें</option>
-                            <option value="9th">कक्षा 9वीं पाठ्यपुस्तकें</option>
-                            <option value="11th">कक्षा 11वीं पाठ्यपुस्तकें</option>
-                            <option value="12th">कक्षा 12वीं पाठ्यपुस्तकें</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-200 space-y-2">
-                    <h3 class="font-bold text-xs text-amber-900">नई पाठ्यपुस्तक जोड़ें:</h3>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <input type="text" id="newBookTitleInput" placeholder="पुस्तक का नाम दर्ज करें..." class="flex-1 border border-slate-300 rounded px-3 py-1.5 text-xs font-semibold bg-white outline-none">
-                        <button onclick="addBookToMaster()" class="bg-amber-600 text-white text-xs px-4 py-1.5 rounded-lg font-bold hover:bg-amber-700 shadow flex items-center space-x-1">
-                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                            <span>पुस्तक जोड़ें</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs form-table">
-                        <thead class="bg-amber-100 text-amber-950 font-bold">
-                            <tr>
-                                <th class="p-2 w-12 text-center">क्र.</th>
-                                <th class="p-2">पाठ्यपुस्तक का नाम</th>
-                                <th class="p-2 text-center">स्थिति</th>
-                                <th class="p-2 text-center w-24">एक्शन</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bookMasterTableBody" class="divide-y divide-slate-200">
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section id="section-cloud-settings" class="content-section hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <div class="flex justify-between items-center pb-2 border-b border-slate-200">
-                    <div>
-                        <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <i data-lucide="cloud" class="w-4 h-4 text-sky-600"></i>
-                            <span>8. क्लाउड/एक्सटर्नल बैकअप व डेटाबेस सेटिंग्स</span>
-                        </h2>
-                        <p class="text-[11px] text-slate-500">सभी छात्र व शिक्षक डेटाबेस को क्लाउड में सुरक्षित रखें या ऑफलाइन बैकअप JSON फ़ाइल डाउनलोड व रीस्टोर करें।</p>
-                    </div>
-                    <span id="cloudStatusBadge" class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full">● लोकल + क्लाउड रेडी</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
-                        <h3 class="font-bold text-xs text-slate-800 border-b pb-1">1. स्थानीय बैकअप (Local JSON Backup & Restore)</h3>
-                        <p class="text-[11px] text-slate-600">पूरी प्रणाली के समस्त छात्र, शिक्षक, अंक व विषय डेटा को एक क्लिक में कंप्यूटर में सुरक्षित करें:</p>
-
-                        <div class="flex flex-wrap gap-2 pt-1">
-                            <button onclick="exportFullDatabaseJSON()" class="bg-sky-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-sky-800 shadow flex items-center space-x-1">
-                                <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>
-                                <span>डेटाबेस डाउनलोड (Backup JSON)</span>
-                            </button>
-
-                            <label class="bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-indigo-800 shadow cursor-pointer flex items-center space-x-1">
-                                <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
-                                <span>डेटाबेस रीस्टोर करें</span>
-                                <input type="file" accept=".json" onchange="importFullDatabaseJSON(event)" class="hidden">
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="bg-sky-50/60 p-3.5 rounded-xl border border-sky-200 space-y-2">
-                        <h3 class="font-bold text-xs text-sky-950 border-b border-sky-300 pb-1">2. क्लाउड/सर्वर एंडपॉइंट क्रेडेंशियल्स</h3>
-                        <div>
-                            <label class="font-semibold block mb-0.5">सर्वर/फायरबेस क्लाउड URL:</label>
-                            <input type="text" id="cloudEndpointInput" value="https://sdms-school-cloud.firebaseio.com/backup.json" class="w-full border rounded px-2 py-1 bg-white font-mono text-xs">
-                        </div>
-                        <div>
-                            <label class="font-semibold block mb-0.5">सुरक्षित API एक्सेस की:</label>
-                            <input type="password" id="cloudApiKeyInput" value="SDMS_SECRET_KEY_90827" class="w-full border rounded px-2 py-1 bg-white font-mono text-xs">
-                        </div>
-                        <div class="pt-1 flex justify-end">
-                            <button onclick="saveCloudConfig()" class="bg-emerald-700 text-white font-bold px-3 py-1 rounded text-xs hover:bg-emerald-800 shadow">क्लाउड सिंक कनेक्शन जांचें व सहेजें</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="section-combined-forms" class="content-section hidden space-y-6">
-                <div class="bg-amber-100 border border-amber-300 text-amber-950 p-2.5 rounded-xl no-print flex justify-between items-center text-xs font-bold">
-                    <span>📄 यहाँ चयनित छात्रा (<span id="combinedStudentNameLabel" class="text-indigo-900 font-extrabold">राहुल शर्मा</span>) के तीनों आधिकारिक फॉर्म्स (म.प्र. बोर्ड फॉर्म, समग्र छात्रवृत्ति फॉर्म व पीएमश्री प्रवेश फॉर्म) एक के नीचे एक क्रमबद्ध प्रदर्शित हैं।</span>
-                    <button onclick="globalPrintCurrentSection()" class="bg-rose-700 text-white px-3 py-1 rounded shadow hover:bg-rose-800">तीनों फॉर्म्स एक साथ प्रिंट करें (Print All 3 Forms)</button>
-                </div>
-
-                <div id="exportable-combined-forms" class="space-y-6 bg-white p-2">
-                    <div class="page-break border-b-2 border-dashed border-slate-400 pb-6 mb-6">
-                        <div id="combined_form_1_wrapper"></div>
-                    </div>
-
-                    <div class="page-break border-b-2 border-dashed border-slate-400 pb-6 mb-6">
-                        <div id="combined_form_2_wrapper"></div>
-                    </div>
-
-                    <div>
-                        <div id="combined_form_3_wrapper"></div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="section-form-mp-board" class="content-section hidden">
-                <div id="exportable-mp-board-form" class="bg-white p-5 rounded-xl border-2 border-slate-900 shadow-lg max-w-3xl mx-auto space-y-2 text-[10px] leading-tight text-slate-900 font-sans">
-                    <div class="text-center relative border-b-2 border-slate-900 pb-2">
-                        <div class="w-10 h-10 border border-slate-800 rounded-full mx-auto flex items-center justify-center font-bold text-[8px] mb-1">MPBSE</div>
-                        <h2 class="text-sm font-extrabold uppercase tracking-wide">माध्यमिक शिक्षा मण्डल, मध्यप्रदेश, भोपाल</h2>
-                        <h3 class="text-xs font-bold">आवेदन पत्र हाईस्कूल परीक्षा</h3>
-                        <div class="inline-block bg-slate-900 text-white text-[9px] px-2 py-0.5 rounded font-mono font-bold mt-1">
-                            सम्बन्धित कोड नम्बर ही खाने में भरिये
-                        </div>
-                    </div>
-
-                    <div class="border border-slate-900 p-1.5 space-y-1">
-                        <div class="flex items-center justify-between font-bold flex-wrap gap-1">
-                            <span class="font-extrabold">1. आवेदक का प्रकार:</span>
-                            <div class="flex flex-wrap gap-2 text-[9px]">
-                                <span>नियमित-1 <span class="letter-box" id="f1_app_1">1</span></span>
-                                <span>स्वाध्यायी-2 <span class="letter-box" id="f1_app_2"></span></span>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2 border-t border-slate-300 pt-1">
-                            <div class="flex items-center space-x-1">
-                                <span>म.प्र. के मूलनिवासी:</span>
-                                <span class="border border-slate-800 px-1 font-bold" id="p1_mpRes">हाँ</span>
-                                <span class="ml-2">CWSN Code:</span>
-                                <span class="letter-box font-mono" id="p1_cwsnCode">0</span>
-                                <span class="letter-box font-mono">0</span>
-                            </div>
-                            <div class="flex items-center justify-end space-x-1">
-                                <span>Section:</span>
-                                <span class="border border-slate-800 px-2 font-bold font-mono" id="p1_section">A</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-1.5 border border-slate-900 p-1.5">
-                        <div>
-                            <span class="font-bold block mb-0.5">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
-                            <div id="p1_nameLetterBoxes" class="flex flex-wrap"></div>
-                        </div>
-                        <div>
-                            <span class="font-bold block mb-0.5">3. पिता का पूरा नाम FULL NAME OF FATHER:</span>
-                            <div id="p1_fatherLetterBoxes" class="flex flex-wrap"></div>
-                        </div>
-                        <div>
-                            <span class="font-bold block mb-0.5">4. माता का पूरा नाम FULL NAME OF MOTHER:</span>
-                            <div id="p1_motherLetterBoxes" class="flex flex-wrap"></div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-1.5 border border-slate-900 p-1.5">
-                        <div>
-                            <span class="font-bold block">5. जन्म तिथि DD/MM/YYYY:</span>
-                            <div class="flex items-center space-x-1 my-0.5" id="p1_dobLetterBoxes">
-                                <span class="letter-box font-mono">1</span><span class="letter-box font-mono">5</span>/
-                                <span class="letter-box font-mono">0</span><span class="letter-box font-mono">5</span>/
-                                <span class="letter-box font-mono">2</span><span class="letter-box font-mono">0</span><span class="letter-box font-mono">1</span><span class="letter-box font-mono">0</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="font-bold block">नामांकन कोड (Enrollment Code):</span>
-                            <div id="p1_enrollLetterBoxes" class="flex flex-wrap my-0.5"></div>
-                        </div>
-                    </div>
-
-                    <div class="border border-slate-900 p-1.5">
-                        <h4 class="font-bold border-b border-slate-400 pb-0.5 mb-1">7. भाषा विषय एवं चयनित विषय कोड विवरण:</h4>
-                        <div id="p1_subjectsContainer" class="grid grid-cols-2 gap-1.5 text-[9px]">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2 border border-slate-900 p-1.5">
-                        <div class="col-span-2 space-y-1">
-                            <div class="flex items-center space-x-2">
-                                <span class="font-bold">8. समग्र आईडी (SSMID):</span>
-                                <span id="p1_ssmidLetterBoxes" class="flex"></span>
-                            </div>
-                            <div><span class="font-bold">संबल क्रमांक:</span> <strong id="p1_sambal" class="font-mono">198273641</strong></div>
-                            <div class="border-t border-slate-300 pt-1">
-                                <span class="font-bold block">9. पत्र व्यवहार का पता (Postal Address):</span>
-                                <p id="p1_address" class="text-[9px] font-semibold text-slate-800">ग्राम सिविल लाइन्स, पोस्ट बेगमगंज, जिला रायसेन - 464881</p>
-                                <p class="text-[9px] mt-0.5">मोबाईल नंबर: <strong id="p1_mobile" class="font-mono">9876543210</strong> | E-mail: <strong id="p1_emailDisplay" class="font-mono">student@gmail.com</strong></p>
-                            </div>
-                        </div>
-
-                        <div class="border-2 border-dashed border-slate-800 p-1 text-center flex flex-col items-center justify-center min-h-[110px] bg-slate-50">
-                            <img id="p1_photoPreviewImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-16 h-20 object-cover border border-slate-400 mb-0.5 shadow-sm">
-                            <span class="text-[7px] leading-none font-bold text-slate-700">परीक्षार्थी की डिजिटल फोटो</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-end pt-2 text-[9px]">
-                        <div>दिनांक: <span class="font-mono font-bold">01/08/2026</span> | स्थान: <span class="font-bold">बेगमगंज</span></div>
-                        <div class="text-center">
-                            <div class="h-6 border-b border-slate-800 w-32 mb-0.5"></div>
-                            <p class="font-bold">छात्र के हस्ताक्षर</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="h-6 border-b border-slate-800 w-32 mb-0.5"></div>
-                            <p class="font-bold">संस्था प्रमुख हस्ताक्षर व सील</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="section-form-sssm" class="content-section hidden">
-                <div id="exportable-sssm-form" class="bg-white p-5 rounded-xl border-2 border-slate-900 shadow-lg max-w-3xl mx-auto space-y-2 text-[10px] leading-tight text-slate-900 font-sans">
-                    <div class="flex justify-between items-center border-b-2 border-slate-900 pb-2">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-12 h-12 border-2 border-slate-900 rounded-full flex items-center justify-center font-black text-xs">SSSM</div>
                             <div>
-                                <h2 class="text-sm font-extrabold">मध्यप्रदेश शासन-समग्र सामाजिक सुरक्षा मिशन</h2>
-                                <h3 class="text-xs font-bold text-indigo-950">समेकित छात्रवृत्ति योजना आवेदन पत्र (कक्षा 9 से 10)</h3>
-                                <p class="text-[9px] font-bold mt-0.5">Child SSSM.ID: <span id="p2_childIdLetterBoxes" class="inline-flex"></span></p>
+                                <select id="dashSectionFilter" onchange="renderDashboardTop10Cards()" class="border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
+                                    <option value="ALL">समस्त सेक्शन</option>
+                                    <option value="A">सेक्शन A</option>
+                                    <option value="B">सेक्शन B</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select id="dashExamFilter" onchange="renderDashboardTop10Cards()" class="border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
+                                    <option value="annual">वार्षिक परीक्षा</option>
+                                    <option value="preboard">प्री-बोर्ड परीक्षा</option>
+                                    <option value="halfYearly">अर्द्धवार्षिक परीक्षा</option>
+                                    <option value="quarterly">त्रैमासिक परीक्षा</option>
+                                    <option value="monthly">मासिक टेस्ट</option>
+                                </select>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="w-24 h-24 border border-slate-800 p-1 text-center flex flex-col items-center justify-center text-[7px] font-bold bg-slate-50">
-                            <img id="p2_photoPreviewImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-14 h-16 object-cover border mb-0.5">
-                            <span>पासपोर्ट साइज फोटो</span>
+                    <!-- TOP 10 CARDS GRID -->
+                    <div id="dashTop10CardsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 pt-1">
+                        <!-- Dynamic Top 10 Cards Rendered Here -->
+                    </div>
+                </div>
+
+                <!-- CLASS-WISE & SCHOOL-WIDE CONSOLIDATED SUMMARY -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 space-y-2">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h3 class="text-xs font-bold text-slate-800 flex items-center space-x-1">
+                                <i data-lucide="bar-chart-3" class="w-4 h-4 text-indigo-600"></i>
+                                <span>कक्षा 9वीं, 10वीं, 11वीं व 12वीं कक्षावार परिणाम</span>
+                            </h3>
+                            <span class="text-[10px] bg-indigo-100 text-indigo-900 font-bold px-2 py-0.5 rounded-full">लाइव प्रतिशत</span>
+                        </div>
+                        <div id="dashClassSummariesGrid" class="space-y-2 text-xs">
                         </div>
                     </div>
 
-                    <table class="w-full text-left border-collapse form-table text-[9px]">
-                        <tbody>
-                            <tr>
-                                <td>1. संभाग: <strong>भोपाल</strong></td>
-                                <td>2. जिला: <strong>रायसेन</strong></td>
-                                <td>3. विकासखण्ड: <strong>बेगमगंज</strong></td>
-                                <td>4. क्षेत्र: <strong id="p2_area">ग्रामीण</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">5. शाला का नाम: <strong>पीएमश्री शा.क.उ.मा.वि. बेगमगंज</strong></td>
-                                <td colspan="2">6. शाला का डाइस कोड: <strong class="font-mono">23340222855</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="border border-slate-800 p-1.5 space-y-1">
-                        <div>
-                            <span class="font-bold block mb-0.5">1. विद्यार्थी का नाम (हिन्दी): <strong id="p2_nameHindi" class="text-indigo-950 font-extrabold">राहुल शर्मा</strong> | लिंग: <strong id="p2_gender">MALE</strong></span>
-                            <div class="flex items-center space-x-1">
-                                <span class="font-bold text-[8px]">(अंग्रेजी केपिटल लेटर में):</span>
-                                <div id="p2_nameEngBoxes" class="flex flex-wrap"></div>
-                            </div>
+                    <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 space-y-2">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h3 class="text-xs font-bold text-slate-800 flex items-center space-x-1">
+                                <i data-lucide="globe" class="w-4 h-4 text-emerald-600"></i>
+                                <span>पूरी शाला का एकजाई परीक्षा परिणाम</span>
+                            </h3>
+                            <span id="dashOverallExamLabel" class="text-[10px] bg-emerald-100 text-emerald-900 font-bold px-2 py-0.5 rounded-full">वार्षिक परीक्षा</span>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-1 border-t border-slate-300 pt-1">
-                            <div>3. जन्म तिथि: <strong id="p2_dob" class="font-mono font-bold">15/05/2010</strong></div>
-                            <div>4. संवर्ग: <strong id="p2_category">OBC</strong></div>
-                            <div>5. म.प्र. का मूल निवासी: <strong>हाँ</strong></div>
-                        </div>
-                    </div>
-
-                    <div class="border border-slate-800 p-1.5 space-y-1">
-                        <h4 class="font-bold border-b border-slate-400 pb-0.5">बैंक विवरण:</h4>
-                        <div class="grid grid-cols-2 gap-1">
-                            <div>1. आई.एफ.एस.सी. कोड: <strong id="p2_bankIfsc" class="font-mono font-bold text-indigo-900">SBIN0001082</strong></div>
-                            <div>2. बैंक का नाम: <strong>State Bank of India</strong></div>
-                        </div>
-                        <div class="border-t border-slate-300 pt-0.5">
-                            <span class="font-bold block mb-0.5">3. बैंक खाता क्रमांक:</span>
-                            <div id="p2_bankAccLetterBoxes" class="flex flex-wrap font-mono font-bold"></div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-end pt-2 text-[9px]">
-                        <div>स्थान: बेगमगंज | दिनांक: 01/08/2026</div>
-                        <div class="text-center">
-                            <div class="h-6 border-b border-slate-800 w-28 mb-0.5"></div>
-                            <p class="font-bold">हस्ताक्षर पालक</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="h-6 border-b border-slate-800 w-28 mb-0.5"></div>
-                            <p class="font-bold">हस्ताक्षर छात्रा</p>
+                        <div id="dashSchoolOverallCard" class="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200 space-y-2 text-xs">
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="section-form-pm-shri" class="content-section hidden">
-                <div id="exportable-pm-shri-form" class="bg-white p-6 rounded-xl border-2 border-slate-900 shadow-lg max-w-3xl mx-auto space-y-3 text-[11px] leading-snug text-slate-900 font-sans">
-                    <div class="flex justify-between items-start border-b-2 border-slate-900 pb-2">
-                        <div>
-                            <h1 class="text-base font-extrabold tracking-wide">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय.बेगमगंज</h1>
-                            <h2 class="text-xs font-bold text-slate-800">जिला रायसेन (म.प्र.)</h2>
-                        </div>
-
-                        <div class="w-28 h-28 border-2 border-slate-800 p-1 text-center flex flex-col items-center justify-center text-[8px] font-bold bg-slate-50">
-                            <img id="p3_photoPreviewImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-16 h-20 object-cover border border-slate-400 mb-0.5">
-                            <span>डिजिटल रंगीन फोटो</span>
-                        </div>
-                    </div>
-
-                    <div class="space-y-1 text-[10.5px] border-t border-b border-slate-300 py-2">
-                        <p>1. छात्रा का नाम कु.: <strong id="p3_nameHindi" class="text-indigo-950 font-bold">राहुल शर्मा</strong></p>
-                        <p>2. पिता का नाम श्री: <strong id="p3_fatherName">राम शर्मा</strong></p>
-                        <p>3. माता का नाम श्रीमती: <strong id="p3_motherName">सुमित्रा शर्मा</strong></p>
-                        <p>4. जाति व वर्ग: <strong id="p3_casteCategory">कुर्मी (OBC)</strong></p>
-                        <p>5. जन्मतिथि: <strong id="p3_dob">15 / 05 / 2010</strong></p>
-                        <p>6. प्रवेश कक्षा: <strong id="p3_classTarget">10th</strong></p>
-                        
-                        <div>
-                            <p>7. चयनित विषय:-</p>
-                            <div id="p3_subjectsGrid" class="grid grid-cols-3 gap-1 pl-4 font-semibold text-[10px] my-0.5">
-                            </div>
-                        </div>
-
-                        <p>8. मोबाईल नं.: <strong id="p3_mobile" class="font-mono">9876543210</strong></p>
-                        <p>9. बैंक खाता क्रमांक: <strong id="p3_bankAccount" class="font-mono">398201928371</strong> | IFSC: <strong id="p3_bankIfsc" class="font-mono">SBIN0001082</strong></p>
-                        <p>10. Child ID: <strong id="p3_childId" class="font-mono">192837465</strong> | परिवार ID: <strong id="p3_familyId" class="font-mono">98765432</strong></p>
-                    </div>
-
-                    <div class="flex justify-between items-end pt-4 text-[10px]">
-                        <div>प्रवेश स्वीकृत</div>
-                        <div class="text-center">
-                            <div class="h-8 border-b border-slate-800 w-32 mb-0.5"></div>
-                            <p class="font-bold">अभिभावक के हस्ताक्षर</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="h-8 border-b border-slate-800 w-32 mb-0.5"></div>
-                            <p class="font-bold">प्राचार्य हस्ताक्षर एवं सील</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="section-profile-card" class="content-section hidden">
-                <div id="exportable-profile-card" class="bg-white rounded-2xl border-2 border-indigo-900 shadow-lg max-w-md mx-auto p-4 space-y-3">
-                    <div class="bg-indigo-950 text-white p-2 rounded-xl text-center">
-                        <h2 class="text-xs font-bold">पीएमश्री शा.क.उ.मा.वि. बेगमगंज</h2>
-                        <p class="text-[9px] text-yellow-300">विद्यार्थी पहचान पत्र (Student ID Card)</p>
-                    </div>
-
-                    <div class="flex items-center space-x-3">
-                        <img id="card_studentPhoto" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-20 h-24 object-cover rounded-lg border-2 border-indigo-900">
-                        <div class="text-xs space-y-1">
-                            <h3 id="card_name" class="font-extrabold text-indigo-950 text-sm">राहुल शर्मा</h3>
-                            <p>स्कॉलर क्र.: <strong id="card_scholar" class="font-mono text-indigo-900">101</strong></p>
-                            <p>कक्षा: <strong id="card_class">10th - A</strong></p>
-                            <p>पिता: <span id="card_father">राम शर्मा</span></p>
-                            <p>मोबाईल: <span id="card_mobile" class="font-mono">9876543210</span></p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="section-admit-card" class="content-section hidden">
-                <div id="exportable-admit-card" class="bg-white p-5 rounded-xl border-2 border-slate-900 shadow-md max-w-2xl mx-auto space-y-3 text-xs">
-                    <div class="text-center border-b-2 border-slate-900 pb-2">
-                        <h2 class="text-sm font-bold uppercase">वार्षिक परीक्षा - प्रवेश पत्र (Admit Card)</h2>
-                        <p class="text-[10px] text-slate-600">पीएमश्री शा.क.उ.मा.वि. बेगमगंज (सत्र 2026-27)</p>
-                    </div>
-
-                    <div class="flex justify-between items-start">
-                        <div class="space-y-1">
-                            <p>छात्र का नाम: <strong id="admit_name" class="font-bold text-indigo-950">राहुल शर्मा</strong></p>
-                            <p>स्कॉलर नंबर: <strong id="admit_scholar" class="font-mono">101</strong></p>
-                            <p>कक्षा-सेक्शन: <strong id="admit_class">10th - A</strong></p>
-                            <p>पिता का नाम: <span id="admit_father">राम शर्मा</span></p>
-                        </div>
-                        <img id="admit_studentPhoto" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-16 h-20 object-cover border border-slate-400">
-                    </div>
-
-                    <table class="w-full text-left text-[11px] form-table">
-                        <thead class="bg-slate-100 font-bold">
-                            <tr>
-                                <th class="p-1">दिनांक</th>
-                                <th class="p-1">परीक्षा विषय</th>
-                                <th class="p-1">समय</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admitTimetableBody">
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section id="section-marksheet" class="content-section hidden">
-                <div id="exportable-marksheet" class="bg-white p-6 rounded-xl border-2 border-slate-900 shadow-md max-w-3xl mx-auto space-y-3 text-xs">
-                    <div class="text-center border-b-2 border-slate-900 pb-2">
-                        <h1 class="text-sm font-extrabold uppercase">माध्यमिक शिक्षा मण्डल, मध्यप्रदेश, भोपाल</h1>
-                        <h2 class="text-xs font-bold text-slate-700">समेकित अंकसूची / STATEMENT OF MARKS</h2>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2 rounded border text-[11px]">
-                        <div>
-                            <p>विद्यार्थी नाम: <strong id="mark_name" class="font-bold text-indigo-950">राहुल शर्मा</strong></p>
-                            <p>स्कॉलर क्र.: <strong id="mark_scholar" class="font-mono">101</strong></p>
-                        </div>
-                        <div class="text-right">
-                            <p>कक्षा-सेक्शन: <strong id="mark_class">10th - A</strong></p>
-                            <p>पिता का नाम: <span id="mark_father">राम शर्मा</span></p>
-                        </div>
-                    </div>
-
-                    <table class="w-full text-left text-[11px] form-table">
-                        <thead class="bg-indigo-950 text-white font-bold">
-                            <tr>
-                                <th class="p-1">विषय का नाम</th>
-                                <th class="p-1 text-center">थ्योरी प्राप्तांक</th>
-                                <th class="p-1 text-center">प्रैक्टिकल प्राप्तांक</th>
-                                <th class="p-1 text-center">कुल प्राप्त</th>
-                                <th class="p-1 text-center">पूर्णांक</th>
-                                <th class="p-1 text-center">स्थिति</th>
-                            </tr>
-                        </thead>
-                        <tbody id="marksheetTableBody">
-                        </tbody>
-                        <tfoot id="marksheetTableFoot" class="bg-slate-100 font-bold">
-                        </tfoot>
-                    </table>
-
-                    <div id="marksheetResultBadgeBox" class="bg-indigo-50 border border-indigo-200 p-2.5 rounded-lg flex justify-between items-center">
-                    </div>
-                </div>
-            </section>
-
-            <section id="section-teacher-card" class="content-section hidden">
-                <div id="exportable-teacher-card" class="bg-white rounded-2xl border-2 border-emerald-900 shadow-lg max-w-md mx-auto p-4 space-y-3">
-                    <div class="bg-emerald-950 text-white p-2 rounded-xl text-center">
-                        <h2 class="text-xs font-bold">पीएमश्री शा.क.उ.मा.वि. बेगमगंज</h2>
-                        <p class="text-[9px] text-emerald-300">शिक्षक पहचान पत्र (Teacher ID Card)</p>
-                    </div>
-
-                    <div class="flex items-center space-x-3">
-                        <div class="w-20 h-24 bg-emerald-100 rounded-lg border-2 border-emerald-900 flex items-center justify-center font-bold text-xs text-emerald-950">शिक्षक फोटो</div>
-                        <div class="text-xs space-y-1">
-                            <h3 id="tcard_name" class="font-extrabold text-emerald-950 text-sm">डॉ. राजेश शर्मा</h3>
-                            <p>कोड: <strong id="tcard_code" class="font-mono text-emerald-900">T01</strong></p>
-                            <p>विषय: <strong id="tcard_subject">उच्च गणित</strong></p>
-                            <p>कक्षा: <span id="tcard_class">Class 10th - A</span></p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+            <!-- Placeholder for other sections which will be appended dynamically via JS if needed -->
+            
         </main>
     </div>
 
-    <!-- SECURITY PASSWORD MODAL -->
-    <div id="securityModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 max-w-sm w-full space-y-3 no-print">
-            <h3 class="text-xs font-bold text-slate-800 border-b pb-2">🔒 शिक्षक सुरक्षा पासवर्ड आवश्यक</h3>
-    <!-- EMAIL AUTH LOGIN MODAL -->
-    <div id="emailOtpModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 p-6 max-w-md w-full space-y-4 no-print">
-            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                <h3 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
-                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-                    <span>ईमेल ऑथेंटिकेशन व पासवर्ड लॉगिन (Email Login)</span>
-                </h3>
-                <button onclick="closeEmailOtpModal()" class="text-slate-400 hover:text-slate-600">✕</button>
-            </div>
-
-            <div class="space-y-2.5 text-xs">
-                <div>
-                    <label class="font-bold block mb-1">लॉगिन रोल चुनें (Select Role):</label>
-                    <select id="loginRoleType" class="w-full border rounded px-2.5 py-1.5 font-bold bg-slate-50 text-indigo-950">
-                        <option value="admin">👑 मुख्य एडमिन (Master Admin)</option>
-                        <option value="principal">🏫 संस्था प्रमुख (प्राचार्य / Principal)</option>
-                        <option value="teacher">👨‍🏫 शिक्षक (Teacher)</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="font-bold block mb-1">ईमेल आईडी (Registered Email ID):</label>
-                    <input type="email" id="loginEmailInput" placeholder="नाम@school.edu.in" class="w-full border-2 border-slate-300 rounded-lg px-3 py-1.5 font-mono text-xs outline-none focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="font-bold block mb-1">सुरक्षा पासवर्ड (Password):</label>
-                    <input type="password" id="loginPasswordInput" placeholder="सुरक्षा पासवर्ड..." class="w-full border-2 border-slate-300 rounded-lg px-3 py-1.5 font-mono text-xs outline-none focus:border-indigo-500">
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-2 pt-2 border-t">
-                <button onclick="closeEmailOtpModal()" class="px-3 py-1.5 border rounded-lg text-xs font-semibold text-slate-600">रद्द करें</button>
-                <button onclick="verifyEmailOtpCode()" class="px-5 py-1.5 bg-indigo-700 text-white rounded-lg text-xs font-bold hover:bg-indigo-800 shadow">सत्यापित व लॉगिन करें</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST NOTIFICATION -->
-    <div id="toastNotification" class="fixed bottom-4 right-4 bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-2xl z-50 hidden border border-slate-700 flex items-center space-x-2">
-        <span id="toastMessage">नोटिफिकेशन सन्देश...</span>
-    </div>
-
     <script>
-        // Encrypted Super Admin Key Guard (Hidden Email)
         const ADMIN_SECRET_KEY = "SDMS_ADMIN_2026_SECURE";
         let loggedInUserEmail = "";
         let activeUserRole = "admin";
         let activeSchoolId = "SCH_001";
         let activeSection = "dashboard";
         let currentStudentId = "101";
-        let currentTeacherId = "T01";
 
-        // DATABASE OF REGISTERED PRINCIPALS & SCHOOLS
-        let principalDB = {
-            "P01": {
-                id: "P01",
-                name: "डॉ. आर. के. श्रीवास्तव",
-                email: "principal.begumganj@school.gov.in",
-                schoolName: "पीएमश्री शा.क.उ.मा.वि. बेगमगंज (रायसेन)",
-                udiseCode: "23340222855",
-                schoolId: "SCH_001",
-                verified: true
+        // MOCK STUDENTS DATABASE
+        let studentsData = {
+            "101": {
+                id: "101", scholarNo: "101", targetClass: "10th", section: "A", srNo: "1",
+                nameHindi: "राहुल शर्मा", nameEng: "RAHUL SHARMA", fatherName: "राम शर्मा", motherName: "सुमित्रा शर्मा",
+                dob: "2010-05-15", gender: "MALE", category: "OBC", caste: "कुर्मी", mobile: "9876543210", email: "rahul@gmail.com",
+                apaarId: "982736451029", childId: "192837465", familyId: "98765432", aadhaar: "987654321098", bloodGroup: "O+",
+                applicantType: "1", bankIfsc: "SBIN0001082", bankAccount: "398201928371", annualIncome: "48000", area: "ग्रामीण",
+                photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
             },
-            "P02": {
-                id: "P02",
-                name: "श्री आर. सी. वर्मा",
-                email: "principal.raisen@school.gov.in",
-                schoolName: "शासकीय मॉडल उच्चतर माध्यमिक विद्यालय रायसेन",
-                udiseCode: "23340100102",
-                schoolId: "SCH_002",
-                verified: true
+            "102": {
+                id: "102", scholarNo: "102", targetClass: "10th", section: "A", srNo: "2",
+                nameHindi: "प्रिया वर्मा", nameEng: "PRIYA VERMA", fatherName: "अनिल वर्मा", motherName: "रेखा वर्मा",
+                dob: "2010-08-20", gender: "FEMALE", category: "SC", caste: "वर्मा", mobile: "9123456789", email: "priya@gmail.com",
+                apaarId: "882736451021", childId: "292837465", familyId: "88765432", aadhaar: "887654321098", bloodGroup: "A+",
+                applicantType: "1", bankIfsc: "SBIN0001082", bankAccount: "298201928371", annualIncome: "36000", area: "ग्रामीण",
+                photoUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
+            },
+            "103": {
+                id: "103", scholarNo: "103", targetClass: "12th", section: "A", srNo: "3",
+                nameHindi: "अमित कुमार", nameEng: "AMIT KUMAR", fatherName: "सुरेश कुमार", motherName: "गीता देवी",
+                dob: "2008-11-12", gender: "MALE", category: "GEN", caste: "शर्मा", mobile: "9988776655", email: "amit@gmail.com",
+                apaarId: "782736451022", childId: "392837465", familyId: "78765432", aadhaar: "787654321098", bloodGroup: "B+",
+                applicantType: "1", bankIfsc: "SBIN0001082", bankAccount: "198201928371", annualIncome: "60000", area: "शहरी",
+                photoUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150"
             }
         };
 
-        // TEACHERS DATABASE WITH PASSWORDS
-        let teacherDB = {
-            "T01": {
-                code: "T01",
-                name: "डॉ. राजेश शर्मा",
-                email: "teacher.math@school.gov.in",
-                subject: "उच्च गणित",
-                classAssigned: "10th",
-                sectionAssigned: "A",
-                password: "123",
-                schoolId: "SCH_001"
-            }
+        let subjectsMasterDB = {
+            "10th": [
+                { name: "प्रथम भाषा हिंदी", code: "401" },
+                { name: "द्वितीय भाषा अंग्रेजी", code: "411" },
+                { name: "तृतीय भाषा संस्कृत", code: "412" },
+                { name: "गणित (Mathematics)", code: "100" },
+                { name: "विज्ञान (Science)", code: "200" },
+                { name: "सामाजिक विज्ञान", code: "300" }
+            ],
+            "12th": [
+                { name: "हिंदी (Hindi)", code: "050" },
+                { name: "अंग्रेजी (English)", code: "051" },
+                { name: "उच्च गणित (Higher Math)", code: "150" },
+                { name: "भौतिक शास्त्र (Physics)", code: "250" },
+                { name: "रसायन शास्त्र (Chemistry)", code: "350" },
+                { name: "आईटी व सुरक्षा (Additional)", code: "450" }
+            ]
         };
 
-        function switchRole(role) {
-            activeUserRole = role;
-            const name = document.getElementById('userName');
-            const badge = document.getElementById('userRoleBadge');
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.lucide) lucide.createIcons();
+            renderDashboardTop10Cards();
+        });
 
-            if (name && badge) {
-                if (role === 'admin') {
-                    name.innerText = "मुख्य एडमिनिस्ट्रेटर";
-                    badge.innerText = "● मास्टर एडमिन एक्सेस (सर्वाधिकार प्राप्त)";
-                } else if (role === 'principal') {
-                    name.innerText = loggedInUserEmail || "संस्था प्रमुख (प्राचार्य)";
-                    badge.innerText = "● विद्यालय स्तरीय सर्वाधिकार प्राप्त";
-                } else if (role === 'teacher') {
-                    name.innerText = loggedInUserEmail || "शिक्षक पैनल";
-                    badge.innerText = "● आबंटित कक्षा सम्पादन अधिकार";
-                } else {
-                    name.innerText = "विद्यार्थी पैनल";
-                    badge.innerText = "● केवल व्यू व डाउनलोड अधिकार";
-                }
-            }
-            renderPrincipalListTable();
-            renderMasterGridTable();
-            showToast("रोल बदल कर " + role.toUpperCase() + " मोड में सेट किया गया!");
+        function showSection(sectionId) {
+            activeSection = sectionId;
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
+            const target = document.getElementById(`section-${sectionId}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-${sectionId}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            const title = document.getElementById('currentActiveSectionTitle');
+            if (title) title.innerText = "अनुभाग: " + sectionId.toUpperCase();
         }
 
-        function renderPrincipalListTable() {
-            const tbody = document.getElementById('principalListTableBody');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            Object.values(principalDB).forEach(p => {
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 border-b border-slate-200">
-                        <td class="p-2 font-mono font-bold text-indigo-900">${p.schoolId}</td>
-                        <td class="p-2 font-bold text-slate-800">${p.schoolName}</td>
-                        <td class="p-2 font-mono">${p.udiseCode}</td>
-                        <td class="p-2 font-semibold">${p.name}</td>
-                        <td class="p-2 font-mono text-indigo-950 font-bold">${p.email}</td>
-                        <td class="p-2 text-center"><span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">✓ सत्यापित</span></td>
-                        <td class="p-2 text-center"><button onclick="deletePrincipal('${p.id}')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px] font-bold hover:bg-rose-700">हटाएं</button></td>
-                    </tr>
+        function renderDashboardTop10Cards() {
+            const container = document.getElementById('dashTop10CardsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            Object.values(studentsData).forEach((st, idx) => {
+                const glowClass = idx === 0 ? 'gold-glow' : (idx === 1 ? 'silver-glow' : 'bronze-glow');
+                container.innerHTML += `
+                    <div class="bg-white p-3 rounded-xl border-2 ${glowClass} shadow-md text-center space-y-1">
+                        <img src="${st.photoUrl}" class="w-16 h-20 object-cover rounded-lg mx-auto border shadow-sm">
+                        <span class="text-[10px] font-black bg-indigo-900 text-yellow-300 px-2 py-0.5 rounded-full block w-fit mx-auto">RANK #${idx + 1}</span>
+                        <h4 class="font-bold text-xs text-slate-800 truncate">${st.nameHindi}</h4>
+                        <p class="text-[10px] text-slate-500 font-mono">Scholar: ${st.scholarNo}</p>
+                    </div>
                 `;
             });
         }
 
-        function handleAddPrincipalForm(e) {
-            e.preventDefault();
-            const pName = document.getElementById('p_name')?.value;
-            const pEmail = document.getElementById('p_email')?.value;
-            const pSchool = document.getElementById('p_schoolName')?.value;
-            const pUdise = document.getElementById('p_udiseCode')?.value;
-
-            const pId = "P_00" + (Object.keys(principalDB).length + 1);
-            const schId = "SCH_00" + (Object.keys(principalDB).length + 1);
-
-            principalDB[pId] = {
-                id: pId,
-                name: pName,
-                email: pEmail,
-                schoolName: pSchool,
-                udiseCode: pUdise,
-                schoolId: schId,
-                verified: true
-            };
-
-            renderPrincipalListTable();
-            showToast(`🎉 संस्था प्रमुख ${pName} का ईमेल सत्यापन पूर्ण होकर पंजीकृत हुआ!`);
-            e.target.reset();
+        function globalPrintCurrentSection() {
+            window.print();
         }
 
-        function deletePrincipal(id) {
-            if (confirm("क्या आप इस संस्था प्रमुख (प्राचार्य) को हटाना चाहते हैं?")) {
-                delete principalDB[id];
-                renderPrincipalListTable();
-                showToast("प्राचार्य विवरण हटाया गया!");
-            }
+        function globalExportPDF() {
+            alert("PDF जनरेट किया जा रहा है...");
         }
 
-        function verifyEmailOtpCode() {
-            const role = document.getElementById('loginRoleType')?.value || 'admin';
-            const email = document.getElementById('loginEmailInput')?.value;
-            const pass = document.getElementById('loginPasswordInput')?.value;
+        function globalExportExcel() {
+            const worksheet = XLSX.utils.json_to_sheet(Object.values(studentsData));
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+            XLSX.writeFile(workbook, `SDMS_Export_${Date.now()}.xlsx`);
+        }
 
-            if (!email) {
-                showToast("⚠️ कृपया पंजीकृत ईमेल दर्ज करें!");
-                return;
+        function globalExportDoc() {
+            alert("Doc एक्सपोर्ट तैयार किया जा रहा है...");
+        }
+
+        function globalExportImage() {
+            alert("इमेज डाउनलोड तैयार हो रहा है...");
+        }
+
+        function shareOnlineLinkToken() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url);
+            alert("सुरक्षित शेयर लिंक कॉपी किया गया:\n" + url);
+        }
+
+        function switchRole(role) {
+            activeUserRole = role;
+            alert("रोल बदलकर " + role.toUpperCase() + " किया गया!");
+        }
+
+        function openLoginModal() {
+            const modal = document.getElementById('emailOtpModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeEmailOtpModal() {
+            const modal = document.getElementById('emailOtpModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function filterSidebarStudentDropdown(query) {
+            const select = document.getElementById('sidebarStudentSelect');
+            if (!select) return;
+            const q = query.toLowerCase().trim();
+            Array.from(select.options).forEach(opt => {
+                opt.hidden = !opt.text.toLowerCase().includes(q);
+            });
+        }
+
+        function loadStudentData(id) {
+            currentStudentId = id;
+            showToast("छात्र " + id + " लोड किया गया!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotification');
+            const toastMsg = document.getElementById('toastMessage');
+            if (toast && toastMsg) {
+                toastMsg.innerText = msg;
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 3000);
             }
-
-            loggedInUserEmail = email;
-            switchRole(role);
-            closeEmailOtpModal();
-            showToast(`🎉 ईमेल ऑथेंटिकेशन सफल! ऑथेंटिकेटेड: ${email}`);
         }
     </script>
 </body>
 </html>
-        // SELECTION TRACKING ARRAYS FOR BATCH PRINT
-        let selectedProfileCardIds = ["101", "102"];
-        let selectedAdmitCardIds = ["101", "102"];
-        let selectedMarksheetIds = ["101", "102"];
-        let selectedTeacherCardCodes = ["T01"];
-
-        function filterStudentListForSection(classFilterId, sectionFilterId, searchFilterId, conditionFilterId) {
-            const cls = document.getElementById(classFilterId)?.value || 'ALL';
-            const sec = document.getElementById(sectionFilterId)?.value || 'ALL';
-            const query = (document.getElementById(searchFilterId)?.value || '').toLowerCase().trim();
-            const cond = document.getElementById(conditionFilterId)?.value || 'ALL';
-
-            return Object.values(studentsDB).filter(st => {
-                if (cls !== 'ALL' && st.targetClass !== cls) return false;
-                if (sec !== 'ALL' && st.section !== sec) return false;
-                if (query !== '') {
-                    const matchName = (st.nameHindi || '').toLowerCase().includes(query) || (st.nameEng || '').toLowerCase().includes(query);
-                    const matchScholar = (st.scholarNo || '').toString().includes(query);
-                    const matchMobile = (st.mobile || '').toString().includes(query);
-                    if (!matchName && !matchScholar && !matchMobile) return false;
-                }
-                if (cond === 'FIRST') {
-                    const res = calculateStudentResult(st, 'annual');
-                    if (res.percentage < 60) return false;
-                } else if (cond === 'DISTINCTION') {
-                    const res = calculateStudentResult(st, 'annual');
-                    if (res.percentage < 75) return false;
-                } else if (cond === 'FAIL') {
-                    const res = calculateStudentResult(st, 'annual');
-                    if (res.resultStatus === 'PASS') return false;
-                } else if (cond === 'REGULAR') {
-                    if (st.applicantType !== '1') return false;
-                } else if (cond === 'PRIVATE') {
-                    if (st.applicantType !== '2') return false;
-                }
-                return true;
-            });
-        }
-
-        // 1. PROFILE CARDS SECTION RENDERER (SINGLE / BATCH)
-        function renderProfileCardsSection() {
-            const students = filterStudentListForSection('pcardClassFilter', 'pcardSectionFilter', 'pcardSearchInput', 'pcardConditionFilter');
-            const container = document.getElementById('profileCardsBatchContainer');
-            const badge = document.getElementById('profileCardCountBadge');
-            if (!container) return;
-
-            if (badge) badge.innerText = `${students.length} छात्र प्रदर्शित`;
-
-            container.innerHTML = '';
-            if (students.length === 0) {
-                container.innerHTML = `<div class="col-span-2 p-6 text-center text-slate-500 font-bold bg-white rounded-xl border border-slate-200">कोई विद्यार्थी नहीं मिला!</div>`;
-                return;
-            }
-
-            students.forEach((st, idx) => {
-                const photo = st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
-                const pageBreakClass = (idx > 0 && idx % 2 === 0) ? 'page-break' : '';
-
-                container.innerHTML += `
-                    <div class="bg-white rounded-2xl border-2 border-indigo-900 shadow-md p-4 space-y-3 ${pageBreakClass}">
-                        <div class="bg-indigo-950 text-white p-2 rounded-xl text-center flex justify-between items-center">
-                            <div>
-                                <h2 class="text-xs font-bold">पीएमश्री शा.क.उ.मा.वि. बेगमगंज</h2>
-                                <p class="text-[9px] text-yellow-300">विद्यार्थी पहचान पत्र (Student ID Card)</p>
-                            </div>
-                            <span class="bg-indigo-800 text-yellow-300 text-[9px] font-bold px-2 py-0.5 rounded">कक्षा ${st.targetClass || '10th'}</span>
-                        </div>
-
-                        <div class="flex items-center space-x-3">
-                            <img src="${photo}" class="w-20 h-24 object-cover rounded-lg border-2 border-indigo-900 shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'">
-                            <div class="text-xs space-y-1 flex-1">
-                                <h3 class="font-extrabold text-indigo-950 text-sm">${st.nameHindi || st.nameEng}</h3>
-                                <p class="text-slate-600">स्कॉलर क्र.: <strong class="font-mono text-indigo-900">${st.scholarNo}</strong> | वर्ग: <strong>${st.category || 'OBC'}</strong></p>
-                                <p class="text-slate-600">कक्षा-सेक्शन: <strong>${st.targetClass || '10th'} - ${st.section || 'A'}</strong></p>
-                                <p class="text-slate-600">पिता का नाम: <span>श्री ${st.fatherName}</span></p>
-                                <p class="text-slate-600">माता का नाम: <span>श्रीमती ${st.motherName || 'सुमित्रा शर्मा'}</span></p>
-                                <p class="text-slate-600">मोबाईल नं.: <span class="font-mono">${st.mobile}</span></p>
-                                <p class="text-slate-600">Child SSSM ID: <span class="font-mono font-bold">${st.childId || '192837465'}</span></p>
-                            </div>
-                        </div>
-
-                        <div class="border-t border-slate-200 pt-2 flex justify-between items-end text-[9px] text-slate-500">
-                            <div>ब्लड ग्रुप: <strong class="text-slate-800">${st.bloodGroup || 'O+'}</strong> | जन्म तिथि: <strong>${st.dob}</strong></div>
-                            <div class="text-center">
-                                <div class="h-5 border-b border-slate-800 w-24 mb-0.5"></div>
-                                <p class="font-bold">प्राचार्य हस्ताक्षर एवं सील</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            if (window.lucide) lucide.createIcons();
-        }
-
-        function toggleSelectAllProfileCards(checked) {
-            renderProfileCardsSection();
-        }
-
-        // 2. ADMIT CARDS SECTION RENDERER (SINGLE / BATCH)
-        function renderAdmitCardsSection() {
-            const students = filterStudentListForSection('admitClassFilter', 'admitSectionFilter', 'admitSearchInput', 'admitConditionFilter');
-            const container = document.getElementById('admitCardsBatchContainer');
-            const badge = document.getElementById('admitCardCountBadge');
-            if (!container) return;
-
-            if (badge) badge.innerText = `${students.length} एडमिट कार्ड प्रदर्शित`;
-
-            container.innerHTML = '';
-            if (students.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-slate-500 font-bold bg-white rounded-xl border border-slate-200">कोई एडमिट कार्ड नहीं मिला!</div>`;
-                return;
-            }
-
-            students.forEach((st, idx) => {
-                const photo = st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
-                const subjects = getStudentSubjectsList(st);
-                const pageBreakClass = (idx > 0) ? 'page-break' : '';
-
-                let timetableHtml = '';
-                const baseDates = ["15/02/2026", "18/02/2026", "21/02/2026", "24/02/2026", "27/02/2026", "02/03/2026", "05/03/2026"];
-                subjects.forEach((sub, sIdx) => {
-                    timetableHtml += `
-                        <tr>
-                            <td class="p-1 font-mono text-center">${baseDates[sIdx] || "08/03/2026"}</td>
-                            <td class="p-1 font-bold">${sub.name} (${sub.code})</td>
-                            <td class="p-1 text-center font-mono">09:00 AM - 12:00 PM</td>
-                            <td class="p-1 text-center"></td>
-                        </tr>
-                    `;
-                });
-
-                container.innerHTML += `
-                    <div class="bg-white p-5 rounded-xl border-2 border-slate-900 shadow-md max-w-3xl mx-auto space-y-3 text-xs ${pageBreakClass}">
-                        <div class="text-center border-b-2 border-slate-900 pb-2">
-                            <h2 class="text-sm font-bold uppercase tracking-wide">वार्षिक परीक्षा - प्रवेश पत्र (Admit Card)</h2>
-                            <p class="text-[10px] text-slate-600">पीएमश्री शा.क.उ.मा.वि. बेगमगंज (सत्र 2025-26) | शाला कोड: 23340222855</p>
-                        </div>
-
-                        <div class="flex justify-between items-start gap-4">
-                            <div class="space-y-1 flex-1">
-                                <p>छात्र का नाम: <strong class="font-extrabold text-indigo-950 text-sm">${st.nameHindi || st.nameEng}</strong></p>
-                                <p>स्कॉलर नंबर: <strong class="font-mono text-indigo-900">${st.scholarNo}</strong> | अनुक्रमांक (Roll No): <strong class="font-mono font-bold">${st.srNo || '101'}</strong></p>
-                                <p>कक्षा-सेक्शन: <strong class="font-bold">${st.targetClass || '10th'} - ${st.section || 'A'}</strong> | संवर्ग: <strong>${st.category || 'OBC'}</strong></p>
-                                <p>पिता का नाम श्री: <span>${st.fatherName}</span></p>
-                                <p>माता का नाम श्रीमती: <span>${st.motherName || 'सुमित्रा शर्मा'}</span></p>
-                                <p>परीक्षा केंद्र का नाम: <strong>शासकीय मॉडल उ.मा.वि. बेगमगंज (रायसेन)</strong></p>
-                            </div>
-                            <div class="text-center">
-                                <img src="${photo}" class="w-20 h-24 object-cover border border-slate-800 rounded shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'">
-                                <span class="text-[8px] font-bold block mt-0.5">परीक्षार्थी फ़ोटो</span>
-                            </div>
-                        </div>
-
-                        <table class="w-full text-left text-[11px] form-table">
-                            <thead class="bg-slate-100 font-bold">
-                                <tr>
-                                    <th class="p-1 w-28 text-center">दिनांक</th>
-                                    <th class="p-1">परीक्षा विषय एवं कोड</th>
-                                    <th class="p-1 w-36 text-center">समय</th>
-                                    <th class="p-1 w-28 text-center">वीक्षक हस्ताक्षर</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${timetableHtml}
-                            </tbody>
-                        </table>
-
-                        <div class="flex justify-between items-end pt-2 text-[9px]">
-                            <div>
-                                <p class="font-bold text-rose-700">* निर्देश: परीक्षार्थी परीक्षा हॉल में प्रवेश पत्र व पहचान पत्र साथ लाएं।</p>
-                                <p>दिनांक: 01/02/2026 | स्थान: बेगमगंज</p>
-                            </div>
-                            <div class="text-center">
-                                <div class="h-6 border-b border-slate-800 w-32 mb-0.5"></div>
-                                <p class="font-bold">परीक्षा नियंत्रक / प्राचार्य हस्ताक्षर</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            if (window.lucide) lucide.createIcons();
-        }
-
-        function toggleSelectAllAdmitCards(checked) {
-            renderAdmitCardsSection();
-        }
-
-        // 3. MARKSHEETS SECTION RENDERER (SINGLE / BATCH)
-        function renderMarksheetsSection() {
-            const students = filterStudentListForSection('marksheetClassFilter', 'marksheetSectionFilter', 'marksheetSearchInput', 'marksheetConditionFilter');
-            const container = document.getElementById('marksheetsBatchContainer');
-            const badge = document.getElementById('marksheetCountBadge');
-            if (!container) return;
-
-            if (badge) badge.innerText = `${students.length} अंकसूची प्रदर्शित`;
-
-            container.innerHTML = '';
-            if (students.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-slate-500 font-bold bg-white rounded-xl border border-slate-200">कोई अंकसूची नहीं मिली!</div>`;
-                return;
-            }
-
-            students.forEach((st, idx) => {
-                const pageBreakClass = (idx > 0) ? 'page-break' : '';
-                const resultData = calculateStudentResult(st, 'annual');
-                const subjects = getStudentSubjectsList(st);
-                const marksCfg = marksConfigDB[st.targetClass || '10th'] || {};
-
-                let rowsHtml = '';
-                subjects.forEach((sub, sIdx) => {
-                    const cfg = marksCfg[sIdx] || { thMax: 75, thPass: 25, prMax: 25, prPass: 8, isAdditional: false };
-                    const mark = (st.examMarks && st.examMarks['annual'] && st.examMarks['annual'][sIdx]) || { th: cfg.thPass + 10, pr: cfg.prPass + 5 };
-                    const thObt = parseInt(mark.th || 0);
-                    const prObt = parseInt(mark.pr || 0);
-                    const totObt = thObt + prObt;
-                    const totalMax = cfg.thMax + cfg.prMax;
-                    const isPass = (thObt >= cfg.thPass) && (prObt >= cfg.prPass);
-
-                    rowsHtml += `
-                        <tr class="${cfg.isAdditional ? 'bg-purple-50/60 font-semibold' : ''}">
-                            <td class="p-1.5 font-bold">${sub.name} (${sub.code}) ${cfg.isAdditional ? '<span class="text-[9px] text-purple-800 font-bold">(अतिरिक्त विषय)</span>' : ''}</td>
-                            <td class="p-1.5 text-center font-mono">${thObt} / ${cfg.thMax}</td>
-                            <td class="p-1.5 text-center font-mono">${prObt} / ${cfg.prMax}</td>
-                            <td class="p-1.5 text-center font-mono font-bold text-indigo-950">${totObt}</td>
-                            <td class="p-1.5 text-center font-mono">${totalMax}</td>
-                            <td class="p-1.5 text-center font-bold ${isPass ? 'text-emerald-700' : 'text-rose-700'}">${isPass ? 'PASS' : 'FAIL'}</td>
-                        </tr>
-                    `;
-                });
-
-                container.innerHTML += `
-                    <div class="bg-white p-6 rounded-xl border-2 border-slate-900 shadow-md max-w-3xl mx-auto space-y-3 text-xs ${pageBreakClass}">
-                        <div class="text-center border-b-2 border-slate-900 pb-2">
-                            <h1 class="text-sm font-extrabold uppercase tracking-wide">माध्यमिक शिक्षा मण्डल, मध्यप्रदेश, भोपाल</h1>
-                            <h2 class="text-xs font-bold text-slate-700">समेकित वार्षिक अंकसूची / STATEMENT OF MARKS (2025-26)</h2>
-                            <p class="text-[10px] text-indigo-950 font-bold">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय.बेगमगंज (रायसेन)</p>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2 rounded border border-slate-300 text-[11px]">
-                            <div>
-                                <p>विद्यार्थी नाम: <strong class="font-bold text-indigo-950 text-sm">${st.nameHindi || st.nameEng}</strong></p>
-                                <p>स्कॉलर क्र.: <strong class="font-mono text-indigo-900">${st.scholarNo}</strong> | संवर्ग: <strong>${st.category || 'OBC'}</strong></p>
-                                <p>माता का नाम: <span>श्रीमती ${st.motherName || 'सुमित्रा शर्मा'}</span></p>
-                            </div>
-                            <div class="text-right">
-                                <p>कक्षा-सेक्शन: <strong class="font-bold">${st.targetClass || '10th'} - ${st.section || 'A'}</strong></p>
-                                <p>पिता का नाम: <span>श्री ${st.fatherName}</span></p>
-                                <p>Child SSSM ID: <strong class="font-mono">${st.childId || '192837465'}</strong></p>
-                            </div>
-                        </div>
-
-                        <table class="w-full text-left text-[11px] form-table">
-                            <thead class="bg-indigo-950 text-white font-bold">
-                                <tr>
-                                    <th class="p-1.5">विषय का नाम</th>
-                                    <th class="p-1.5 text-center">थ्योरी प्राप्तांक</th>
-                                    <th class="p-1.5 text-center">प्रैक्टिकल प्राप्तांक</th>
-                                    <th class="p-1.5 text-center">कुल प्राप्त</th>
-                                    <th class="p-1.5 text-center">पूर्णांक</th>
-                                    <th class="p-1.5 text-center">स्थिति</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${rowsHtml}
-                            </tbody>
-                            <tfoot class="bg-slate-100 font-bold">
-                                <tr>
-                                    <td class="p-1.5">मुख्य विषयों का कुल योग:</td>
-                                    <td colspan="2" class="p-1.5 text-center">प्राप्तांक: <span class="font-mono text-indigo-900 text-sm font-bold">${resultData.totalObtained}</span></td>
-                                    <td class="p-1.5 text-center font-mono">${resultData.totalObtained}</td>
-                                    <td class="p-1.5 text-center font-mono">${resultData.totalMax}</td>
-                                    <td class="p-1.5 text-center text-indigo-950 font-bold">${resultData.percentage}%</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-
-                        <div class="bg-indigo-50 border border-indigo-200 p-2.5 rounded-lg flex justify-between items-center text-xs">
-                            <div>
-                                <span class="text-slate-500 font-medium">अंतिम वार्षिक परीक्षा परिणाम:</span>
-                                <span class="font-extrabold text-indigo-950 block text-sm">${resultData.division}</span>
-                            </div>
-                            <div class="text-center">
-                                <span class="text-slate-500 font-medium">कुल प्रतिशत (%):</span>
-                                <span class="font-extrabold text-emerald-800 block text-sm">${resultData.percentage}%</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-slate-500 font-medium">ग्रेड (Grade):</span>
-                                <span class="font-extrabold text-indigo-900 block text-sm">${resultData.grade}</span>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between items-end pt-3 text-[9px] text-slate-500">
-                            <div>दिनांक: 01/05/2026 | स्थान: बेगमगंज</div>
-                            <div class="text-center">
-                                <div class="h-6 border-b border-slate-800 w-32 mb-0.5"></div>
-                                <p class="font-bold">प्राचार्य हस्ताक्षर एवं सील</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            if (window.lucide) lucide.createIcons();
-        }
-
-        function toggleSelectAllMarksheets(checked) {
-            renderMarksheetsSection();
-        }
-
-        // 4. TEACHER CARDS SECTION RENDERER (SINGLE / BATCH)
-        function renderTeacherCardsSection() {
-            const query = (document.getElementById('tcardSearchInput')?.value || '').toLowerCase().trim();
-            const cls = document.getElementById('tcardClassFilter')?.value || 'ALL';
-            const container = document.getElementById('teacherCardsBatchContainer');
-            const badge = document.getElementById('teacherCardCountBadge');
-            if (!container) return;
-
-            const teachers = Object.values(teacherDB).filter(t => {
-                if (cls !== 'ALL' && t.classAssigned !== cls) return false;
-                if (query !== '') {
-                    const matchName = (t.name || '').toLowerCase().includes(query);
-                    const matchCode = (t.code || '').toLowerCase().includes(query);
-                    const matchSub = (t.subject || '').toLowerCase().includes(query);
-                    if (!matchName && !matchCode && !matchSub) return false;
-                }
-                return true;
-            });
-
-            if (badge) badge.innerText = `${teachers.length} शिक्षक चयनित`;
-
-            container.innerHTML = '';
-            if (teachers.length === 0) {
-                container.innerHTML = `<div class="col-span-2 p-6 text-center text-slate-500 font-bold bg-white rounded-xl border border-slate-200">कोई शिक्षक नहीं मिला!</div>`;
-                return;
-            }
-
-            teachers.forEach((t, idx) => {
-                container.innerHTML += `
-                    <div class="bg-white rounded-2xl border-2 border-emerald-900 shadow-md p-4 space-y-3">
-                        <div class="bg-emerald-950 text-white p-2 rounded-xl text-center">
-                            <h2 class="text-xs font-bold">पीएमश्री शा.क.उ.मा.वि. बेगमगंज</h2>
-                            <p class="text-[9px] text-emerald-300">शिक्षक पहचान पत्र (Teacher ID Card)</p>
-                        </div>
-
-                        <div class="flex items-center space-x-3">
-                            <div class="w-20 h-24 bg-emerald-100 rounded-lg border-2 border-emerald-900 flex items-center justify-center font-bold text-xs text-emerald-950 shadow-inner">शिक्षक फोटो</div>
-                            <div class="text-xs space-y-1 flex-1">
-                                <h3 class="font-extrabold text-emerald-950 text-sm">${t.name}</h3>
-                                <p class="text-slate-600">एम्प्लॉई कोड: <strong class="font-mono text-emerald-900">${t.code}</strong></p>
-                                <p class="text-slate-600">विशेषज्ञता विषय: <strong class="text-slate-800">${t.subject}</strong></p>
-                                <p class="text-slate-600">आबंटित कक्षा/सेक्शन: <span class="font-bold">${t.classAssigned} - ${t.sectionAssigned || 'A'}</span></p>
-                                <p class="text-slate-600">ईमेल: <span class="font-mono text-[10px]">${t.email}</span></p>
-                            </div>
-                        </div>
-
-                        <div class="border-t border-slate-200 pt-2 flex justify-between items-end text-[9px] text-slate-500">
-                            <div>सत्र: <strong>2025-2026</strong> | शाला: <strong>बेगमगंज</strong></div>
-                            <div class="text-center">
-                                <div class="h-5 border-b border-slate-800 w-24 mb-0.5"></div>
-                                <p class="font-bold">संस्था प्रमुख हस्ताक्षर</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            if (window.lucide) lucide.createIcons();
-        }
-
-        function toggleSelectAllTeacherCards(checked) {
-            renderTeacherCardsSection();
-        }
-
-        // OVERRIDE SHOWSECTION TO RENDER BATCH CARDS ON TAB CHANGE
-        const originalShowSection = window.showSection;
-        window.showSection = function(sectionId) {
-            if (typeof originalShowSection === 'function') {
-                originalShowSection(sectionId);
-            }
-            if (sectionId === 'profile-card') renderProfileCardsSection();
-            if (sectionId === 'admit-card') renderAdmitCardsSection();
-            if (sectionId === 'marksheet') renderMarksheetsSection();
-            if (sectionId === 'teacher-card') renderTeacherCardsSection();
-        };
-
-        // INITIALIZE RENDERERS ON LOAD
-        document.addEventListener("DOMContentLoaded", () => {
-            renderProfileCardsSection();
-            renderAdmitCardsSection();
-            renderMarksheetsSection();
-            renderTeacherCardsSection();
-        });
-</script>
