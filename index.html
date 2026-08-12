@@ -1153,6 +1153,18 @@
         let activeSection = "dashboard";
         let currentStudentId = "101";
 
+        // HELPER TO SANITIZE STRINGS TO CLEAN UPPERCASE ENGLISH ONLY
+        function cleanEnglishOnly(str) {
+            if (!str) return '';
+            let clean = str.toString()
+                .replace(/श्रीमती|श्री|डॉ\.|इंजी\.|कु\.|महोदय/g, '')
+                .replace(/MRS\.|MR\.|DR\./gi, '')
+                .replace(/[^a-zA-Z\s]/g, '')
+                .trim()
+                .toUpperCase();
+            return clean;
+        }
+
         // MASTER STUDENTS DATABASE WITH FULL 50+ COLUMNS DATA
         let studentsData = {
             "101": {
@@ -1175,7 +1187,9 @@
                 nameHindi: "राहुल शर्मा",
                 nameEng: "RAHUL SHARMA",
                 fatherName: "श्री राम शर्मा",
+                fatherNameEng: "RAM SHARMA",
                 motherName: "श्रीमती सीता शर्मा",
+                motherNameEng: "SITA SHARMA",
                 dob: "2009-05-15",
                 gender: "MALE",
                 category: "GEN",
@@ -1235,7 +1249,9 @@
                 nameHindi: "पूजा पटेल",
                 nameEng: "PUJA PATEL",
                 fatherName: "श्री मोहन पटेल",
+                fatherNameEng: "MOHAN PATEL",
                 motherName: "श्रीमती अनीता पटेल",
+                motherNameEng: "ANITA PATEL",
                 dob: "2009-08-20",
                 gender: "FEMALE",
                 category: "OBC",
@@ -1295,7 +1311,9 @@
                 nameHindi: "अमित वर्मा",
                 nameEng: "AMIT VERMA",
                 fatherName: "श्री सुरेश वर्मा",
+                fatherNameEng: "SURESH VERMA",
                 motherName: "श्रीमती मीरा वर्मा",
+                motherNameEng: "MEERA VERMA",
                 dob: "2010-02-10",
                 gender: "MALE",
                 category: "SC",
@@ -1672,44 +1690,44 @@
         }
 
         function makeLetterBoxes(str, minLength = 20) {
-            let val = (str || '').toString().toUpperCase();
-            let boxesHtml = '';
-            let len = Math.max(val.length, minLength);
-            for (let i = 0; i < len; i++) {
-                let char = val[i] !== undefined && val[i] !== '' ? val[i] : '&nbsp;';
-                boxesHtml += `<span class="letter-box">${char}</span>`;
-            }
-            return `<div class="letter-box-container">${boxesHtml}</div>`;
-        }
-
-        function renderCombinedOfficialForms() {
-            renderIndividualForm('mp-board', 'combinedForm1Container');
-            renderIndividualForm('sssm', 'combinedForm2Container');
-            renderIndividualForm('pm-shri', 'combinedForm3Container');
-        }
-
-        function renderIndividualForm(formType, targetContainerId = null) {
-            const containerId = targetContainerId || (formType === 'mp-board' ? 'formMpBoardContainer' : (formType === 'sssm' ? 'formSssmContainer' : 'formPmShriContainer'));
-            const container = document.getElementById(containerId);
-            if (!container) return;
-
-            const st = studentsData[currentStudentId] || Object.values(studentsData)[0];
-
-            if (formType === 'pm-shri') {
-                container.innerHTML = `
-                    <div class="p-6 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-3 text-xs text-slate-950 shadow-md">
-                        <!-- Top Header Section (School Title Centered) -->
-                        <div class="text-center border-b border-slate-900 pb-2">
-                            <h1 class="text-base font-black tracking-wide leading-tight">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज</h1>
-                            <h2 class="text-xs font-bold mt-0.5">जिला रायसेन (म.प्र.)</h2>
-                        </div>
-
-                        <!-- Top Details & Photo Grid -->
-                        <div class="flex justify-between items-start border-b-2 border-slate-900 pb-3 gap-4">
-                            <div class="space-y-2 flex-1 text-xs font-bold leading-relaxed">
-                                <div class="flex flex-wrap items-center gap-6">
-                                    <p>स्काॅलर नं.: <span class="fill-line min-w-[110px] font-mono text-sm">${st.scholarNo || '............'}</span></p>
-                                    <p>कक्षाध्यापक: <span class="fill-line min-w-[130px]">....................</span></p>
+                        <!-- Part 2: Personal Details -->
+                        <div class="bg-indigo-50/50 p-3 rounded-lg border border-indigo-200 space-y-2">
+                            <h3 class="font-extrabold text-indigo-900 text-xs uppercase tracking-wider">2. व्यक्तिगत जानकारी (Personal Details):</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                                <div>
+                                    <label class="text-slate-700 block">Candidate (नाम हिन्दी में)</label>
+                                    <input type="text" id="f_nameHindi" class="w-full border rounded px-2 py-1 font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">Candidate (FULL NAME IN ENGLISH) *</label>
+                                    <input type="text" id="f_nameEng" required class="w-full border rounded px-2 py-1 font-bold uppercase">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">father name (पिता का नाम - हिन्दी) *</label>
+                                    <input type="text" id="f_fatherName" required class="w-full border rounded px-2 py-1 font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">FATHER NAME IN ENGLISH (अंग्रेजी)</label>
+                                    <input type="text" id="f_fatherNameEng" class="w-full border rounded px-2 py-1 font-bold uppercase" placeholder="e.g. RAM SHARMA">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">mother name (माता का नाम - हिन्दी) *</label>
+                                    <input type="text" id="f_motherName" required class="w-full border rounded px-2 py-1 font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">MOTHER NAME IN ENGLISH (अंग्रेजी)</label>
+                                    <input type="text" id="f_motherNameEng" class="w-full border rounded px-2 py-1 font-bold uppercase" placeholder="e.g. SITA SHARMA">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">DOB (जन्म तिथि) *</label>
+                                    <input type="date" id="f_dob" required class="w-full border rounded px-2 py-1 font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">SEX (लिंग)</label>
+                                    <select id="f_gender" class="w-full border rounded px-2 py-1 bg-white font-bold">
+                                        <option value="FEMALE">FEMALE (बालिका)</option>
+                                        <option value="MALE">MALE (बालक)</option>
+                                    </select>
                                 </div>
                                 <div class="pt-1">
                                     <p class="leading-loose">छात्रा को कक्षा <span class="fill-line min-w-[60px] font-bold text-center">${st.targetClass || '......'}</span> में प्रवेश दिया जाये। &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; प्रवेश दिनांक: <span class="fill-line min-w-[110px]">${st.admissionDate || '............'}</span></p>
@@ -1957,10 +1975,124 @@
                             ${makeLetterBoxes(st.fatherName, 30)}
                         </div>
 
-                        <!-- Point 4: Mother Name -->
+        function loadStudentData(stId) {
+            currentStudentId = stId;
+            const st = studentsData[stId];
+            if (!st) return;
+            document.getElementById("f_scholarNo").value = st.scholarNo || '';
+            document.getElementById("f_rollNo").value = st.rollNo || '';
+            document.getElementById("f_enrollmentNo").value = st.enrollmentNo || '';
+            document.getElementById("f_targetClass").value = st.targetClass || '10th';
+            document.getElementById("f_section").value = st.section || 'A';
+            document.getElementById("f_srNo").value = st.srNo || '';
+            document.getElementById("f_nameHindi").value = st.nameHindi || '';
+            document.getElementById("f_nameEng").value = st.nameEng || '';
+            document.getElementById("f_fatherName").value = st.fatherName || '';
+            document.getElementById("f_fatherNameEng").value = st.fatherNameEng || cleanEnglishOnly(st.fatherName);
+            document.getElementById("f_motherName").value = st.motherName || '';
+            document.getElementById("f_motherNameEng").value = st.motherNameEng || cleanEnglishOnly(st.motherName);
+            document.getElementById("f_dob").value = st.dob || '';
+            document.getElementById("f_gender").value = st.gender || 'FEMALE';
+            document.getElementById("f_category").value = st.category || 'OBC';
+            document.getElementById("f_caste").value = st.caste || '';
+            document.getElementById("f_mobile").value = st.mobile || '';
+            document.getElementById("f_email").value = st.email || '';
+            document.getElementById("f_apaarId").value = st.apaarId || '';
+            document.getElementById("f_childId").value = st.childId || '';
+            document.getElementById("f_familyId").value = st.familyId || '';
+            document.getElementById("f_aadhaar").value = st.aadhaar || '';
+            document.getElementById("f_bankName").value = st.bankName || '';
+            document.getElementById("f_bankAccount").value = st.bankAccount || '';
+            document.getElementById("f_bankIfsc").value = st.bankIfsc || '';
+            document.getElementById("f_address").value = st.address || '';
+            document.getElementById("formPhotoPreview").src = st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
+            
+            renderFormClassBookCheckboxes(st.targetClass);
+        }
+
+        function handleMasterStudentSave(e) {
+            e.preventDefault();
+            const scholar = document.getElementById("f_scholarNo").value;
+            const fEng = document.getElementById("f_fatherNameEng").value;
+            const mEng = document.getElementById("f_motherNameEng").value;
+            
+            studentsData[scholar] = {
+                id: scholar,
+                scholarNo: scholar,
+                rollNo: document.getElementById("f_rollNo").value,
+                enrollmentNo: document.getElementById("f_enrollmentNo").value,
+                targetClass: document.getElementById("f_targetClass").value,
+                section: document.getElementById("f_section").value,
+                nameHindi: document.getElementById("f_nameHindi").value,
+                nameEng: document.getElementById("f_nameEng").value,
+                fatherName: document.getElementById("f_fatherName").value,
+                fatherNameEng: fEng || cleanEnglishOnly(document.getElementById("f_fatherName").value),
+                motherName: document.getElementById("f_motherName").value,
+                motherNameEng: mEng || cleanEnglishOnly(document.getElementById("f_motherName").value),
+                dob: document.getElementById("f_dob").value,
+                gender: document.getElementById("f_gender").value,
+                category: document.getElementById("f_category").value,
+                mobile: document.getElementById("f_mobile").value,
+                apaarId: document.getElementById("f_apaarId").value,
+                childId: document.getElementById("f_childId").value,
+                aadhaar: document.getElementById("f_aadhaar").value,
+                address: document.getElementById("f_address").value,
+                photoUrl: document.getElementById("formPhotoPreview").src
+            };
+            populateSidebarSelectors();
+            showToast("छात्र रिकॉर्ड सफलतापूर्वक सुरक्षित किया गया!");
+            showSection("master-grid");
+        }
+            } else if (formType === 'mp-board') {
+                const candidateEng = cleanEnglishOnly(st.nameEng);
+                const fatherEng = cleanEnglishOnly(st.fatherNameEng || st.fatherName);
+                const motherEng = cleanEnglishOnly(st.motherNameEng || st.motherName);
+
+                container.innerHTML = `
+                    <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
+                        <div class="text-center border-b-2 border-slate-900 pb-2 relative">
+                            <div class="w-8 h-8 mx-auto border-2 border-slate-900 rounded-full flex items-center justify-center font-black text-[8px] mb-1">MPB</div>
+                            <h1 class="text-xs font-black">माध्यमिक शिक्षा मण्डल, मध्य प्रदेश, भोपाल</h1>
+                            <h2 class="text-xs font-bold">आवेदन पत्र हाईस्कूल परीक्षा</h2>
+                            <div class="bg-slate-900 text-white text-[8px] font-bold px-2 py-0.5 inline-block rounded mt-1">सम्बंधित कोड नम्बर ही खाने में भरिये</div>
+                        </div>
+
+                        <!-- Point 1: Applicant Type & Details -->
+                        <div class="border border-slate-800 p-1.5 space-y-1">
+                            <div class="flex flex-wrap items-center justify-between text-[8px] font-bold">
+                                <span>1. आवेदक का प्रकार:</span>
+                                <span>नियमित-1 [✓]</span>
+                                <span>स्वाध्यायी-2 [ ]</span>
+                                <span>नियमित (10वीं फेल)-3 [ ]</span>
+                                <span>स्वाध्यायी (10वीं फेल)-4 [ ]</span>
+                                <span>श्रेणी सुधार-5 [ ]</span>
+                            </div>
+                            <div class="flex flex-wrap items-center justify-between text-[8px]">
+                                <span>म.प्र. मूलनिवासी? <strong>हाँ [✓]</strong></span>
+                                <span>CWSN Code: <span class="border px-1">00</span></span>
+                                <span>Section: <span class="border px-1">${st.section || 'A'}</span></span>
+                                <span>रोल नंबर: <span class="border px-1">${st.rollNo || '1001'}</span></span>
+                                <span>परिणाम: <span class="border px-1">Pass</span></span>
+                                <span>श्रेणी: <span class="border px-1">First</span></span>
+                            </div>
+                        </div>
+
+                        <!-- Point 2: Candidate Name (PURE ENGLISH ONLY) -->
+                        <div>
+                            <span class="font-bold block mb-0.5">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
+                            ${makeLetterBoxes(candidateEng, 30)}
+                        </div>
+
+                        <!-- Point 3: Father Name (PURE ENGLISH ONLY) -->
+                        <div>
+                            <span class="font-bold block mb-0.5">3. पिता का पूरा नाम FULL NAME OF FATHER:</span>
+                            ${makeLetterBoxes(fatherEng, 30)}
+                        </div>
+
+                        <!-- Point 4: Mother Name (PURE ENGLISH ONLY) -->
                         <div>
                             <span class="font-bold block mb-0.5">4. माता का पूरा नाम FULL NAME OF MOTHER:</span>
-                            ${makeLetterBoxes(st.motherName, 30)}
+                            ${makeLetterBoxes(motherEng, 30)}
                         </div>
 
                         <!-- Point 5: DOB -->
@@ -1973,89 +2105,6 @@
                                 <span class="font-bold block mb-0.5">जन्म तिथि (शब्दों में):</span>
                                 <div class="border-b border-slate-800 text-[9px] font-bold pb-0.5">पंद्रह मई दो हजार नौ</div>
                             </div>
-                        </div>
-
-                        <!-- Point 6: School Codes -->
-                        <div class="grid grid-cols-4 gap-1 text-[8px] font-bold">
-                            <div>जिला कोड: <div class="mt-0.5">${makeLetterBoxes('34', 3)}</div></div>
-                            <div>विकास खण्ड कोड: <div class="mt-0.5">${makeLetterBoxes('02', 3)}</div></div>
-                            <div>शाला कोड: <div class="mt-0.5">${makeLetterBoxes('233402', 6)}</div></div>
-                            <div>नामांकन कोड: <div class="mt-0.5">${makeLetterBoxes(st.enrollmentNo || '', 8)}</div></div>
-                        </div>
-
-                        <!-- Point 7: Subjects -->
-                        <div class="border border-slate-800 p-1.5 space-y-1">
-                            <span class="font-bold block">7. भाषा विषय :-</span>
-                            <div class="grid grid-cols-3 gap-2 text-[8px]">
-                                <div>प्रथम भाषा: <strong>${st.sub1 || '401 - हिन्दी'}</strong></div>
-                                <div>द्वितीय भाषा: <strong>${st.sub2 || '411 - अंग्रेजी'}</strong></div>
-                                <div>तृतीय भाषा: <strong>${st.sub6 || '501 - संस्कृत'}</strong></div>
-                            </div>
-                        </div>
-
-                        <!-- Point 8: SSMID & Sambal -->
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <span class="font-bold block mb-0.5">8. समग्र आई.डी. (SSMID):</span>
-                                ${makeLetterBoxes(st.childId, 9)}
-                            </div>
-                            <div>
-                                <span class="font-bold block mb-0.5">संबल क्रमांक:</span>
-                                ${makeLetterBoxes(st.sambalNo, 9)}
-                            </div>
-                        </div>
-
-                        <!-- Point 9: Address & Photo -->
-                        <div class="flex justify-between items-start space-x-2 pt-1">
-                            <div class="flex-1 text-[8px] font-bold space-y-1">
-                                <span class="block text-[9px] underline">9. पत्र व्यवहार का पता :-</span>
-                                <p>House No. : 12 &nbsp;&nbsp;&nbsp;&nbsp; Colony : बेगमगंज वार्ड 4</p>
-                                <p>Town : बेगमगंज &nbsp;&nbsp;&nbsp;&nbsp; Block : बेगमगंज</p>
-                                <p>District : रायसेन &nbsp;&nbsp;&nbsp;&nbsp; Pin: 464881</p>
-                                <p>Phone No. : ${st.mobile || ''} &nbsp;&nbsp;&nbsp;&nbsp; Email-Id: ${st.email || ''}</p>
-                            </div>
-
-                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 flex flex-col justify-between bg-slate-50 text-[8px] flex-shrink-0">
-                                ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-20 h-22 object-cover mx-auto border">` : '<div class="w-20 h-22 border bg-white mx-auto"></div>'}
-                                <span>नवीनतम डिजिटल फोटो</span>
-                                <div class="border-t border-slate-800 pt-0.5">छात्र के हस्ताक्षर</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        function renderProfileCards() {
-            const container = document.getElementById("exportableProfileCard");
-            if (!container) return;
-            container.innerHTML = Object.values(studentsData).map(st => `
-                <div class="bg-white p-4 rounded-xl border-2 border-indigo-900 shadow-md flex items-center space-x-3">
-                    <img src="${st.photoUrl || ''}" class="w-20 h-24 object-cover rounded border">
-                    <div class="space-y-1 text-xs">
-                        <h4 class="font-black text-indigo-950">${st.nameHindi || st.nameEng}</h4>
-                        <p class="font-bold text-slate-700">कक्षा: ${st.targetClass} - ${st.section} | Sc: ${st.scholarNo}</p>
-                        <p class="text-slate-600">पिता: ${st.fatherName}</p>
-                        <p class="text-slate-600">मोबाईल: ${st.mobile}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderAdmitCards() {
-            const container = document.getElementById("exportableAdmitCard");
-            if (!container) return;
-            container.innerHTML = Object.values(studentsData).map(st => `
-                <div class="bg-white p-4 rounded-xl border-2 border-rose-900 shadow-md space-y-2 text-xs">
-                    <div class="text-center font-bold border-b pb-1">
-                        <h3>वार्षिक परीक्षा एडमिट कार्ड 2026</h3>
-                        <p class="text-[10px]">शा.क.उ.मा.वि. बेगमगंज</p>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p><strong>छात्र का नाम:</strong> ${st.nameHindi || st.nameEng}</p>
-                            <p><strong>अनुक्रमांक (Roll No):</strong> ${st.rollNo || '1001'}</p>
-                            <p><strong>कक्षा:</strong> ${st.targetClass} (${st.section})</p>
                         </div>
                         <img src="${st.photoUrl || ''}" class="w-16 h-20 object-cover border">
                     </div>
