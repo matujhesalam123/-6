@@ -14,7 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- jsPDF & html2canvas for PDF Export -->
+    <!-- jsPDF & html2canvas for PDF & Image Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- SheetJS for Excel Export -->
@@ -34,6 +34,14 @@
             .content-section { border: none !important; box-shadow: none !important; display: block !important; }
             .page-break { page-break-after: always; break-after: page; }
             .letter-box { border-color: #000000 !important; }
+            .a4-container {
+                width: 100% !important;
+                min-height: 297mm !important;
+                padding: 6mm 8mm !important;
+                border: none !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+            }
         }
         
         .tab-btn.active {
@@ -147,7 +155,6 @@
 
     <div class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 md:p-5 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
 
-        <!-- PERSISTENT LEFT SIDEBAR PANEL -->
         <aside class="md:col-span-1 bg-white rounded-xl shadow-sm p-3 border border-slate-200 no-print flex flex-col space-y-3 sticky top-16 h-fit">
             
             <!-- Quick Live Student Search & Selector -->
@@ -286,7 +293,6 @@
                 </div>
             </div>
 
-            <!-- SECTION 1: DASHBOARD -->
             <section id="section-dashboard" class="content-section space-y-4">
                 
                 <!-- OVERALL SCHOOL TOPPER SPOTLIGHT BANNER -->
@@ -393,7 +399,7 @@
                         <div>
                             <h2 class="text-base font-bold text-indigo-950 flex items-center space-x-1.5">
                                 <i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i>
-                                <span>मास्टर्स ऑनलाइन छात्र प्रवेश व संपादन फ़ॉर्म</span>
+                                <span>मास्टर्स ऑनलाइन छात्र प्रवेश व संपादन फ़ॉर्म (50+ Fields)</span>
                             </h2>
                             <p class="text-xs text-slate-500">म.प्र. बोर्ड, समग्र छात्रवृत्ति व पीएमश्री तीनों फ़ॉर्म्स हेतु 50+ एकीकृत कॉलम</p>
                         </div>
@@ -819,16 +825,54 @@
                 </div>
             </section>
 
-            <section id="section-combined-forms" class="content-section space-y-6 hidden">
-                <div class="bg-slate-200 p-2 rounded-xl text-center no-print">
-                    <span class="text-xs font-black text-indigo-950">तीनों आधिकारिक प्रिंट फ़ॉर्म्स (1, 2 एवं 3) एक के नीचे दूसरा क्रमानुसार पेज ब्रेक सहित जनरेटेड:</span>
+            <section id="section-combined-forms" class="content-section space-y-4 hidden">
+                <div class="bg-amber-100 border border-amber-300 p-3 rounded-xl no-print space-y-2">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-300 pb-2">
+                        <span class="text-xs font-black text-amber-950 flex items-center space-x-1">
+                            <i data-lucide="layers" class="w-4 h-4 text-amber-600"></i>
+                            <span>संयुक्त फ़ॉर्म्स (1, 2 व 3) बैच फ़िल्टर व 5-इन-1 एक्सपोर्ट टूलबार</span>
+                        </span>
+                        <span id="combBatchCountDisplay" class="text-[11px] bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full font-extrabold">प्रदर्शित छात्र: 0</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs font-bold">
+                        <div>
+                            <label class="block text-amber-900 mb-0.5 text-[10px]">1. कक्षा चुनें:</label>
+                            <select id="combClassFilter" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white">
+                                <option value="ALL">🏢 पूरे स्कूल के सभी छात्र (All School)</option>
+                                <option value="10th" selected>कक्षा 10वीं</option>
+                                <option value="9th">कक्षा 9वीं</option>
+                                <option value="11th">कक्षा 11वीं</option>
+                                <option value="12th">कक्षा 12वीं</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-amber-900 mb-0.5 text-[10px]">2. सेक्शन चुनें:</label>
+                            <select id="combSectionFilter" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white">
+                                <option value="ALL">समस्त सेक्शन (All Sections)</option>
+                                <option value="A">Section A</option>
+                                <option value="B">Section B</option>
+                                <option value="C">Section C</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-amber-900 mb-0.5 text-[10px]">3. खोजें (नाम/स्कॉलर):</label>
+                            <input type="text" id="combSearchInput" oninput="handleCombFilterChange()" placeholder="🔍 छात्र खोजें..." class="w-full border rounded px-2 py-1 bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-amber-900 mb-0.5 text-[10px]">4. विशिष्ट छात्र:</label>
+                            <select id="combStudentSelect" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white">
+                                <option value="ALL_CLASS">-- चयनित फ़िल्टर अनुसार सभी छात्र --</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="exportableCombinedForms" class="space-y-8 bg-white p-4 rounded-xl border border-slate-300 shadow-lg">
+                <div id="exportableCombinedForms" class="space-y-8">
                     <div id="combinedForm1Container"></div>
-                    <div class="page-break my-6 border-b-2 border-dashed border-slate-400"></div>
+                    <div class="page-break my-6 border-b-2 border-dashed border-slate-400 no-print"></div>
                     <div id="combinedForm2Container"></div>
-                    <div class="page-break my-6 border-b-2 border-dashed border-slate-400"></div>
+                    <div class="page-break my-6 border-b-2 border-dashed border-slate-400 no-print"></div>
                     <div id="combinedForm3Container"></div>
                 </div>
             </section>
@@ -848,10 +892,6 @@
                                 <option value="11th">11th</option>
                                 <option value="12th">12th</option>
                             </select>
-                            <label class="flex items-center space-x-1 font-bold text-indigo-900 cursor-pointer">
-                                <input type="checkbox" id="pcardSelectAll" onchange="toggleProfileCardSelectAll(this.checked)">
-                                <span>पूरी कक्षा के कार्ड्स चुनें (Select All)</span>
-                            </label>
                         </div>
                     </div>
                 </div>
@@ -990,7 +1030,7 @@
                     <div class="flex justify-between items-center border-b pb-2">
                         <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
                             <i data-lucide="sliders" class="w-4 h-4 text-emerald-600"></i>
-                            <span>2. कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स (Theory & Practical Max/Min Marks Config - 9 Columns Table)</span>
+                            <span>2. कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स (Theory & Practical Max/Min Marks Config)</span>
                         </h2>
                         <select id="marksConfigClassSelect" onchange="renderMarksConfig()" class="text-xs font-bold border rounded px-2 py-1 bg-emerald-50 text-emerald-950 border-emerald-300">
                             <option value="10th">10th Standard</option>
@@ -1010,7 +1050,7 @@
                     <div class="flex flex-wrap items-center justify-between border-b pb-2 gap-2">
                         <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
                             <i data-lucide="pen-tool" class="w-4 h-4 text-rose-600"></i>
-                            <span>3. 5-स्तरीय परीक्षा अंक प्रविष्टि (5-Exam Level Marks Spreadsheet - 12 Columns Table)</span>
+                            <span>3. 5-स्तरीय परीक्षा अंक प्रविष्टि (5-Exam Level Marks Spreadsheet)</span>
                         </h2>
 
                         <div class="flex flex-wrap items-center gap-2 text-xs">
@@ -1043,7 +1083,7 @@
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5 border-b pb-2">
                         <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-600"></i>
-                        <span>4. एकजाई शाला परिणाम रिपोर्ट (Consolidated Overall Report - 11 Columns Table)</span>
+                        <span>4. एकजाई शाला परिणाम रिपोर्ट (Consolidated Overall School Report)</span>
                     </h2>
 
                     <div id="consolidatedReportContainer">
@@ -1056,7 +1096,7 @@
                     <div class="flex flex-wrap items-center justify-between border-b pb-2 gap-2">
                         <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
                             <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-600"></i>
-                            <span>5. कक्षा-सेक्शन विस्तृत रिपोर्ट (Class & Section Detailed Filter Report - 16 Columns Table)</span>
+                            <span>5. कक्षा-सेक्शन विस्तृत रिपोर्ट (Class & Section Detailed Filter Report)</span>
                         </h2>
 
                         <div class="flex flex-wrap items-center gap-2 text-xs">
@@ -1090,7 +1130,7 @@
                     <div class="flex justify-between items-center border-b pb-2">
                         <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
                             <i data-lucide="library" class="w-4 h-4 text-amber-700"></i>
-                            <span>6. पुस्तकालय व पाठ्यपुस्तक मास्टर (Library & Textbook Master - 10 Columns Table)</span>
+                            <span>6. पुस्तकालय व पाठ्यपुस्तक मास्टर (Library & Textbook Master)</span>
                         </h2>
                         <select id="bookMasterClassSelect" onchange="renderBookMaster()" class="text-xs font-bold border rounded px-2 py-1 bg-amber-50 text-amber-950 border-amber-300">
                             <option value="10th">10th Standard</option>
@@ -1547,7 +1587,22 @@
         function renderMasterGrid() {
             const tbody = document.getElementById("masterGridTbody");
             if (!tbody) return;
-            tbody.innerHTML = Object.values(studentsData).map(st => `
+
+            const q = (document.getElementById("gridGlobalSearchInput") ? document.getElementById("gridGlobalSearchInput").value : "").toLowerCase().trim();
+            const cls = document.getElementById("gridClassFilter") ? document.getElementById("gridClassFilter").value : "ALL";
+            const cat = document.getElementById("gridCategoryFilter") ? document.getElementById("gridCategoryFilter").value : "ALL";
+
+            let filtered = Object.values(studentsData).filter(st => {
+                if (cls !== "ALL" && st.targetClass !== cls) return false;
+                if (cat !== "ALL" && st.category !== cat) return false;
+                if (q) {
+                    const haystack = JSON.stringify(st).toLowerCase();
+                    if (!haystack.includes(q)) return false;
+                }
+                return true;
+            });
+
+            tbody.innerHTML = filtered.map(st => `
                 <tr class="hover:bg-indigo-50/50 transition font-semibold">
                     <td class="p-2 border"><img src="${st.photoUrl || ''}" class="w-8 h-10 object-cover rounded border"></td>
                     <td class="p-2 border font-mono font-bold text-indigo-950">${st.scholarNo}</td>
@@ -1566,8 +1621,9 @@
                     <td class="p-2 border text-[10px]">Sambal: ${st.sambalNo || 'NO'}</td>
                     <td class="p-2 border text-[10px]">${st.area} / ₹${st.annualIncome}</td>
                     <td class="p-2 border text-center font-bold text-emerald-700">84.8% (Pass)</td>
-                    <td class="p-2 border text-center">
-                        <button onclick="editStudentRecord('${st.id}')" class="bg-indigo-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">संपादित करें</button>
+                    <td class="p-2 border text-center whitespace-nowrap">
+                        <button onclick="editStudentRecord('${st.id}')" class="bg-indigo-600 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow mr-1">संपादित करें</button>
+                        <button onclick="deleteStudentRecord('${st.id}')" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">हटाएं</button>
                     </td>
                 </tr>
             `).join('');
@@ -1575,6 +1631,15 @@
 
         function applyMasterGridFilters() {
             renderMasterGrid();
+        }
+
+        function deleteStudentRecord(id) {
+            if (confirm("क्या आप इस छात्र रिकॉर्ड को हटाना चाहते हैं?")) {
+                delete studentsData[id];
+                populateSidebarSelectors();
+                renderMasterGrid();
+                showToast("छात्र रिकॉर्ड हटाया गया!", "error");
+            }
         }
 
         function loadStudentData(stId) {
@@ -1682,10 +1747,49 @@
             return `<div class="letter-box-container">${boxesHtml}</div>`;
         }
 
+        function handleCombFilterChange() {
+            renderCombinedOfficialForms();
+        }
+
         function renderCombinedOfficialForms() {
-            renderIndividualForm('mp-board', 'combinedForm1Container');
-            renderIndividualForm('sssm', 'combinedForm2Container');
-            renderIndividualForm('pm-shri', 'combinedForm3Container');
+            const cls = document.getElementById("combClassFilter") ? document.getElementById("combClassFilter").value : "ALL";
+            const sec = document.getElementById("combSectionFilter") ? document.getElementById("combSectionFilter").value : "ALL";
+            const selStudent = document.getElementById("combStudentSelect") ? document.getElementById("combStudentSelect").value : "ALL_CLASS";
+            const q = (document.getElementById("combSearchInput") ? document.getElementById("combSearchInput").value : "").toLowerCase().trim();
+
+            let list = Object.values(studentsData);
+            if (cls !== "ALL") list = list.filter(st => st.targetClass === cls);
+            if (sec !== "ALL") list = list.filter(st => st.section === sec);
+            if (q) {
+                list = list.filter(st => 
+                    st.scholarNo.toLowerCase().includes(q) ||
+                    (st.nameHindi && st.nameHindi.toLowerCase().includes(q)) ||
+                    st.nameEng.toLowerCase().includes(q)
+                );
+            }
+
+            const selectDropdown = document.getElementById("combStudentSelect");
+            if (selectDropdown) {
+                selectDropdown.innerHTML = `<option value="ALL_CLASS">-- चयनित फ़िल्टर अनुसार सभी छात्र (${list.length}) --</option>` +
+                    list.map(st => `<option value="${st.id}" ${selStudent === st.id ? 'selected' : ''}>${st.nameHindi || st.nameEng} (${st.scholarNo}) - Cls ${st.targetClass}-${st.section}</option>`).join('');
+            }
+
+            if (selStudent !== "ALL_CLASS" && selStudent !== "") {
+                list = list.filter(st => st.id === selStudent);
+            }
+
+            const countBadge = document.getElementById("combBatchCountDisplay");
+            if (countBadge) countBadge.innerText = `प्रदर्शित छात्र: ${list.length} (कुल फ़ॉर्म्स: ${list.length * 3})`;
+
+            const c1 = document.getElementById("combinedForm1Container");
+            const c2 = document.getElementById("combinedForm2Container");
+            const c3 = document.getElementById("combinedForm3Container");
+
+            if (c1 && c2 && c3) {
+                c1.innerHTML = list.map(st => renderIndividualFormHTML('mp-board', st)).join('<div class="page-break my-6 border-b-2 border-dashed border-slate-400 no-print"></div>');
+                c2.innerHTML = list.map(st => renderIndividualFormHTML('sssm', st)).join('<div class="page-break my-6 border-b-2 border-dashed border-slate-400 no-print"></div>');
+                c3.innerHTML = list.map(st => renderIndividualFormHTML('pm-shri', st)).join('<div class="page-break my-6 border-b-2 border-dashed border-slate-400 no-print"></div>');
+            }
         }
 
         function renderIndividualForm(formType, targetContainerId = null) {
@@ -1694,9 +1798,12 @@
             if (!container) return;
 
             const st = studentsData[currentStudentId] || Object.values(studentsData)[0];
+            container.innerHTML = renderIndividualFormHTML(formType, st);
+        }
 
+        function renderIndividualFormHTML(formType, st) {
             if (formType === 'pm-shri') {
-                container.innerHTML = `
+                return `
                     <div class="p-6 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-3 text-xs text-slate-950 shadow-md">
                         <!-- Top Header Section (School Title Centered) -->
                         <div class="text-center border-b border-slate-900 pb-2">
@@ -1771,7 +1878,7 @@
                     </div>
                 `;
             } else if (formType === 'sssm') {
-                container.innerHTML = `
+                return `
                     <div class="p-4 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
                         <div class="flex justify-between items-center border-b-2 border-slate-900 pb-1">
                             <div class="flex items-center space-x-2">
@@ -1794,7 +1901,6 @@
                             ${makeLetterBoxes(st.childId, 9)}
                         </div>
 
-                        <!-- 13 Points Top Grid Table -->
                         <table class="form-table text-[9px] font-bold">
                             <tr>
                                 <td>1. संभाग: <span class="font-extrabold">भोपाल</span></td>
@@ -1821,7 +1927,6 @@
                             </tr>
                         </table>
 
-                        <!-- Student Personal Table -->
                         <table class="form-table text-[9px]">
                             <tr>
                                 <td colspan="3">1. विद्यार्थी का नाम ( हिन्दी ): <strong>${st.nameHindi || ''}</strong></td>
@@ -1916,7 +2021,7 @@
                     </div>
                 `;
             } else if (formType === 'mp-board') {
-                container.innerHTML = `
+                return `
                     <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
                         <div class="text-center border-b-2 border-slate-900 pb-2 relative">
                             <div class="w-8 h-8 mx-auto border-2 border-slate-900 rounded-full flex items-center justify-center font-black text-[8px] mb-1">MPB</div>
@@ -1925,7 +2030,6 @@
                             <div class="bg-slate-900 text-white text-[8px] font-bold px-2 py-0.5 inline-block rounded mt-1">सम्बंधित कोड नम्बर ही खाने में भरिये</div>
                         </div>
 
-                        <!-- Point 1: Applicant Type & Details -->
                         <div class="border border-slate-800 p-1.5 space-y-1">
                             <div class="flex flex-wrap items-center justify-between text-[8px] font-bold">
                                 <span>1. आवेदक का प्रकार:</span>
@@ -1945,25 +2049,21 @@
                             </div>
                         </div>
 
-                        <!-- Point 2: Candidate Name -->
                         <div>
                             <span class="font-bold block mb-0.5">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
                             ${makeLetterBoxes(st.nameEng, 30)}
                         </div>
 
-                        <!-- Point 3: Father Name -->
                         <div>
                             <span class="font-bold block mb-0.5">3. पिता का पूरा नाम FULL NAME OF FATHER:</span>
                             ${makeLetterBoxes(st.fatherName, 30)}
                         </div>
 
-                        <!-- Point 4: Mother Name -->
                         <div>
                             <span class="font-bold block mb-0.5">4. माता का पूरा नाम FULL NAME OF MOTHER:</span>
                             ${makeLetterBoxes(st.motherName, 30)}
                         </div>
 
-                        <!-- Point 5: DOB -->
                         <div class="flex items-center space-x-4">
                             <div>
                                 <span class="font-bold block mb-0.5">5. जन्म तिथि (अंकों में):</span>
@@ -1975,7 +2075,6 @@
                             </div>
                         </div>
 
-                        <!-- Point 6: School Codes -->
                         <div class="grid grid-cols-4 gap-1 text-[8px] font-bold">
                             <div>जिला कोड: <div class="mt-0.5">${makeLetterBoxes('34', 3)}</div></div>
                             <div>विकास खण्ड कोड: <div class="mt-0.5">${makeLetterBoxes('02', 3)}</div></div>
@@ -1983,7 +2082,6 @@
                             <div>नामांकन कोड: <div class="mt-0.5">${makeLetterBoxes(st.enrollmentNo || '', 8)}</div></div>
                         </div>
 
-                        <!-- Point 7: Subjects -->
                         <div class="border border-slate-800 p-1.5 space-y-1">
                             <span class="font-bold block">7. भाषा विषय :-</span>
                             <div class="grid grid-cols-3 gap-2 text-[8px]">
@@ -1993,7 +2091,6 @@
                             </div>
                         </div>
 
-                        <!-- Point 8: SSMID & Sambal -->
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <span class="font-bold block mb-0.5">8. समग्र आई.डी. (SSMID):</span>
@@ -2005,7 +2102,6 @@
                             </div>
                         </div>
 
-                        <!-- Point 9: Address & Photo -->
                         <div class="flex justify-between items-start space-x-2 pt-1">
                             <div class="flex-1 text-[8px] font-bold space-y-1">
                                 <span class="block text-[9px] underline">9. पत्र व्यवहार का पता :-</span>
@@ -2029,7 +2125,11 @@
         function renderProfileCards() {
             const container = document.getElementById("exportableProfileCard");
             if (!container) return;
-            container.innerHTML = Object.values(studentsData).map(st => `
+            const cls = document.getElementById("pcardClassFilter").value;
+            let list = Object.values(studentsData);
+            if (cls !== "ALL") list = list.filter(st => st.targetClass === cls);
+
+            container.innerHTML = list.map(st => `
                 <div class="bg-white p-4 rounded-xl border-2 border-indigo-900 shadow-md flex items-center space-x-3">
                     <img src="${st.photoUrl || ''}" class="w-20 h-24 object-cover rounded border">
                     <div class="space-y-1 text-xs">
@@ -2045,7 +2145,11 @@
         function renderAdmitCards() {
             const container = document.getElementById("exportableAdmitCard");
             if (!container) return;
-            container.innerHTML = Object.values(studentsData).map(st => `
+            const cls = document.getElementById("admitClassFilter").value;
+            let list = Object.values(studentsData);
+            if (cls !== "ALL") list = list.filter(st => st.targetClass === cls);
+
+            container.innerHTML = list.map(st => `
                 <div class="bg-white p-4 rounded-xl border-2 border-rose-900 shadow-md space-y-2 text-xs">
                     <div class="text-center font-bold border-b pb-1">
                         <h3>वार्षिक परीक्षा एडमिट कार्ड 2026</h3>
@@ -2066,7 +2170,11 @@
         function renderMarksheets() {
             const container = document.getElementById("exportableMarksheet");
             if (!container) return;
-            container.innerHTML = Object.values(studentsData).map(st => `
+            const cls = document.getElementById("markClassFilter").value;
+            let list = Object.values(studentsData);
+            if (cls !== "ALL") list = list.filter(st => st.targetClass === cls);
+
+            container.innerHTML = list.map(st => `
                 <div class="bg-white p-4 rounded-xl border-2 border-amber-800 shadow-md space-y-2 text-xs">
                     <div class="text-center font-bold border-b pb-1">
                         <h3>समेकित अंकसूची (Statement of Marks)</h3>
@@ -2084,7 +2192,7 @@
         }
 
         function renderTeacherCard() {
-            // Already rendered in HTML template
+            // Static Teacher Card initialized
         }
 
         function renderManagementPanel() {
