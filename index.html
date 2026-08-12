@@ -133,7 +133,7 @@
                 </div>
                 <div>
                     <h1 class="text-base font-extrabold tracking-wide text-yellow-400">SDMS - मास्टर्स स्टूडेंट डाटा मैनेजमेंट पोर्टल</h1>
-                    <p class="text-[10px] text-indigo-200" id="headerSchoolLabel">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज (रायसेन)</p>
+                    <p class="text-[10px] text-indigo-200" id="headerSchoolLabel">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय</p>
                 </div>
             </div>
             
@@ -164,9 +164,10 @@
                     <span>🔍 त्वरित छात्र खोजें:</span>
                     <span id="quickStudentCountBadge" class="text-[9px] bg-indigo-200 text-indigo-950 px-1.5 py-0.2 rounded-full font-bold">0 छात्र</span>
                 </label>
-                <input type="text" id="sidebarSearchInput" oninput="filterSidebarStudentDropdown(this.value)" placeholder="नाम, स्कॉलर या रोल नंबर..." class="w-full text-xs px-2 py-1 border border-indigo-300 rounded outline-none focus:ring-1 focus:ring-indigo-600 font-semibold">
+                <input type="text" id="sidebarSearchInput" oninput="filterSidebarStudentDropdown(this.value)" placeholder="नाम, स्कॉलर या रोल नंबर..." class="w-full text-xs border border-indigo-300 rounded px-2 py-1 outline-none focus:border-indigo-500">
                 
-                <select id="sidebarStudentSelect" onchange="loadStudentData(this.value)" class="w-full bg-white border border-indigo-300 rounded px-2 py-1 text-xs font-bold text-indigo-950 outline-none">
+                <select id="sidebarStudentSelect" onchange="loadStudentData(this.value)" class="w-full bg-white border border-indigo-300 rounded px-2 py-1 text-xs font-bold text-indigo-950 outline-none focus:border-indigo-500">
+                    <option value="">-- छात्र चुनें --</option>
                 </select>
             </div>
 
@@ -176,9 +177,10 @@
                     <span>👨‍🏫 त्वरित शिक्षक खोजें:</span>
                     <span id="quickTeacherCountBadge" class="text-[9px] bg-teal-200 text-teal-950 px-1.5 py-0.2 rounded-full font-bold">0 शिक्षक</span>
                 </label>
-                <input type="text" id="sidebarTeacherSearchInput" oninput="filterSidebarTeacherDropdown(this.value)" placeholder="शिक्षक नाम या कोड..." class="w-full text-xs px-2 py-1 border border-teal-300 rounded outline-none focus:ring-1 focus:ring-teal-600 font-semibold">
+                <input type="text" id="sidebarTeacherSearchInput" oninput="filterSidebarTeacherDropdown(this.value)" placeholder="शिक्षक नाम या कोड..." class="w-full text-xs border border-teal-300 rounded px-2 py-1 outline-none focus:border-teal-500">
                 
-                <select id="sidebarTeacherSelect" onchange="loadTeacherCardData(this.value)" class="w-full bg-white border border-teal-300 rounded px-2 py-1 text-xs font-bold text-teal-950 outline-none">
+                <select id="sidebarTeacherSelect" onchange="loadTeacherCardData(this.value)" class="w-full bg-white border border-teal-300 rounded px-2 py-1 text-xs font-bold text-teal-950 outline-none focus:border-teal-500">
+                    <option value="">-- शिक्षक चुनें --</option>
                 </select>
             </div>
 
@@ -253,7 +255,7 @@
                 <p class="text-indigo-900 uppercase tracking-wider font-extrabold">आधिकारिक प्रिंट फ़ॉर्म्स:</p>
                 <button onclick="showSection('form-mp-board')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">1. म.प्र. बोर्ड हाईस्कूल फॉर्म</button>
                 <button onclick="showSection('form-sssm')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">2. समग्र छात्रवृत्ति योजना फॉर्म</button>
-                <button onclick="showSection('form-pm-shri')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">3. पीएमश्री बेगमगंज प्रवेश फॉर्म</button>
+                <button onclick="showSection('form-pm-shri')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">3. पीएमश्री बेगमगंज प्रपत्र</button>
             </div>
         </aside>
 
@@ -298,8 +300,469 @@
             <section id="section-dashboard" class="content-section space-y-4">
                 
                 <!-- OVERALL SCHOOL TOPPER SPOTLIGHT BANNER -->
-                <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-slate-950 p-4 rounded-2xl shadow-xl border-2 border-yellow-300 gold-glow relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-slate-950 p-4 rounded-2xl shadow-xl border-2 border-yellow-300 gold-glow relative overflow-hidden flex flex-col md:flex-row justify-between items-center">
                     <div class="flex items-center space-x-4">
                         <div class="relative">
-                            <img id="dashTopperPhoto" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-24 h-28 object-cover rounded-xl border-4 border-white shadow-2xl bg-white">
-                            <span class="absolute -top-3 -right-3 bg-red-600 text-white font-black text-xs px-2 py-0.5 rounded-full shadow border-2 border-white flex items-center space
+                            <img id="dashTopperPhoto" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-24 h-28 object-cover rounded-xl border-4 border-white shadow-2xl" alt="Topper">
+                            <span class="absolute -top-3 -right-3 bg-red-600 text-white font-black text-xs px-2 py-0.5 rounded-full shadow border-2 border-white flex items-center space-x-1">
+                                <i data-lucide="crown" class="w-3 h-3"></i>
+                                <span>शीर्ष</span>
+                            </span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-[10px] font-bold uppercase tracking-wide">स्कूल शीर्ष स्कोरर (Overall Topper):</p>
+                            <h2 id="dashTopperName" class="text-lg font-black">डेटा लोड हो रहा है...</h2>
+                            <p id="dashTopperDetails" class="text-sm font-bold">कक्षा व विवरण</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-center text-slate-600 font-bold">डैशबोर्ड - सभी डेटा यहाँ दिखेंगे</p>
+            </section>
+
+            <!-- PLACEHOLDER SECTIONS -->
+            <section id="section-student-entry" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">मास्टर्स छात्र ऑनलाइन फ़ॉर्म</h2>
+                    <p class="text-slate-600">छात्र डेटा प्रवेश फॉर्म यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-master-grid" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">मास्टर्स छात्र सर्च ग्रिड</h2>
+                    <p class="text-slate-600">छात्र खोज ग्रिड यहाँ होगी</p>
+                </div>
+            </section>
+
+            <section id="section-combined-forms" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">तीनों फ़ॉर्म्स संयुक्त</h2>
+                    <p class="text-slate-600">संयुक्त फॉर्म्स यहाँ होंगे</p>
+                </div>
+            </section>
+
+            <section id="section-profile-card" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">छात्र प्रोफाइल आईकार्ड</h2>
+                    <p class="text-slate-600">प्रोफाइल आईकार्ड यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-admit-card" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">वार्षिक परीक्षा एडमिट कार्ड</h2>
+                    <p class="text-slate-600">एडमिट कार्ड यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-marksheet" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">समेकित अंकसूची</h2>
+                    <p class="text-slate-600">अंकसूची यहाँ होगी</p>
+                </div>
+            </section>
+
+            <section id="section-teacher-card" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">शिक्षक पहचान पत्र</h2>
+                    <p class="text-slate-600">शिक्षक आईकार्ड यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-management-panel" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">संस्था प्रमुख व शिक्षक प्रबंधन</h2>
+                    <p class="text-slate-600">प्रबंधन पैनल यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-subject-master" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">विषय व विषय कोड मास्टर</h2>
+                    <p class="text-slate-600">विषय मास्टर यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-marks-config" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स</h2>
+                    <p class="text-slate-600">अंकों की सेटिंग्स यहाँ होंगी</p>
+                </div>
+            </section>
+
+            <section id="section-exam-marks" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">5-स्तरीय परीक्षा अंक प्रविष्टि</h2>
+                    <p class="text-slate-600">परीक्षा अंक प्रविष्टि यहाँ होगी</p>
+                </div>
+            </section>
+
+            <section id="section-consolidated-report" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">एकजाई शा��ा परिणाम रिपोर्ट</h2>
+                    <p class="text-slate-600">परिणाम रिपोर्ट यहाँ होगी</p>
+                </div>
+            </section>
+
+            <section id="section-class-exam-report" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">कक्षा-सेक्शन विस्तृत रिपोर्ट</h2>
+                    <p class="text-slate-600">विस्तृत रिपोर्ट यहाँ होगी</p>
+                </div>
+            </section>
+
+            <section id="section-book-master" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">पुस्तकालय व पाठ्यपुस्तक मास्टर</h2>
+                    <p class="text-slate-600">पुस्तकालय मास्टर यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-cloud-settings" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">क्लाउड व बैकअप सेटिंग्स</h2>
+                    <p class="text-slate-600">क्लाउड सेटिंग्स यहाँ होंगी</p>
+                </div>
+            </section>
+
+            <!-- FORM SECTIONS -->
+            <section id="section-form-mp-board" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">म.प्र. बोर्ड हाईस्कूल फॉर्म</h2>
+                    <p class="text-slate-600">बोर्ड फॉर्म यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-form-sssm" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">समग्र छात्रवृत्ति योजना फॉर्म</h2>
+                    <p class="text-slate-600">समग्र फॉर्म यहाँ होगा</p>
+                </div>
+            </section>
+
+            <section id="section-form-pm-shri" class="content-section hidden">
+                <div class="bg-white p-4 rounded-xl shadow">
+                    <h2 class="text-lg font-bold text-indigo-950 mb-4">पीएमश्री बेगमगंज प्रपत्र</h2>
+                    <p class="text-slate-600">पीएमश्री प्रपत्र यहाँ होगा</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+        // Local Storage Management
+        const STORAGE_KEY = 'sdmsData';
+        
+        function getStorageData() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+                    students: [],
+                    teachers: [],
+                    subjects: [],
+                    marks: []
+                };
+            } catch (e) {
+                return { students: [], teachers: [], subjects: [], marks: [] };
+            }
+        }
+
+        function saveStorageData(data) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.error('Storage save failed:', e);
+            }
+        }
+
+        // ===== SECTION NAVIGATION =====
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.add('hidden'));
+
+            // Show selected section
+            const targetSection = document.getElementById(`section-${sectionName}`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            // Update active button
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            const activeBtn = document.getElementById(`btn-${sectionName}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+
+            // Update toolbar title
+            const titles = {
+                'dashboard': 'अनुभाग: मुख्य डैशबोर्ड',
+                'student-entry': 'अनुभाग: मास्टर्स छात्र ऑनलाइन फ़ॉर्म',
+                'master-grid': 'अनुभाग: मास्टर्स छात्र सर्च ग्रिड',
+                'combined-forms': 'अनुभाग: तीनों फ़ॉर्म्स संयुक्त',
+                'profile-card': 'अनुभाग: छात्र प्रोफाइल आईकार्ड',
+                'admit-card': 'अनुभाग: वार्षिक परीक्षा एडमिट कार्ड',
+                'marksheet': 'अनुभाग: समेकित अंकसूची',
+                'teacher-card': 'अनुभाग: शिक्षक पहचान पत्र',
+                'management-panel': 'अनुभाग: संस्था प्रमुख व शिक्षक प्रबंधन',
+                'subject-master': 'अनुभाग: विषय व विषय कोड मास्टर',
+                'marks-config': 'अनुभाग: कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स',
+                'exam-marks': 'अनुभाग: 5-स्तरीय परीक्षा अंक प्रविष्टि',
+                'consolidated-report': 'अनुभाग: एकजाई शाला परिणाम रिपोर्ट',
+                'class-exam-report': 'अनुभाग: कक्षा-सेक्शन विस्तृत रिपोर्ट',
+                'book-master': 'अनुभाग: पुस्तकालय व पाठ्यपुस्तक मास्टर',
+                'cloud-settings': 'अनुभाग: क्लाउड व बैकअप सेटिंग्स',
+                'form-mp-board': 'अनुभाग: म.प्र. बोर्ड हाईस्कूल फॉर्म',
+                'form-sssm': 'अनुभाग: समग्र छात्रवृत्ति योजना फॉर्म',
+                'form-pm-shri': 'अनुभाग: पीएमश्री बेगमगंज प्रपत्र'
+            };
+            
+            const titleEl = document.getElementById('currentActiveSectionTitle');
+            if (titleEl && titles[sectionName]) {
+                titleEl.textContent = titles[sectionName];
+            }
+        }
+
+        // ===== STUDENT SEARCH & DROPDOWN =====
+        function filterSidebarStudentDropdown(searchValue) {
+            const data = getStorageData();
+            const select = document.getElementById('sidebarStudentSelect');
+            const searchInput = document.getElementById('sidebarSearchInput');
+            
+            select.innerHTML = '<option value="">-- छात्र चुनें --</option>';
+            
+            if (data.students.length === 0) {
+                document.getElementById('quickStudentCountBadge').textContent = '0 छात्र';
+                return;
+            }
+
+            const filtered = data.students.filter(student => {
+                const name = student.name || '';
+                const rollNo = student.rollNo || '';
+                const scholarNo = student.scholarNo || '';
+                const searchLower = searchValue.toLowerCase();
+                
+                return name.toLowerCase().includes(searchLower) ||
+                       rollNo.toLowerCase().includes(searchLower) ||
+                       scholarNo.toLowerCase().includes(searchLower);
+            });
+
+            filtered.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id || '';
+                option.textContent = `${student.name} (रोल: ${student.rollNo})`;
+                select.appendChild(option);
+            });
+
+            document.getElementById('quickStudentCountBadge').textContent = `${filtered.length} छात्र`;
+        }
+
+        function loadStudentData(studentId) {
+            if (!studentId) return;
+            
+            const data = getStorageData();
+            const student = data.students.find(s => s.id === studentId);
+            
+            if (student) {
+                console.log('Student Data Loaded:', student);
+                // Add your student detail display logic here
+            }
+        }
+
+        // ===== TEACHER SEARCH & DROPDOWN =====
+        function filterSidebarTeacherDropdown(searchValue) {
+            const data = getStorageData();
+            const select = document.getElementById('sidebarTeacherSelect');
+            
+            select.innerHTML = '<option value="">-- शिक्षक चुनें --</option>';
+            
+            if (data.teachers.length === 0) {
+                document.getElementById('quickTeacherCountBadge').textContent = '0 शिक्षक';
+                return;
+            }
+
+            const filtered = data.teachers.filter(teacher => {
+                const name = teacher.name || '';
+                const code = teacher.code || '';
+                const searchLower = searchValue.toLowerCase();
+                
+                return name.toLowerCase().includes(searchLower) ||
+                       code.toLowerCase().includes(searchLower);
+            });
+
+            filtered.forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher.id || '';
+                option.textContent = `${teacher.name} (कोड: ${teacher.code})`;
+                select.appendChild(option);
+            });
+
+            document.getElementById('quickTeacherCountBadge').textContent = `${filtered.length} शिक्षक`;
+        }
+
+        function loadTeacherCardData(teacherId) {
+            if (!teacherId) return;
+            
+            const data = getStorageData();
+            const teacher = data.teachers.find(t => t.id === teacherId);
+            
+            if (teacher) {
+                console.log('Teacher Data Loaded:', teacher);
+                // Add your teacher detail display logic here
+            }
+        }
+
+        // ===== EXPORT FUNCTIONS =====
+        function globalPrintCurrentSection() {
+            window.print();
+        }
+
+        function globalExportPDF() {
+            const element = document.querySelector('.content-section:not(.hidden)');
+            if (!element) {
+                alert('कोई सेक्शन चुना नहीं गया');
+                return;
+            }
+
+            html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save('SDMS_Export.pdf');
+            }).catch(err => {
+                console.error('PDF Export Error:', err);
+                alert('PDF एक्सपोर्ट में त्रुटि हुई');
+            });
+        }
+
+        function globalExportExcel() {
+            const data = getStorageData();
+            const ws_data = [];
+            
+            if (data.students.length > 0) {
+                ws_data.push(['छात्र डेटा']);
+                ws_data.push(['नाम', 'रोल नंबर', 'स्कॉलर नंबर']);
+                data.students.forEach(s => {
+                    ws_data.push([s.name, s.rollNo, s.scholarNo]);
+                });
+            }
+
+            const ws = XLSX.utils.aoa_to_sheet(ws_data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'डेटा');
+            XLSX.writeFile(wb, 'SDMS_Export.xlsx');
+        }
+
+        function globalExportDoc() {
+            const element = document.querySelector('.content-section:not(.hidden)');
+            if (!element) {
+                alert('कोई सेक्शन चुना नहीं गया');
+                return;
+            }
+
+            const html = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>SDMS Export</title>
+                </head>
+                <body>
+                    ${element.innerHTML}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'SDMS_Export.doc';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function globalExportImage() {
+            const element = document.querySelector('.content-section:not(.hidden)');
+            if (!element) {
+                alert('कोई सेक्शन चुना नहीं गया');
+                return;
+            }
+
+            html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'SDMS_Export.png';
+                link.click();
+            }).catch(err => {
+                console.error('Image Export Error:', err);
+                alert('इमेज एक्सपोर्ट में त्रुटि हुई');
+            });
+        }
+
+        function shareOnlineLinkToken() {
+            const token = Math.random().toString(36).substring(2, 15) + 
+                         Math.random().toString(36).substring(2, 15);
+            const shareUrl = `${window.location.origin}?token=${token}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SDMS',
+                    text: 'SDMS डेटा साझा करें',
+                    url: shareUrl
+                });
+            } else {
+                alert(`शेयर लिंक:\n${shareUrl}`);
+            }
+        }
+
+        // ===== BACKUP & RESTORE =====
+        function downloadJsonBackup() {
+            const data = getStorageData();
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SDMS_Backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ===== INITIALIZE PAGE =====
+        function initializePage() {
+            // Load icons
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+
+            // Show dashboard by default
+            showSection('dashboard');
+
+            // Load initial student/teacher counts
+            filterSidebarStudentDropdown('');
+            filterSidebarTeacherDropdown('');
+        }
+
+        // Run initialization when page loads
+        document.addEventListener('DOMContentLoaded', initializePage);
+
+        // Also run it immediately in case DOM is already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
+    </script>
+</body>
+</html>
