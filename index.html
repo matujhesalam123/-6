@@ -1324,20 +1324,112 @@
 
             <section id="section-subject-master" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
-                    <div class="flex justify-between items-center border-b pb-2">
-                        <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
-                            <i data-lucide="book-open" class="w-4 h-4 text-purple-600"></i>
-                            <span>1. विषय व विषय कोड मास्टर (Subject & Code Master)</span>
-                        </h2>
-                        <select id="subjectMasterClassSelect" onchange="renderSubjectMaster()" class="text-xs font-bold border rounded px-2 py-1 bg-purple-50 text-purple-950 border-purple-300">
-                            <option value="10th">10th Standard</option>
-                            <option value="9th">9th Standard</option>
-                            <option value="11th">11th Standard</option>
-                            <option value="12th">12th Standard</option>
-                        </select>
+                    
+                    <!-- Header Bar with Add Button and View Toggles -->
+                    <div class="flex flex-wrap justify-between items-center border-b pb-3 gap-2">
+                        <div>
+                            <h2 class="text-sm font-extrabold text-indigo-950 flex items-center space-x-1.5">
+                                <i data-lucide="book-open" class="w-5 h-5 text-purple-600"></i>
+                                <span>1. विषय व विषय कोड मास्टर (Subject & Subject Code Master)</span>
+                            </h2>
+                            <p class="text-xs text-slate-500 font-semibold">विभिन्न कक्षाओं के विषय व कोड जोड़ें, बदलें, हटाएँ एवं कक्षाओं के बीच कोड की तुलना करें</p>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="toggleSubjectViewMode('list')" id="btnSubViewList" class="bg-purple-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow flex items-center space-x-1">
+                                <i data-lucide="list" class="w-3.5 h-3.5"></i>
+                                <span>कक्षावार सूची</span>
+                            </button>
+                            <button onclick="toggleSubjectViewMode('compare')" id="btnSubViewCompare" class="bg-slate-200 text-slate-800 hover:bg-purple-100 text-xs font-bold px-3 py-1.5 rounded-lg shadow flex items-center space-x-1">
+                                <i data-lucide="git-compare" class="w-3.5 h-3.5 text-purple-700"></i>
+                                <span>📊 कक्षावार कोड तुलना</span>
+                            </button>
+                            <button type="button" onclick="openSubjectModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow flex items-center space-x-1 transition">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                                <span>+ नया विषय व कोड जोड़ें</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <div id="subjectMasterContainer" class="overflow-x-auto">
+                    <!-- Single Class View Controls Bar -->
+                    <div id="subSingleClassControls" class="flex flex-wrap items-center justify-between gap-2 bg-purple-50/60 p-2.5 rounded-lg border border-purple-200 text-xs font-bold">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-purple-950 font-extrabold">कक्षा चुनें:</span>
+                            <select id="subjectMasterClassSelect" onchange="renderSubjectMaster()" class="font-extrabold border rounded px-2.5 py-1 bg-white text-purple-950 border-purple-300 outline-none">
+                                <option value="10th">कक्षा 10वीं (10th Standard)</option>
+                                <option value="9th">कक्षा 9वीं (9th Standard)</option>
+                                <option value="11th">कक्षा 11वीं (11th Standard)</option>
+                                <option value="12th">कक्षा 12वीं (12th Standard)</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-center space-x-2">
+                            <input type="text" id="subjectSearchInput" oninput="renderSubjectMaster()" placeholder="🔍 विषय का नाम या कोड खोजें..." class="border border-purple-300 rounded px-2.5 py-1 outline-none font-semibold text-slate-900 bg-white w-56">
+                            <span id="subjectCountBadge" class="bg-purple-200 text-purple-950 px-2 py-0.5 rounded-full text-[10px]">0 विषय</span>
+                        </div>
+                    </div>
+
+                    <!-- Subject Table Container (List or Compare Matrix) -->
+                    <div id="subjectMasterContainer" class="overflow-x-auto border rounded-xl shadow-sm">
+                    </div>
+                </div>
+
+                <!-- ADD / EDIT SUBJECT MODAL -->
+                <div id="subjectModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-3">
+                    <div class="bg-white rounded-xl shadow-2xl border border-slate-300 w-full max-w-lg p-4 space-y-3 font-semibold text-xs">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h3 class="text-sm font-black text-indigo-950 flex items-center space-x-1.5" id="subjectModalTitle">
+                                <i data-lucide="book-open" class="w-4 h-4 text-purple-600"></i>
+                                <span>विषय एवं विषय कोड जोड़ें / संपादित करें</span>
+                            </h3>
+                            <button type="button" onclick="closeSubjectModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">&times;</button>
+                        </div>
+
+                        <form id="subjectForm" onsubmit="handleSubjectSave(event)" class="space-y-3">
+                            <input type="hidden" id="s_editId" value="">
+
+                            <div>
+                                <label class="text-slate-700 block font-bold mb-0.5">1. संबंधित कक्षा चुनें *</label>
+                                <select id="s_targetClass" required class="w-full border rounded px-2.5 py-1.5 font-bold bg-white text-indigo-950">
+                                    <option value="10th">10th Standard (कक्षा 10वीं)</option>
+                                    <option value="9th">9th Standard (कक्षा 9वीं)</option>
+                                    <option value="11th">11th Standard (कक्षा 11वीं)</option>
+                                    <option value="12th">12th Standard (कक्षा 12वीं)</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-slate-700 block font-bold mb-0.5">2. विषय कोड (Code) *</label>
+                                    <input type="text" id="s_code" required placeholder="उदा. 401 या 051" class="w-full border rounded px-2 py-1.5 font-mono font-bold text-indigo-950 uppercase">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block font-bold mb-0.5">3. विषय श्रेणी / प्रकार</label>
+                                    <select id="s_category" class="w-full border rounded px-2 py-1.5 font-bold bg-white">
+                                        <option value="प्रथम भाषा (अनिवार्य)">प्रथम भाषा (अनिवार्य)</option>
+                                        <option value="द्वितीय भाषा (अनिवार्य)">द्वितीय भाषा (अनिवार्य)</option>
+                                        <option value="तृतीय भाषा">तृतीय भाषा</option>
+                                        <option value="मुख्य विषय">मुख्य विषय</option>
+                                        <option value="ऐच्छिक विषय">ऐच्छिक विषय (Elective)</option>
+                                        <option value="व्यावसायिक / वोकेशनल">व्यावसायिक (Vocational)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-slate-700 block font-bold mb-0.5">4. विषय का पूरा नाम (Subject Name) *</label>
+                                <input type="text" id="s_name" required placeholder="उदा. हिन्दी / Mathematics / Physics" class="w-full border rounded px-2.5 py-1.5 font-bold text-slate-900">
+                            </div>
+
+                            <div class="bg-amber-50 p-2 rounded border border-amber-200 text-[11px] text-amber-900">
+                                💡 <strong>ऑटो-सिंक सूचना:</strong> परिवर्तन सहेजने पर यह नया विषय व कोड ऑनलाइन फ़ॉर्म, एडमिट कार्ड, अंकसूची और फ़िल्टर्स में स्वचालित रूप से सिंक हो जाएगा।
+                            </div>
+
+                            <div class="flex justify-end space-x-2 pt-2 border-t">
+                                <button type="button" onclick="closeSubjectModal()" class="bg-slate-200 text-slate-700 px-4 py-1.5 rounded font-bold">रद्द करें</button>
+                                <button type="submit" class="bg-purple-900 hover:bg-purple-950 text-white px-5 py-1.5 rounded font-bold shadow">सुरक्षित करें एवं सिंक करें</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </section>
@@ -1509,6 +1601,48 @@
     <script>
         let activeSection = "dashboard";
         let currentStudentId = "101";
+
+        let subjectMasterViewMode = "list"; // 'list' or 'compare'
+        let subjectMasterData = {
+            "9th": [
+                { id: "SUB_9_1", code: "401", name: "हिन्दी", category: "प्रथम भाषा (अनिवार्य)" },
+                { id: "SUB_9_2", code: "411", name: "अंग्रेजी", category: "द्वितीय भाषा (अनिवार्य)" },
+                { id: "SUB_9_3", code: "501", name: "संस्कृत", category: "तृतीय भाषा" },
+                { id: "SUB_9_4", code: "100", name: "गणित", category: "मुख्य विषय" },
+                { id: "SUB_9_5", code: "200", name: "विज्ञान", category: "मुख्य विषय" },
+                { id: "SUB_9_6", code: "300", name: "सामाजिक विज्ञान", category: "मुख्य विषय" }
+            ],
+            "10th": [
+                { id: "SUB_10_1", code: "401", name: "हिन्दी", category: "प्रथम भाषा (अनिवार्य)" },
+                { id: "SUB_10_2", code: "411", name: "अंग्रेजी", category: "द्वितीय भाषा (अनिवार्य)" },
+                { id: "SUB_10_3", code: "501", name: "संस्कृत", category: "तृतीय भाषा" },
+                { id: "SUB_10_4", code: "100", name: "गणित (Standard)", category: "मुख्य विषय" },
+                { id: "SUB_10_5", code: "200", name: "विज्ञान", category: "मुख्य विषय" },
+                { id: "SUB_10_6", code: "300", name: "सामाजिक विज्ञान", category: "मुख्य विषय" }
+            ],
+            "11th": [
+                { id: "SUB_11_1", code: "051", name: "Hindi", category: "प्रथम भाषा (अनिवार्य)" },
+                { id: "SUB_11_2", code: "052", name: "ENGLISH", category: "द्वितीय भाषा (अनिवार्य)" },
+                { id: "SUB_11_3", code: "055", name: "Urdu", category: "तृतीय भाषा" },
+                { id: "SUB_11_4", code: "130", name: "Political science", category: "ऐच्छिक विषय" },
+                { id: "SUB_11_5", code: "140", name: "Economics", category: "ऐच्छिक विषय" },
+                { id: "SUB_11_6", code: "166", name: "Sociology", category: "ऐच्छिक विषय" },
+                { id: "SUB_11_7", code: "210", name: "Physics", category: "ऐच्छic विषय" },
+                { id: "SUB_11_8", code: "220", name: "Chemistry", category: "ऐच्छिक विषय" },
+                { id: "SUB_11_9", code: "230", name: "Mathematics", category: "ऐच्छिक विषय" },
+                { id: "SUB_11_10", code: "240", name: "Biology", category: "ऐच्छिक विषय" }
+            ],
+            "12th": [
+                { id: "SUB_12_1", code: "051", name: "Hindi", category: "प्रथम भाषा (अनिवार्य)" },
+                { id: "SUB_12_2", code: "052", name: "ENGLISH", category: "द्वितीय भाषा (अनिवार्य)" },
+                { id: "SUB_12_3", code: "055", name: "Urdu", category: "तृतीय भाषा" },
+                { id: "SUB_12_4", code: "130", name: "Political science", category: "ऐच्छिक विषय" },
+                { id: "SUB_12_5", code: "140", name: "Economics", category: "ऐच्छिक विषय" },
+                { id: "SUB_12_6", code: "166", name: "Sociology", category: "ऐच्छिक विषय" },
+                { id: "SUB_12_7", code: "210", name: "Physics", category: "ऐच्छिक विषय" },
+                { id: "SUB_12_8", code: "220", name: "Chemistry", category: "ऐच्छिक विषय" }
+            ]
+        };
 
         // MASTER STUDENTS DATABASE WITH FULL 50+ COLUMNS DATA
         let studentsData = {
@@ -3211,47 +3345,84 @@
                 return;
             }
 
+        function toggleSubjectViewMode(mode) {
+            subjectMasterViewMode = mode;
+            const btnList = document.getElementById("btnSubViewList");
+            const btnCompare = document.getElementById("btnSubViewCompare");
+            const controls = document.getElementById("subSingleClassControls");
+
+            if (mode === 'compare') {
+                if (btnList) btnList.className = "bg-slate-200 text-slate-800 hover:bg-purple-100 text-xs font-bold px-3 py-1.5 rounded-lg shadow flex items-center space-x-1";
+                if (btnCompare) btnCompare.className = "bg-purple-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow flex items-center space-x-1";
+                if (controls) controls.classList.add("hidden");
+            } else {
+                if (btnList) btnList.className = "bg-purple-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow flex items-center space-x-1";
+                if (btnCompare) btnCompare.className = "bg-slate-200 text-slate-800 hover:bg-purple-100 text-xs font-bold px-3 py-1.5 rounded-lg shadow flex items-center space-x-1";
+                if (controls) controls.classList.remove("hidden");
+            }
+            renderSubjectMaster();
+        }
+
+        function renderSubjectMaster() {
+            const container = document.getElementById("subjectMasterContainer");
+            if (!container) return;
+
+            if (subjectMasterViewMode === 'compare') {
+                renderSubjectCompareMatrix(container);
+                return;
+            }
+
+            const targetClass = document.getElementById("subjectMasterClassSelect") ? document.getElementById("subjectMasterClassSelect").value : "10th";
+            const q = (document.getElementById("subjectSearchInput") ? document.getElementById("subjectSearchInput").value : "").toLowerCase().trim();
+
+            let list = subjectMasterData[targetClass] || [];
+
+            if (q) {
+                list = list.filter(s => 
+                    s.code.toLowerCase().includes(q) || 
+                    s.name.toLowerCase().includes(q) || 
+                    (s.category && s.category.toLowerCase().includes(q))
+                );
+            }
+
+            const badge = document.getElementById("subjectCountBadge");
+            if (badge) badge.innerText = `${list.length} विषय`;
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center font-bold text-slate-500 bg-white">कक्षा ${targetClass} के लिए कोई विषय मास्टर डेटा उपलब्ध नहीं है।</div>`;
+                return;
+            }
+
             container.innerHTML = `
                 <table class="w-full text-xs border text-left border-collapse">
-                    <thead class="bg-indigo-950 text-white font-bold uppercase">
+                    <thead class="bg-purple-950 text-white font-bold uppercase">
                         <tr>
-                            <th class="p-2 border border-indigo-800 text-center">फोटो</th>
-                            <th class="p-2 border border-indigo-800">शिक्षक का नाम</th>
-                            <th class="p-2 border border-indigo-800">पदनाम (Designation)</th>
-                            <th class="p-2 border border-indigo-800">यूनिक ID / कोड</th>
-                            <th class="p-2 border border-indigo-800">जन्मतिथि</th>
-                            <th class="p-2 border border-indigo-800">सम्पर्क (फोन/ईमेल)</th>
-                            <th class="p-2 border border-indigo-800">कक्षा अध्यापक?</th>
-                            <th class="p-2 border border-indigo-800">प्रभारी कक्षा-सेक्शन</th>
-                            <th class="p-2 border border-indigo-800">अध्यापन विषय व कक्षाएँ</th>
-                            <th class="p-2 border border-indigo-800 text-center">एक्शन</th>
+                            <th class="p-2 border border-purple-800 text-center w-12">क्र.</th>
+                            <th class="p-2 border border-purple-800 w-28">विषय कोड</th>
+                            <th class="p-2 border border-purple-800">विषय का नाम (Subject Name)</th>
+                            <th class="p-2 border border-purple-800">विषय श्रेणी / प्रकार</th>
+                            <th class="p-2 border border-purple-800 text-center w-36">ऑटो-सिंक स्थिति</th>
+                            <th class="p-2 border border-purple-800 text-center w-32">एक्शन</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 bg-white font-semibold text-slate-800">
-                        ${list.map(tc => `
-                            <tr class="hover:bg-cyan-50/60 transition">
-                                <td class="p-1.5 border border-slate-300 text-center">
-                                    <img src="${tc.photoUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150'}" class="w-10 h-12 object-cover rounded border border-slate-400 mx-auto shadow-sm">
-                                </td>
-                                <td class="p-2 border border-slate-300 font-extrabold text-indigo-950">${tc.name}</td>
-                                <td class="p-2 border border-slate-300 font-bold text-cyan-900">${tc.designation}</td>
-                                <td class="p-2 border border-slate-300 font-mono font-bold text-slate-900">${tc.code}</td>
-                                <td class="p-2 border border-slate-300 font-mono">${tc.dob || '-'}</td>
-                                <td class="p-2 border border-slate-300 text-[11px]">
-                                    <div class="font-mono font-bold text-slate-900">📞 ${tc.mobile}</div>
-                                    ${tc.email ? `<div class="font-mono text-slate-500">✉️ ${tc.email}</div>` : ''}
+                        ${list.map((sub, idx) => `
+                            <tr class="hover:bg-purple-50/60 transition">
+                                <td class="p-2 border border-slate-300 text-center font-bold">${idx + 1}</td>
+                                <td class="p-2 border border-slate-300 font-mono font-extrabold text-indigo-950 text-xs">${sub.code}</td>
+                                <td class="p-2 border border-slate-300 font-black text-slate-900">${sub.name}</td>
+                                <td class="p-2 border border-slate-300">
+                                    <span class="bg-purple-100 text-purple-950 px-2 py-0.5 rounded text-[10px] font-bold">${sub.category || 'सामान्य'}</span>
                                 </td>
                                 <td class="p-2 border border-slate-300 text-center">
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-black ${tc.isClassTeacher === 'YES' ? 'bg-emerald-100 text-emerald-950' : 'bg-slate-100 text-slate-600'}">
-                                        ${tc.isClassTeacher || 'NO'}
+                                    <span class="text-emerald-700 font-extrabold text-[10px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center justify-center space-x-1">
+                                        <span>✓ ऑटो-सिंक्ड</span>
                                     </span>
                                 </td>
-                                <td class="p-2 border border-slate-300 font-extrabold text-emerald-900">${tc.isClassTeacher === 'YES' ? (tc.inchargeClass || '-') : '-'}</td>
-                                <td class="p-2 border border-slate-300 text-[11px] text-slate-700">${tc.subjectsTaught || tc.subject || '-'}</td>
                                 <td class="p-2 border border-slate-300 text-center">
                                     <div class="flex items-center justify-center space-x-1">
-                                        <button onclick="editTeacherRecord('${tc.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">संपादित</button>
-                                        <button onclick="deleteTeacherRecord('${tc.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">हटाएं</button>
+                                        <button onclick="openSubjectModal('${targetClass}', '${sub.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">संपादित</button>
+                                        <button onclick="deleteSubjectRecord('${targetClass}', '${sub.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">हटाएं</button>
                                     </div>
                                 </td>
                             </tr>
@@ -3261,189 +3432,152 @@
             `;
         }
 
-        function resetMgmtFilters() {
-            if (document.getElementById("mgmtSearchInput")) document.getElementById("mgmtSearchInput").value = "";
-            if (document.getElementById("mgmtDesignationFilter")) document.getElementById("mgmtDesignationFilter").value = "ALL";
-            if (document.getElementById("mgmtClassTeacherFilter")) document.getElementById("mgmtClassTeacherFilter").value = "ALL";
-            if (document.getElementById("mgmtSortFilter")) document.getElementById("mgmtSortFilter").value = "nameAsc";
-            renderManagementPanel();
-            showToast("प्रबंधन फ़िल्टर रीसेट किए गए!");
+        function renderSubjectCompareMatrix(container) {
+            // Build a cross-class comparison matrix of all distinct subject names across 9th, 10th, 11th, 12th
+            const classes = ["9th", "10th", "11th", "12th"];
+            let subjectMap = {};
+
+            classes.forEach(c => {
+                (subjectMasterData[c] || []).forEach(s => {
+                    const normKey = s.name.trim().toLowerCase();
+                    if (!subjectMap[normKey]) {
+                        subjectMap[normKey] = {
+                            name: s.name.trim(),
+                            codes: { "9th": "-", "10th": "-", "11th": "-", "12th": "-" }
+                        };
+                    }
+                    subjectMap[normKey].codes[c] = s.code;
+                });
+            });
+
+            const rows = Object.values(subjectMap);
+
+            container.innerHTML = `
+                <div class="p-3 bg-purple-50 border-b border-purple-200 flex justify-between items-center text-xs font-bold text-purple-950">
+                    <span class="flex items-center space-x-1.5">
+                        <i data-lucide="git-compare" class="w-4 h-4 text-purple-700"></i>
+                        <span>कक्षावार विषय एवं विषय कोड तुलना तालिका (Cross-Class Subject Code Matrix)</span>
+                    </span>
+                    <span class="text-[10px] text-purple-800 bg-purple-200 px-2.5 py-0.5 rounded-full">${rows.length} अद्वितीय विषय</span>
+                </div>
+                <table class="w-full text-xs border text-left border-collapse">
+                    <thead class="bg-indigo-950 text-white font-bold uppercase">
+                        <tr>
+                            <th class="p-2 border border-indigo-800 text-center w-12">क्र.</th>
+                            <th class="p-2 border border-indigo-800">विषय का नाम (Subject Name)</th>
+                            <th class="p-2 border border-indigo-800 text-center w-28 bg-indigo-900">कक्षा 9वीं कोड</th>
+                            <th class="p-2 border border-indigo-800 text-center w-28 bg-indigo-900">कक्षा 10वीं कोड</th>
+                            <th class="p-2 border border-indigo-800 text-center w-28 bg-indigo-900">कक्षा 11वीं कोड</th>
+                            <th class="p-2 border border-indigo-800 text-center w-28 bg-indigo-900">कक्षा 12वीं कोड</th>
+                            <th class="p-2 border border-indigo-800 text-center w-36">तुलना स्थिति</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white font-semibold text-slate-800">
+                        ${rows.map((row, idx) => {
+                            const codesArr = [row.codes["9th"], row.codes["10th"], row.codes["11th"], row.codes["12th"]].filter(c => c !== "-");
+                            const allSame = codesArr.every(val => val === codesArr[0]);
+                            const matchBadge = allSame 
+                                ? `<span class="bg-emerald-100 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded">✓ समान कोड</span>` 
+                                : `<span class="bg-amber-100 text-amber-950 text-[10px] font-black px-2 py-0.5 rounded">⚠ कक्षावार अंतर</span>`;
+
+                            return `
+                                <tr class="hover:bg-purple-50/50 transition">
+                                    <td class="p-2 border border-slate-300 text-center font-bold">${idx + 1}</td>
+                                    <td class="p-2 border border-slate-300 font-black text-indigo-950">${row.name}</td>
+                                    <td class="p-2 border border-slate-300 text-center font-mono font-extrabold ${row.codes["9th"] !== '-' ? 'text-purple-950 bg-purple-50/50' : 'text-slate-400'}">${row.codes["9th"]}</td>
+                                    <td class="p-2 border border-slate-300 text-center font-mono font-extrabold ${row.codes["10th"] !== '-' ? 'text-purple-950 bg-purple-50/50' : 'text-slate-400'}">${row.codes["10th"]}</td>
+                                    <td class="p-2 border border-slate-300 text-center font-mono font-extrabold ${row.codes["11th"] !== '-' ? 'text-purple-950 bg-purple-50/50' : 'text-slate-400'}">${row.codes["11th"]}</td>
+                                    <td class="p-2 border border-slate-300 text-center font-mono font-extrabold ${row.codes["12th"] !== '-' ? 'text-purple-950 bg-purple-50/50' : 'text-slate-400'}">${row.codes["12th"]}</td>
+                                    <td class="p-2 border border-slate-300 text-center">${matchBadge}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+            if (window.lucide) lucide.createIcons();
         }
 
-        function openTeacherModal(id = null) {
-            const modal = document.getElementById("teacherModal");
+        function openSubjectModal(cls = null, id = null) {
+            const modal = document.getElementById("subjectModal");
             if (!modal) return;
-            document.getElementById("teacherForm").reset();
-            document.getElementById("t_editId").value = "";
-            document.getElementById("t_photoPreview").src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150";
-            document.getElementById("teacherModalTitle").innerText = "नया शिक्षक / प्राचार्य विवरण जोड़ें";
+            document.getElementById("subjectForm").reset();
+            document.getElementById("s_editId").value = "";
 
-            if (id && teachersData[id]) {
-                const tc = teachersData[id];
-                document.getElementById("t_editId").value = tc.id;
-                document.getElementById("t_name").value = tc.name || '';
-                document.getElementById("t_designation").value = tc.designation || 'उच्च माध्यमिक शिक्षक';
-                document.getElementById("t_code").value = tc.code || '';
-                document.getElementById("t_dob").value = tc.dob || '';
-                document.getElementById("t_mobile").value = tc.mobile || '';
-                document.getElementById("t_email").value = tc.email || '';
-                document.getElementById("t_address").value = tc.address || '';
-                document.getElementById("t_isClassTeacher").value = tc.isClassTeacher || 'YES';
-                document.getElementById("t_inchargeClass").value = tc.inchargeClass || '';
-                document.getElementById("t_subjectsTaught").value = tc.subjectsTaught || tc.subject || '';
-                if (tc.photoUrl) document.getElementById("t_photoPreview").src = tc.photoUrl;
-                document.getElementById("teacherModalTitle").innerText = "शिक्षक विवरण संपादित करें";
+            const curClass = cls || (document.getElementById("subjectMasterClassSelect") ? document.getElementById("subjectMasterClassSelect").value : "10th");
+            document.getElementById("s_targetClass").value = curClass;
+            document.getElementById("subjectModalTitle").innerText = `कक्षा ${curClass} - विषय एवं विषय कोड जोड़ें`;
+
+            if (id && subjectMasterData[curClass]) {
+                const sub = subjectMasterData[curClass].find(s => s.id === id);
+                if (sub) {
+                    document.getElementById("s_editId").value = sub.id;
+                    document.getElementById("s_code").value = sub.code;
+                    document.getElementById("s_name").value = sub.name;
+                    document.getElementById("s_category").value = sub.category || "मुख्य विषय";
+                    document.getElementById("subjectModalTitle").innerText = `कक्षा ${curClass} - विषय कोड संपादित करें`;
+                }
             }
+
             modal.classList.remove("hidden");
         }
 
-        function closeTeacherModal() {
-            const modal = document.getElementById("teacherModal");
+        function closeSubjectModal() {
+            const modal = document.getElementById("subjectModal");
             if (modal) modal.classList.add("hidden");
         }
 
-        function editTeacherRecord(id) {
-            openTeacherModal(id);
-        }
-
-        function deleteTeacherRecord(id) {
-            if (confirm("क्या आप इस शिक्षक / प्राचार्य रिकॉर्ड को हटाना चाहते हैं?")) {
-                delete teachersData[id];
-                populateSidebarSelectors();
-                renderManagementPanel();
-                if (activeSection === "teacher-card") renderTeacherCard();
-                showToast("शिक्षक रिकॉर्ड हटाया गया!", "error");
-            }
-        }
-
-        function handleTeacherSave(e) {
+        function handleSubjectSave(e) {
             e.preventDefault();
-            const editId = document.getElementById("t_editId").value;
-            const code = document.getElementById("t_code").value.trim();
-            const id = editId || (code ? `T_${code}` : `T_${Date.now()}`);
+            const targetClass = document.getElementById("s_targetClass").value;
+            const editId = document.getElementById("s_editId").value;
+            const code = document.getElementById("s_code").value.trim().toUpperCase();
+            const name = document.getElementById("s_name").value.trim();
+            const category = document.getElementById("s_category").value;
 
-            teachersData[id] = {
-                id: id,
-                name: document.getElementById("t_name").value.trim(),
-                designation: document.getElementById("t_designation").value,
-                code: code,
-                dob: document.getElementById("t_dob").value,
-                mobile: document.getElementById("t_mobile").value.trim(),
-                email: document.getElementById("t_email").value.trim(),
-                address: document.getElementById("t_address").value.trim(),
-                isClassTeacher: document.getElementById("t_isClassTeacher").value,
-                inchargeClass: document.getElementById("t_inchargeClass").value.trim(),
-                subjectsTaught: document.getElementById("t_subjectsTaught").value.trim(),
-                subject: document.getElementById("t_subjectsTaught").value.trim(),
-                photoUrl: document.getElementById("t_photoPreview").src
-            };
+            if (!subjectMasterData[targetClass]) subjectMasterData[targetClass] = [];
 
-            closeTeacherModal();
-            populateSidebarSelectors();
-            renderManagementPanel();
-            if (activeSection === "teacher-card") renderTeacherCard();
-            showToast("शिक्षक / प्राचार्य रिकॉर्ड सफलतापूर्वक सुरक्षित किया गया!");
+            if (editId) {
+                const idx = subjectMasterData[targetClass].findIndex(s => s.id === editId);
+                if (idx !== -1) {
+                    subjectMasterData[targetClass][idx] = { id: editId, code, name, category };
+                }
+            } else {
+                const newId = `SUB_${targetClass}_${Date.now()}`;
+                subjectMasterData[targetClass].push({ id: newId, code, name, category });
+            }
+
+            closeSubjectModal();
+            renderSubjectMaster();
+            autoSyncSubjectMasterToSystem();
+            showToast(`विषय "${name}" (कोड: ${code}) सहेजा गया व ऑटो-सिंक हो गया!`);
         }
 
-        function toggleTeacherInchargeField(val) {
-            const wrapper = document.getElementById("t_inchargeClassWrapper");
-            if (wrapper) {
-                if (val === 'NO') wrapper.classList.add("opacity-40", "pointer-events-none");
-                else wrapper.classList.remove("opacity-40", "pointer-events-none");
+        function deleteSubjectRecord(cls, id) {
+            if (subjectMasterData[cls]) {
+                subjectMasterData[cls] = subjectMasterData[cls].filter(s => s.id !== id);
+                renderSubjectMaster();
+                autoSyncSubjectMasterToSystem();
+                showToast(`विषय रिकॉर्ड हटाया गया व ऑटो-सिंक हुआ!`, "error");
             }
         }
 
-        function previewTeacherPhoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("t_photoPreview").src = e.target.result;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
+        function autoSyncSubjectMasterToSystem() {
+            // Helper function to auto-propagate subject codes across form inputs, books and default templates
+            const targetClass = document.getElementById("f_targetClass") ? document.getElementById("f_targetClass").value : "10th";
+            const subs = subjectMasterData[targetClass] || [];
+
+            if (subs.length >= 1 && document.getElementById("f_sub1")) document.getElementById("f_sub1").value = `${subs[0].code} - ${subs[0].name}`;
+            if (subs.length >= 2 && document.getElementById("f_sub2")) document.getElementById("f_sub2").value = `${subs[1].code} - ${subs[1].name}`;
+            if (subs.length >= 3 && document.getElementById("f_sub3")) document.getElementById("f_sub3").value = `${subs[2].code} - ${subs[2].name}`;
+            if (subs.length >= 4 && document.getElementById("f_sub4")) document.getElementById("f_sub4").value = `${subs[3].code} - ${subs[3].name}`;
+            if (subs.length >= 5 && document.getElementById("f_sub5")) document.getElementById("f_sub5").value = `${subs[4].code} - ${subs[4].name}`;
+            if (subs.length >= 6 && document.getElementById("f_sub6")) document.getElementById("f_sub6").value = `${subs[5].code} - ${subs[5].name}`;
         }
 
-        function exportMgmtPDF() {
-            showToast("प्रबंधन PDF जनरेट हो रही है...", "success");
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'pt', 'a4');
-            const target = document.getElementById("managementPanelContent") || document.body;
-            html2canvas(target, { scale: 1.5 }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 595.28;
-                const pageHeight = 841.89;
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                doc.save(`SDMS_Faculty_Management_List.pdf`);
-            });
-        }
-
-        function exportMgmtExcel() {
-            const data = Object.values(teachersData).map(tc => ({
-                "Unique Code": tc.code,
-                "Name": tc.name,
-                "Designation": tc.designation,
-                "DOB": tc.dob,
-                "Mobile": tc.mobile,
-                "Email": tc.email,
-                "Address": tc.address,
-                "Class Teacher": tc.isClassTeacher,
-                "Incharge Class": tc.inchargeClass,
-                "Subjects Taught": tc.subjectsTaught
-            }));
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Faculty");
-            XLSX.writeFile(wb, `SDMS_Faculty_List.xlsx`);
-            showToast("Excel फ़ाइल डाउनलोड हो गई!");
-        }
-
-        function exportMgmtDoc() {
-            const content = document.getElementById("managementPanelContent").innerText;
-            const blob = new Blob(['\ufeff' + content], { type: 'application/msword' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `SDMS_Faculty_List.doc`;
-            a.click();
-            showToast("Word फ़ाइल डाउनलोड हो गई!");
-        }
-
-        function exportMgmtImage() {
-            const target = document.getElementById("managementPanelContent") || document.body;
-            html2canvas(target).then(canvas => {
-                const a = document.createElement('a');
-                a.href = canvas.toDataURL('image/png');
-                a.download = `SDMS_Faculty_List.png`;
-                a.click();
-                showToast("इमेज जनरेट हो गई!");
-            });
-        }
-
-        function shareOnlineLinkToken() {
-            const token = btoa(JSON.stringify({ sec: activeSection, time: Date.now() }));
-            const dummyUrl = `${window.location.origin}${window.location.pathname}?token=${token}`;
-            
-            const tempInput = document.createElement("input");
-            document.body.appendChild(tempInput);
-            tempInput.value = dummyUrl;
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-
-            showToast("सुरक्षित शेयर लिंक क्लिपबोर्ड पर कॉपी हो गया!");
-        }
-
-        function downloadJsonBackup() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ students: studentsData, teachers: teachersData, books: booksMasterData }));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", `SDMS_Full_Backup_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            dlAnchor.remove();
-            showToast("JSON बैकअप डाउनलोड हो गया!");
-        }
+        function renderMarksConfig() {
+            const container = document.getElementById("marksConfigContainer");
+            if (!container) return;
 
         function restoreJsonBackup(input) {
             if (input.files && input.files[0]) {
