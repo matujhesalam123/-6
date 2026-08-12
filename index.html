@@ -759,39 +759,90 @@
             </section>
 
             <section id="section-combined-forms" class="content-section space-y-4 hidden">
-                <!-- COMBINED FORMS MULTI-STUDENT BATCH SELECTION TOOLBAR -->
-                <div class="bg-amber-100 border border-amber-300 rounded-xl p-3 no-print space-y-2 text-xs font-bold text-amber-950">
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                        <span class="text-sm font-black flex items-center space-x-1">
-                            <i data-lucide="layers" class="w-4 h-4 text-amber-700"></i>
-                            <span>संयुक्त ऑफ़िशियल फ़ॉर्म्स बैच व फ़िल्टर सेलेक्टर</span>
-                        </span>
+                <!-- COMBINED FORMS MULTI-STUDENT BATCH SELECTION & EXPORT TOOLBAR -->
+                <div class="bg-amber-100/90 border border-amber-300 rounded-2xl p-3.5 no-print space-y-3 shadow-sm text-xs font-bold text-amber-950">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 pb-2">
+                        <div class="flex items-center space-x-2">
+                            <div class="p-1.5 bg-amber-500 text-white rounded-lg shadow-sm">
+                                <i data-lucide="layers" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xs font-black uppercase tracking-tight text-amber-950">संयुक्त ऑफ़िशियल फ़ॉर्म्स (1, 2 व 3) बैच फ़िल्टर व एक्सपोर्ट टूलबार</h2>
+                                <p class="text-[10px] text-amber-800 font-medium">एक छात्र, चयनित सेक्शन, कक्षा या पूरे स्कूल का फॉर्म एक साथ देखें, प्रिंट व एक्सपोर्ट करें</p>
+                            </div>
+                        </div>
 
-                        <div class="flex flex-wrap items-center gap-2">
-                            <!-- Target Class Selector -->
-                            <select id="combClassFilter" onchange="renderCombinedFormsBatch()" class="border border-amber-400 rounded px-2 py-1 bg-white font-extrabold text-amber-950">
-                                <option value="ALL">समस्त शाला छात्र (All School)</option>
+                        <span id="combBatchCountDisplay" class="bg-amber-200/80 text-amber-950 text-[11px] px-2.5 py-1 rounded-full font-black border border-amber-300 shadow-sm">
+                            प्रदर्शित छात्र: 0 रिकॉर्ड्स
+                        </span>
+                    </div>
+
+                    <!-- Filter Control Inputs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                        <!-- Class Selector -->
+                        <div>
+                            <label class="block text-[10px] uppercase font-extrabold text-amber-900 mb-0.5">1. कक्षा चुनें (Class Filter)</label>
+                            <select id="combClassFilter" onchange="handleCombClassChange()" class="w-full border border-amber-400 rounded-lg px-2.5 py-1.5 bg-white font-extrabold text-amber-950 outline-none focus:ring-2 focus:ring-amber-500">
+                                <option value="ALL">🏢 पूरे स्कूल का फॉर्म (All School)</option>
                                 <option value="10th" selected>10th Standard</option>
                                 <option value="9th">9th Standard</option>
                                 <option value="11th">11th Standard</option>
                                 <option value="12th">12th Standard</option>
                             </select>
+                        </div>
 
-                            <!-- Target Section Selector -->
-                            <select id="combSectionFilter" onchange="renderCombinedFormsBatch()" class="border border-amber-400 rounded px-2 py-1 bg-white font-extrabold text-amber-950">
+                        <!-- Section Selector -->
+                        <div>
+                            <label class="block text-[10px] uppercase font-extrabold text-amber-900 mb-0.5">2. सेक्शन चुनें (Section Filter)</label>
+                            <select id="combSectionFilter" onchange="renderCombinedFormsBatch()" class="w-full border border-amber-400 rounded-lg px-2.5 py-1.5 bg-white font-extrabold text-amber-950 outline-none focus:ring-2 focus:ring-amber-500">
                                 <option value="ALL">समस्त सेक्शन (All Sections)</option>
                                 <option value="A">Section A</option>
                                 <option value="B">Section B</option>
+                                <option value="C">Section C</option>
                             </select>
+                        </div>
 
-                            <!-- Individual Student Selector -->
-                            <select id="combStudentSelect" onchange="renderCombinedFormsBatch()" class="border border-amber-400 rounded px-2 py-1 bg-white font-extrabold text-amber-950 max-w-xs">
-                                <option value="ALL_CLASS">-- चयनित कक्षा के सभी छात्र --</option>
+                        <!-- Search Input -->
+                        <div>
+                            <label class="block text-[10px] uppercase font-extrabold text-amber-900 mb-0.5">3. खोजें (Search Name/Scholar)</label>
+                            <input type="text" id="combSearchInput" oninput="renderCombinedFormsBatch()" placeholder="🔍 छात्र नाम / स्कॉलर नं..." class="w-full border border-amber-400 rounded-lg px-2.5 py-1.5 bg-white font-bold text-amber-950 outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+
+                        <!-- Individual Student Selector -->
+                        <div>
+                            <label class="block text-[10px] uppercase font-extrabold text-amber-900 mb-0.5">4. विशिष्ट छात्र (Single Student)</label>
+                            <select id="combStudentSelect" onchange="renderCombinedFormsBatch()" class="w-full border border-amber-400 rounded-lg px-2.5 py-1.5 bg-white font-extrabold text-amber-950 outline-none focus:ring-2 focus:ring-amber-500">
+                                <option value="ALL_CLASS">-- चयनित फिल्टर अनुसार सभी छात्र --</option>
                             </select>
+                        </div>
+                    </div>
 
-                            <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded shadow transition flex items-center space-x-1">
+                    <!-- Export Toolbar Buttons -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-t border-amber-200 pt-2">
+                        <div class="text-[10px] text-amber-800 font-bold">
+                            💡 प्रिंट करते समय ए4 साइज में सभी तीनों फॉर्म क्रमानुसार पेजब्रेक के साथ स्वतः एडजस्ट होंगे।
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <button onclick="window.print()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3 py-1.5 rounded-lg shadow font-extrabold transition flex items-center space-x-1 text-xs">
                                 <i data-lucide="printer" class="w-3.5 h-3.5"></i>
                                 <span>🖨️ एकसाथ बैच प्रिंट</span>
+                            </button>
+                            <button onclick="exportCombinedFormsPDF()" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1.5 rounded-lg shadow font-bold transition flex items-center space-x-1 text-xs">
+                                <i data-lucide="file-type-2" class="w-3.5 h-3.5"></i>
+                                <span>📄 PDF डाउनलोड</span>
+                            </button>
+                            <button onclick="exportCombinedFormsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg shadow font-bold transition flex items-center space-x-1 text-xs">
+                                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                                <span>📊 Excel शीट</span>
+                            </button>
+                            <button onclick="exportCombinedFormsWord()" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg shadow font-bold transition flex items-center space-x-1 text-xs">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                                <span>📝 Word Doc</span>
+                            </button>
+                            <button onclick="exportCombinedFormsImage()" class="bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-1.5 rounded-lg shadow font-bold transition flex items-center space-x-1 text-xs">
+                                <i data-lucide="image" class="w-3.5 h-3.5"></i>
+                                <span>🖼️ PNG फोटो</span>
                             </button>
                         </div>
                     </div>
@@ -917,108 +968,171 @@
     <div id="toastContainer" class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none no-print"></div>
 
     <script>
-        // GLOBAL DATA STORE
-        let currentActiveSection = 'section-dashboard';
-        let gridColFilters = {};
-        let gridSortKey = "scholarNo";
-        let gridSortAsc = true;
+        function handleCombClassChange() {
+            // Reset individual student dropdown selection when class filter changes
+            const selDropdown = document.getElementById('combStudentSelect');
+            if (selDropdown) selDropdown.value = 'ALL_CLASS';
+            renderCombinedFormsBatch();
+        }
 
-        // ALL 50+ COLUMNS METADATA DEFINITION FOR MASTER GRID
-        const gridColumnsConfig = [
-            { key: "photoUrl", label: "फोटो", sortable: false, type: "image" },
-            { key: "scholarNo", label: "स्कॉलर क्र.", sortable: true },
-            { key: "rollNo", label: "अनुक्रमांक (Roll)", sortable: true },
-            { key: "enrollmentNo", label: "नामांकन क्र.", sortable: true },
-            { key: "srNo", label: "एस.आर. क्र.", sortable: true },
-            { key: "targetClass", label: "कक्षा", sortable: true },
-            { key: "section", label: "सेक्शन", sortable: true },
-            { key: "applicantType", label: "प्रवेश प्रकार 1", sortable: true },
-            { key: "applicantType2", label: "प्रवेश प्रकार 2", sortable: true },
-            { key: "applicantType3", label: "प्रवेश प्रकार 3", sortable: true },
-            { key: "provisionalResult", label: "अस्थाई रिजल्ट", sortable: true },
-            { key: "tcStatus", label: "T.C. जमा?", sortable: true },
-            { key: "gapCertificate", label: "गैप सर्टिफिकेट", sortable: true },
-            { key: "lastYearPassType", label: "गत वर्ष पास", sortable: true },
-            { key: "medium", label: "माध्यम", sortable: true },
-            { key: "admissionDate", label: "प्रवेश दिनांक", sortable: true },
-            { key: "nameHindi", label: "विद्यार्थी नाम (हिन्दी)", sortable: true },
-            { key: "nameEng", label: "FULL NAME (ENG)", sortable: true },
-            { key: "fatherName", label: "पिता का नाम", sortable: true },
-            { key: "fatherNameEng", label: "FATHER NAME (ENG)", sortable: true },
-            { key: "motherName", label: "माता का नाम", sortable: true },
-            { key: "motherNameEng", label: "MOTHER NAME (ENG)", sortable: true },
-            { key: "dob", label: "जन्म तिथि (DOB)", sortable: true },
-            { key: "gender", label: "लिंग (SEX)", sortable: true },
-            { key: "category", label: "वर्ग (Category)", sortable: true },
-            { key: "caste", label: "उपजाति (CAST)", sortable: true },
-            { key: "mobile", label: "मोबाईल नंबर", sortable: true },
-            { key: "email", label: "ईमेल आईडी", sortable: true },
-            { key: "bloodGroup", label: "ब्लड ग्रुप", sortable: true },
-            { key: "address", label: "पत्र व्यवहार का पता", sortable: true },
-            { key: "apaarId", label: "अपार ID (APAAR)", sortable: true },
-            { key: "childId", label: "चाइल्ड समग्र ID", sortable: true },
-            { key: "familyId", label: "परिवार ID", sortable: true },
-            { key: "aadhaar", label: "आधार नंबर", sortable: true },
-            { key: "bankName", label: "बैंक का नाम", sortable: true },
-            { key: "bankAccount", label: "बैंक खाता क्रमांक", sortable: true },
-            { key: "bankIfsc", label: "IFSC कोड", sortable: true },
-            { key: "annualIncome", label: "वार्षिक आय (₹)", sortable: true },
-            { key: "bplStatus", label: "BPL कार्ड?", sortable: true },
-            { key: "ladliLaxmi", label: "लाड़ली लक्ष्मी?", sortable: true },
-            { key: "ladliLaxmiNo", label: "L.L. क्रमांक", sortable: true },
-            { key: "cwsnStatus", label: "दिव्यांग (CWSN)", sortable: true },
-            { key: "hostelStatus", label: "छात्राबासी", sortable: true },
-            { key: "covidStatus", label: "COVID 19 प्रभावित", sortable: true },
-            { key: "mpTassStatus", label: "MP TASS पंजीकृत", sortable: true },
-            { key: "mpTassNo", label: "MP TASS NO.", sortable: true },
-            { key: "scholarshipStatus", label: "छात्रवृत्ति पात्र", sortable: true },
-            { key: "sambalStatus", label: "संबल कार्ड?", sortable: true },
-            { key: "sambalNo", label: "संबल क्रमांक", sortable: true },
-            { key: "area", label: "एरिया (क्षेत्र)", sortable: true },
-            { key: "feesPaid", label: "प्रवेश फीस (₹)", sortable: true },
-            { key: "remarks", label: "रिमार्क (Remark)", sortable: true },
-            { key: "sub1", label: "1sub (विषय 1)", sortable: true },
-            { key: "sub2", label: "2sub (विषय 2)", sortable: true },
-            { key: "sub3", label: "3sub (विषय 3)", sortable: true },
-            { key: "sub4", label: "4sub (विषय 4)", sortable: true },
-            { key: "sub5", label: "5sub (विषय 5)", sortable: true },
-            { key: "sub6", label: "6sub (विषय 6)", sortable: true },
-            { key: "receivedBooks", label: "पुस्तकालय की पुस्तकें", sortable: false },
-            { key: "actions", label: "डायरेक्ट एक्शन", sortable: false }
-        ];
+        function renderCombinedFormsBatch() {
+            const container = document.getElementById('combinedFormsContainer');
+            if (!container) return;
 
-        // SAMPLE STUDENTS SEED DATA
-        let studentsData = {
-            "STU1001": {
-                id: "STU1001", scholarNo: "1001", rollNo: "100101", enrollmentNo: "N2026/01", srNo: "SR-01",
-                targetClass: "10th", section: "A", applicantType: "1", applicantType2: "पुनः प्रवेशी", applicantType3: "स्थाई",
-                provisionalResult: "Pass", tcStatus: "YES", gapCertificate: "NO", lastYearPassType: "Regular",
-                medium: "HINDI", admissionDate: "2026-07-01", nameHindi: "कु. रश्मि लोधी", nameEng: "RASHMI LODHI",
-                fatherName: "श्री रामचरण लोधी", fatherNameEng: "RAMCHARAN LODHI", motherName: "श्रीमती कमला बाई", motherNameEng: "KAMLA BAI",
-                dob: "2010-08-15", gender: "FEMALE", category: "OBC", caste: "लोधी", mobile: "9876543210", email: "rashmi@gmail.com",
-                bloodGroup: "B+", address: "ग्राम - बेगमगंज, वार्ड क्र 04", apaarId: "987654321012", childId: "123456789", familyId: "987654321",
-                aadhaar: "1234-5678-9012", bankName: "SBI BEGUMGANJ", bankAccount: "30123456789", bankIfsc: "SBIN0001020",
-                annualIncome: "45000", bplStatus: "YES", ladliLaxmi: "YES", ladliLaxmiNo: "LL-88210", cwsnStatus: "NO",
-                hostelStatus: "NO", covidStatus: "NO", mpTassStatus: "YES", mpTassNo: "MPT-99120", scholarshipStatus: "YES",
-                sambalStatus: "YES", sambalNo: "SMB-77120", area: "ग्रामीण", feesPaid: "100", remarks: "उत्कृष्ट छात्रा",
-                sub1: "HINDI (050)", sub2: "ENGLISH (200)", sub3: "SANSKRIT (512)", sub4: "MATHEMATICS (100)", sub5: "SCIENCE (110)", sub6: "SOCIAL SCIENCE (300)",
-                receivedBooks: ["हिंदी क्षितिज", "गणित 10वीं", "विज्ञान 10वीं"], photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
-            },
-            "STU1002": {
-                id: "STU1002", scholarNo: "1002", rollNo: "100102", enrollmentNo: "N2026/02", srNo: "SR-02",
-                targetClass: "10th", section: "A", applicantType: "1", applicantType2: "पुनः प्रवेशी", applicantType3: "स्थाई",
-                provisionalResult: "Pass", tcStatus: "YES", gapCertificate: "NO", lastYearPassType: "Regular",
-                medium: "HINDI", admissionDate: "2026-07-02", nameHindi: "कु. रिया जैन", nameEng: "RIYA JAIN",
-                fatherName: "श्री संजय जैन", fatherNameEng: "SANJAY JAIN", motherName: "श्रीमती सुनीता जैन", motherNameEng: "SUNITA JAIN",
-                dob: "2010-04-12", gender: "FEMALE", category: "GEN", caste: "जैन", mobile: "9826112233", email: "riya@gmail.com",
-                bloodGroup: "O+", address: "बेगमगंज मुख्य बाजार", apaarId: "987654321013", childId: "123456790", familyId: "987654322",
-                aadhaar: "1234-5678-9013", bankName: "BOB BEGUMGANJ", bankAccount: "30123456790", bankIfsc: "BARB0BEGUMG",
-                annualIncome: "75000", bplStatus: "NO", ladliLaxmi: "NO", ladliLaxmiNo: "-", cwsnStatus: "NO",
-                hostelStatus: "NO", covidStatus: "NO", mpTassStatus: "NO", mpTassNo: "-", scholarshipStatus: "NO",
-                sambalStatus: "NO", sambalNo: "-", area: "शहरी", feesPaid: "100", remarks: "मेधावी",
-                sub1: "HINDI (050)", sub2: "ENGLISH (200)", sub3: "SANSKRIT (512)", sub4: "MATHEMATICS (100)", sub5: "SCIENCE (110)", sub6: "SOCIAL SCIENCE (300)",
-                receivedBooks: ["हिंदी क्षितिज", "अंग्रेजी बिहाइव"], photoUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
+            const classFilter = document.getElementById('combClassFilter') ? document.getElementById('combClassFilter').value : '10th';
+            const secFilter = document.getElementById('combSectionFilter') ? document.getElementById('combSectionFilter').value : 'ALL';
+            const stuSelect = document.getElementById('combStudentSelect') ? document.getElementById('combStudentSelect').value : 'ALL_CLASS';
+            const searchQ = (document.getElementById('combSearchInput') ? document.getElementById('combSearchInput').value : '').toLowerCase().trim();
+
+            let list = Object.values(studentsData);
+
+            // 1. Filter by Class
+            if (classFilter !== 'ALL') {
+                list = list.filter(s => s.targetClass === classFilter);
             }
+
+            // 2. Filter by Section
+            if (secFilter !== 'ALL') {
+                list = list.filter(s => s.section === secFilter);
+            }
+
+            // 3. Filter by Search Query
+            if (searchQ) {
+                list = list.filter(s => 
+                    (s.nameHindi || '').toLowerCase().includes(searchQ) ||
+                    (s.nameEng || '').toLowerCase().includes(searchQ) ||
+                    (s.scholarNo || '').toLowerCase().includes(searchQ) ||
+                    (s.rollNo || '').toLowerCase().includes(searchQ)
+                );
+            }
+
+            // 4. Update the individual student selector dropdown dynamically
+            const selDropdown = document.getElementById('combStudentSelect');
+            if (selDropdown) {
+                const currentVal = selDropdown.value;
+                let optionsHTML = `<option value="ALL_CLASS">-- चयनित फिल्टर अनुसार सभी छात्र (${list.length}) --</option>`;
+                list.forEach(s => {
+                    optionsHTML += `<option value="${s.id}" ${currentVal === s.id ? 'selected' : ''}>${s.nameHindi} (स्कॉलर: ${s.scholarNo}) - Cls ${s.targetClass}-${s.section}</option>`;
+                });
+                selDropdown.innerHTML = optionsHTML;
+            }
+
+            // 5. Filter for a single selected student if chosen
+            if (stuSelect !== 'ALL_CLASS' && stuSelect !== '') {
+                list = list.filter(s => s.id === stuSelect);
+            }
+
+            // Update badge count display
+            const countDisplay = document.getElementById('combBatchCountDisplay');
+            if (countDisplay) {
+                countDisplay.innerText = `प्रदर्शित छात्र: ${list.length} रिकॉर्ड (कुल 3 फ़ॉर्म/छात्र = ${list.length * 3} फ़ॉर्म्स)`;
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white p-8 rounded-xl border border-rose-200 text-center text-rose-600 font-bold shadow-sm space-y-2">
+                        <i data-lucide="alert-circle" class="w-8 h-8 text-rose-500 mx-auto"></i>
+                        <p class="text-sm">चयनित कक्षा, सेक्शन या खोज फ़िल्टर हेतु कोई छात्र रिकॉर्ड उपलब्ध नहीं है।</p>
+                        <p class="text-xs text-slate-500 font-normal">कृपया टूलबार में कक्षा या फ़िल्टर बदलकर पुनः प्रयास करें।</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            // Render all 3 official forms for each student in the batch
+            container.innerHTML = list.map(st => renderSingleStudentCombinedFormsHTML(st)).join('<div class="page-break my-8 border-b-2 border-dashed border-slate-300 no-print"></div>');
+            lucide.createIcons();
+        }
+
+        // BATCH EXPORT FUNCTIONS FOR COMBINED FORMS
+        function exportCombinedFormsPDF() {
+            window.print();
+        }
+
+        function exportCombinedFormsExcel() {
+            const classFilter = document.getElementById('combClassFilter') ? document.getElementById('combClassFilter').value : '10th';
+            const secFilter = document.getElementById('combSectionFilter') ? document.getElementById('combSectionFilter').value : 'ALL';
+            
+            let list = Object.values(studentsData);
+            if (classFilter !== 'ALL') list = list.filter(s => s.targetClass === classFilter);
+            if (secFilter !== 'ALL') list = list.filter(s => s.section === secFilter);
+
+            const exportData = list.map(s => ({
+                "Scholar No": s.scholarNo,
+                "Roll No": s.rollNo,
+                "Class": s.targetClass,
+                "Section": s.section,
+                "Student Name (Hindi)": s.nameHindi,
+                "Student Name (English)": s.nameEng,
+                "Father Name": s.fatherName,
+                "Mother Name": s.motherName,
+                "DOB": s.dob,
+                "Gender": s.gender,
+                "Category": s.category,
+                "Mobile": s.mobile,
+                "Aadhaar": s.aadhaar,
+                "Child SSMID": s.childId,
+                "Family SSMID": s.familyId,
+                "Bank Account": s.bankAccount,
+                "Bank IFSC": s.bankIfsc,
+                "Address": s.address
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Combined_Forms_Batch");
+            XLSX.writeFile(wb, `Combined_Forms_${classFilter}_${secFilter}.xlsx`);
+            showToast("संयुक्त फ़ॉर्म्स का बैच Excel डाउनलोड हो गया है!", "success");
+        }
+
+        function exportCombinedFormsWord() {
+            const container = document.getElementById('combinedFormsContainer');
+            if (!container) return;
+
+            const htmlContent = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>Combined Official Forms Batch</title>
+                <style>
+                    body { font-family: sans-serif; font-size: 10pt; }
+                    .letter-box { border: 1px solid #000; padding: 2px 4px; display: inline-block; font-weight: bold; }
+                    table { border-collapse: collapse; width: 100%; }
+                    td, th { border: 1px solid #000; padding: 4px; }
+                </style>
+                </head>
+                <body>
+                    ${container.innerHTML}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SDMS_Combined_Forms_Batch.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast("संयुक्त फ़ॉर्म्स Word Document (.doc) डाउनलोड हो गया है!", "success");
+        }
+
+        function exportCombinedFormsImage() {
+            const container = document.getElementById('combinedFormsContainer');
+            if (!container) return;
+
+            showToast("इमेज तैयार हो रही है, कृपया प्रतीक्षा करें...", "success");
+            html2canvas(container, { scale: 1.5, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `SDMS_Combined_Forms_Batch.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast("PNG फोटो सफलतापूर्वक डाउनलोड हुई!", "success");
+            }).catch(err => {
+                console.error(err);
+                showToast("इमेज जनरेट करने में त्रुटि हुई। कृपया प्रिंट उपयोग करें।", "error");
+            });
+        }
         };
 
         function showSection(sectionId) {
