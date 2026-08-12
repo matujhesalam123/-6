@@ -1020,14 +1020,32 @@
                     <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-2">
                         <div class="flex items-center space-x-2">
                             <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
-                            <h3 class="text-xs font-bold text-slate-800">समेकित अंकसूची विवरण (Board Marksheets)</h3>
+                            <h3 class="text-xs font-bold text-slate-800">समेकित अंकसूची विवरण (Board Marksheets Generator)</h3>
                         </div>
                         <span id="markCountBadge" class="text-[10px] bg-amber-100 text-amber-900 font-extrabold px-2.5 py-0.5 rounded-full">प्रदर्शित अंकसूची: 0</span>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs font-semibold">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 text-xs font-semibold">
                         <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">1. कक्षा चुनें:</label>
+                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">1. शैक्षणिक सत्र (Session):</label>
+                            <select id="markSessionFilter" onchange="renderMarksheets()" class="w-full border rounded px-2 py-1 font-extrabold bg-amber-50 text-amber-950 border-amber-300">
+                                <option value="SESSION - 2025-26">सत्र 2025-26</option>
+                                <option value="SESSION - 2026-27">सत्र 2026-27</option>
+                                <option value="SESSION - 2027-28">सत्र 2027-28</option>
+                                <option value="SESSION - 2028-29">सत्र 2028-29</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">2. परीक्षा का प्रकार:</label>
+                            <select id="markExamTypeFilter" onchange="renderMarksheets()" class="w-full border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
+                                <option value="ANNUAL EXAM">ANNUAL EXAM (वार्षिक परीक्षा)</option>
+                                <option value="PRE-BOARD EXAM">PRE-BOARD EXAM (प्री-बोर्ड)</option>
+                                <option value="HALF YEARLY EXAM">HALF YEARLY EXAM (अर्द्धवार्षिक)</option>
+                                <option value="QUARTERLY EXAM">QUARTERLY EXAM (त्रैमासिक)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">3. कक्षा चुनें:</label>
                             <select id="markClassFilter" onchange="renderMarksheets()" class="w-full border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
                                 <option value="ALL">🏢 पूरे स्कूल की कक्षाएं (All Classes)</option>
                                 <option value="10th">कक्षा 10वीं</option>
@@ -1037,7 +1055,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">2. सेक्शन चुनें:</label>
+                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">4. सेक्शन चुनें:</label>
                             <select id="markSectionFilter" onchange="renderMarksheets()" class="w-full border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
                                 <option value="ALL">समस्त सेक्शन (All Sections)</option>
                                 <option value="A">Section A</option>
@@ -1046,11 +1064,11 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">3. एडवांस खोजें:</label>
-                            <input type="text" id="markSearchInput" oninput="renderMarksheets()" placeholder="🔍 छात्र नाम, स्कॉलर, रोल नं..." class="w-full border rounded px-2 py-1 border-amber-300 outline-none">
+                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">5. खोजें:</label>
+                            <input type="text" id="markSearchInput" oninput="renderMarksheets()" placeholder="🔍 छात्र नाम, स्कॉलर, रोल..." class="w-full border rounded px-2 py-1 border-amber-300 outline-none">
                         </div>
                         <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">4. कंडीशन / परिणाम फ़िल्टर:</label>
+                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">6. कंडीशन फ़िल्टर:</label>
                             <select id="markConditionFilter" onchange="renderMarksheets()" class="w-full border rounded px-2 py-1 bg-amber-50 text-amber-950 border-amber-300 font-bold">
                                 <option value="ALL">समस्त परिणाम</option>
                                 <option value="DISTINCTION">विशेष योग्यता (>75%)</option>
@@ -1059,19 +1077,10 @@
                                 <option value="FAIL">अनुत्तीर्ण / पूरक (Fail/Supp)</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">5. सॉर्टिंग क्रम:</label>
-                            <select id="markSortFilter" onchange="renderMarksheets()" class="w-full border rounded px-2 py-1 bg-amber-50 text-amber-950 border-amber-300 font-bold">
-                                <option value="percentDesc">प्रतिशत (उच्चतम से निम्नतम)</option>
-                                <option value="percentAsc">प्रतिशत (निम्नतम से उच्चतम)</option>
-                                <option value="rollAsc">अनुक्रमांक (Roll No)</option>
-                                <option value="nameAsc">नाम (A-Z)</option>
-                            </select>
-                        </div>
                     </div>
                 </div>
 
-                <div id="exportableMarksheet" class="space-y-6">
+                <div id="exportableMarksheet" class="space-y-8">
                 </div>
             </section>
 
@@ -1386,14 +1395,15 @@
         let gridSortAscending = true;
         let gridColumnFilters = {};
 
+        // INITIAL MOCK DATASETS
         let studentsData = {
             "101": {
                 id: "101",
-                scholarNo: "101",
-                rollNo: "1001",
-                enrollmentNo: "MP2025/101",
+                scholarNo: "16626",
+                rollNo: "9266510060201",
+                enrollmentNo: "A25/651006/197",
                 srNo: "SR-501",
-                targetClass: "10th",
+                targetClass: "9th",
                 section: "A",
                 applicantType: "1",
                 applicantType2: "सामान्य",
@@ -1402,22 +1412,22 @@
                 tcStatus: "YES",
                 gapCertificate: "NO",
                 lastYearPassType: "Regular",
-                medium: "HINDI",
+                medium: "Hindi",
                 admissionDate: "2025-07-01",
-                nameHindi: "राहुल शर्मा",
-                nameEng: "RAHUL SHARMA",
-                fatherName: "श्री राम शर्मा",
-                motherName: "श्रीमती सीता शर्मा",
-                dob: "2009-05-15",
-                gender: "MALE",
+                nameHindi: "तपस्या तिवारी",
+                nameEng: "TAPASYA TIWARI",
+                fatherName: "श्री राजेश तिवारी",
+                motherName: "श्रीमती रचना तिवारी",
+                dob: "2012-08-28",
+                gender: "FEMALE",
                 category: "GEN",
                 caste: "ब्राह्मण",
                 mobile: "9826012345",
-                email: "rahul@gmail.com",
+                email: "tapasya@gmail.com",
                 bloodGroup: "O+",
                 address: "बेगमगंज वार्ड 4 (रायसेन)",
                 apaarId: "APAAR-9012-3456",
-                childId: "123456789",
+                childId: "155076454",
                 familyId: "987654321",
                 aadhaar: "1234-5678-9012",
                 bankName: "भारतीय स्टेट बैंक बेगमगंज",
@@ -1439,22 +1449,22 @@
                 feesPaid: "100",
                 remarks: "उत्कृष्ट प्रदर्शन",
                 photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
-                sub1: "401 - हिन्दी",
-                sub2: "411 - अंग्रेजी",
-                sub3: "100 - गणित",
-                sub4: "200 - विज्ञान",
-                sub5: "300 - सामाजिक विज्ञान",
-                sub6: "501 - संस्कृत",
+                sub1: "401 - Hindi",
+                sub2: "411 - English",
+                sub3: "512 - Sanskrit",
+                sub4: "100 - Maths (Standard)",
+                sub5: "200 - Science",
+                sub6: "300 - Social Science",
                 receivedBooks: ["NCERT हिन्दी", "NCERT गणित", "NCERT विज्ञान", "NCERT सा.विज्ञान"]
             },
             "102": {
                 id: "102",
-                scholarNo: "102",
-                rollNo: "1002",
-                enrollmentNo: "MP2025/102",
+                scholarNo: "15807",
+                rollNo: "11266510060201",
+                enrollmentNo: "A23/651006/368",
                 srNo: "SR-502",
-                targetClass: "10th",
-                section: "A",
+                targetClass: "11th",
+                section: "B",
                 applicantType: "1",
                 applicantType2: "सामान्य",
                 applicantType3: "स्थाई",
@@ -1462,22 +1472,22 @@
                 tcStatus: "YES",
                 gapCertificate: "NO",
                 lastYearPassType: "Regular",
-                medium: "HINDI",
+                medium: "Hindi",
                 admissionDate: "2025-07-02",
-                nameHindi: "पूजा पटेल",
-                nameEng: "PUJA PATEL",
-                fatherName: "श्री मोहन पटेल",
-                motherName: "श्रीमती अनीता पटेल",
-                dob: "2009-08-20",
+                nameHindi: "आशना",
+                nameEng: "AASHNA",
+                fatherName: "श्री मसरूर अली",
+                motherName: "श्रीमती असबुन निशा",
+                dob: "2009-01-21",
                 gender: "FEMALE",
                 category: "OBC",
-                caste: "कुर्मी",
+                caste: "मुस्लिम",
                 mobile: "9826023456",
-                email: "puja@gmail.com",
+                email: "aashna@gmail.com",
                 bloodGroup: "B+",
                 address: "ग्राम सुल्तानपुर बेगमगंज",
                 apaarId: "APAAR-9012-3457",
-                childId: "234567890",
+                childId: "142631395",
                 familyId: "876543210",
                 aadhaar: "2345-6789-0123",
                 bankName: "मध्यांचल ग्रामीण बैंक बेगमगंज",
@@ -1499,73 +1509,13 @@
                 feesPaid: "100",
                 remarks: "छात्रवृत्ति हेतु पात्र",
                 photoUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150",
-                sub1: "401 - हिन्दी",
-                sub2: "411 - अंग्रेजी",
-                sub3: "100 - गणित",
-                sub4: "200 - विज्ञान",
-                sub5: "300 - सामाजिक विज्ञान",
-                sub6: "501 - संस्कृत",
-                receivedBooks: ["NCERT हिन्दी", "NCERT गणित"]
-            },
-            "103": {
-                id: "103",
-                scholarNo: "103",
-                rollNo: "1003",
-                enrollmentNo: "MP2025/103",
-                srNo: "SR-503",
-                targetClass: "9th",
-                section: "B",
-                applicantType: "2",
-                applicantType2: "सामान्य",
-                applicantType3: "स्थाई",
-                provisionalResult: "Pass",
-                tcStatus: "YES",
-                gapCertificate: "NO",
-                lastYearPassType: "Regular",
-                medium: "HINDI",
-                admissionDate: "2025-07-05",
-                nameHindi: "अमित वर्मा",
-                nameEng: "AMIT VERMA",
-                fatherName: "श्री सुरेश वर्मा",
-                motherName: "श्रीमती मीरा वर्मा",
-                dob: "2010-02-10",
-                gender: "MALE",
-                category: "SC",
-                caste: "अहिरवार",
-                mobile: "9826034567",
-                email: "",
-                bloodGroup: "A+",
-                address: "बेगमगंज वार्ड 2",
-                apaarId: "APAAR-9012-3458",
-                childId: "345678901",
-                familyId: "765432109",
-                aadhaar: "3456-7890-1234",
-                bankName: "बैंक ऑफ इंडिया बेगमगंज",
-                bankAccount: "30345678901",
-                bankIfsc: "BKID0009812",
-                annualIncome: "36000",
-                bplStatus: "YES",
-                ladliLaxmi: "NO",
-                ladliLaxmiNo: "",
-                cwsnStatus: "NO",
-                hostelStatus: "NO",
-                covidStatus: "NO",
-                mpTassStatus: "YES",
-                mpTassNo: "MPT-88124",
-                scholarshipStatus: "YES",
-                sambalStatus: "YES",
-                sambalNo: "SAM-5513",
-                area: "शहरी",
-                feesPaid: "100",
-                remarks: "",
-                photoUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150",
-                sub1: "401 - हिन्दी",
-                sub2: "411 - अंग्रेजी",
-                sub3: "100 - गणित",
-                sub4: "200 - विज्ञान",
-                sub5: "300 - सामाजिक विज्ञान",
-                sub6: "501 - संस्कृत",
-                receivedBooks: ["NCERT हिन्दी"]
+                sub1: "051 - Hindi",
+                sub2: "055 - Urdu",
+                sub3: "130 - Political science",
+                sub4: "140 - Economics",
+                sub5: "166 - Sociology",
+                sub6: "52 - ENGLISH",
+                receivedBooks: ["NCERT हिन्दी", "NCERT राजनीति"]
             }
         };
 
@@ -2363,6 +2313,394 @@
             }
         }
 
+        function renderMarksheets() {
+            const container = document.getElementById("exportableMarksheet");
+            if (!container) return;
+            const cls = document.getElementById("markClassFilter") ? document.getElementById("markClassFilter").value : "ALL";
+            const sec = document.getElementById("markSectionFilter") ? document.getElementById("markSectionFilter").value : "ALL";
+            const q = (document.getElementById("markSearchInput") ? document.getElementById("markSearchInput").value : "").toLowerCase().trim();
+            const cond = document.getElementById("markConditionFilter") ? document.getElementById("markConditionFilter").value : "ALL";
+            const session = document.getElementById("markSessionFilter") ? document.getElementById("markSessionFilter").value : "SESSION - 2025-26";
+
+            let list = Object.values(studentsData).filter(st => {
+                if (cls !== "ALL" && st.targetClass !== cls) return false;
+                if (sec !== "ALL" && st.section !== sec) return false;
+                if (cond === "DISTINCTION" && (!st.percentage || parseFloat(st.percentage) < 75)) return false;
+                if (cond === "FIRST" && (!st.percentage || parseFloat(st.percentage) < 60)) return false;
+                if (cond === "PASS" && st.provisionalResult !== "Pass") return false;
+                if (cond === "FAIL" && st.provisionalResult !== "Fail" && st.provisionalResult !== "Supp") return false;
+
+                if (q) {
+                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName}`.toLowerCase();
+                    if (!haystack.includes(q)) return false;
+                }
+                return true;
+            });
+
+            const badge = document.getElementById("markCountBadge");
+            if (badge) badge.innerText = `प्रदर्शित अंकसूची: ${list.length}`;
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="text-center p-6 bg-white rounded-xl border font-bold text-slate-500">कोई समेकित अंकसूची उपलब्ध नहीं है।</div>`;
+                return;
+            }
+
+            container.innerHTML = list.map(st => {
+                const isClass11or12 = (st.targetClass === "11th" || st.targetClass === "12th");
+
+                if (isClass11or12) {
+                    // CLASS 11 & 12 MARKSHEET FORMAT (MATCHING IMAGE 2)
+                    return `
+                        <div class="bg-white p-6 rounded-xl border-2 border-slate-900 shadow-xl max-w-4xl mx-auto space-y-3 text-slate-950 font-sans page-break">
+                            <div class="flex justify-between items-center border-b-2 border-slate-900 pb-2">
+                                <div class="w-16 h-16 flex items-center justify-center border-2 border-slate-900 rounded-full font-black text-xs">
+                                    MPB
+                                </div>
+                                <div class="text-center space-y-0.5">
+                                    <h2 class="text-base font-black tracking-wide">PMShri-GHSS GIRLS BEGAMGANJ(6 to 12)</h2>
+                                    <h3 class="text-xs font-bold">DISTRICT - Raisen (M.P.)</h3>
+                                    <h1 class="text-sm font-black underline tracking-wider">अंकसूची / MARKSHEET</h1>
+                                    <div class="flex items-center justify-center space-x-4 text-[10px] font-extrabold pt-0.5">
+                                        <span>February- (2026)</span>
+                                        <span>Class - ${st.targetClass.replace('th','')}</span>
+                                        <span>${session}</span>
+                                        <span>DISE CODE - 23340222855</span>
+                                    </div>
+                                </div>
+                                <div class="w-16 h-16 border border-slate-900 p-1 flex items-center justify-center text-[8px] text-center font-bold">
+                                    QR CODE
+                                </div>
+                            </div>
+
+                            <!-- Student Info Header Table -->
+                            <table class="w-full border-2 border-slate-900 text-center text-[10px] font-bold border-collapse">
+                                <tr class="bg-slate-100 border-b border-slate-900">
+                                    <td class="p-1 border-r border-slate-900">अनुक्रमांक / ROLL NO.</td>
+                                    <td class="p-1 border-r border-slate-900">नामांकन क्रमांक / ENROLMENT NO.</td>
+                                    <td class="p-1 border-r border-slate-900">समग्र आईडी / SSSMID</td>
+                                    <td class="p-1 border-r border-slate-900">प्रवेश क्रमांक / SCHOLAR NO.</td>
+                                    <td class="p-1 border-r border-slate-900">संस्था क्रमांक / SCHOOL CODE</td>
+                                    <td class="p-1">माध्यम / MEDIUM</td>
+                                </tr>
+                                <tr class="font-mono text-xs font-extrabold border-b-2 border-slate-900">
+                                    <td class="p-1 border-r border-slate-900">${st.rollNo || '11266510060201'}</td>
+                                    <td class="p-1 border-r border-slate-900">${st.enrollmentNo || 'A23/651006/368'}</td>
+                                    <td class="p-1 border-r border-slate-900">${st.childId || '142631395'}</td>
+                                    <td class="p-1 border-r border-slate-900">${st.scholarNo || '15807'}</td>
+                                    <td class="p-1 border-r border-slate-900">651006</td>
+                                    <td class="p-1">${st.medium || 'Hindi'}</td>
+                                </tr>
+                            </table>
+
+                            <div class="flex justify-between items-start gap-4 text-xs font-bold py-1">
+                                <div class="space-y-1.5 flex-1">
+                                    <p>श्री/श्रीमती/कुमारी SHRI/SMT/KUMARI - <span class="font-black uppercase">${st.nameEng || st.nameHindi}</span></p>
+                                    <p>पिता का नाम श्री FATHER'S NAME SHRI - <span class="font-black uppercase">${st.fatherName}</span></p>
+                                    <p>माता का नाम श्रीमती MOTHER'S NAME SMT. - <span class="font-black uppercase">${st.motherName}</span></p>
+                                    <p>जन्म तिथि DATE OF BIRTH - <span class="font-mono font-black">${st.dob}</span></p>
+                                </div>
+                                <div class="w-20 h-24 border-2 border-slate-900 p-0.5 flex-shrink-0 bg-slate-50">
+                                    <img src="${st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-900 text-white text-center py-0.5 text-[10px] font-black tracking-wider uppercase">EDUCATIONAL PERFORMANCE</div>
+
+                            <!-- Class 11/12 Subject Marks Table -->
+                            <table class="w-full border-2 border-slate-900 text-[10px] text-center border-collapse">
+                                <thead class="bg-slate-100 font-extrabold border-b-2 border-slate-900">
+                                    <tr>
+                                        <th rowspan="2" class="p-1.5 border-r border-slate-900 w-36 text-left">विषय<br>SUBJECT</th>
+                                        <th colspan="2" class="p-1 border-r border-slate-900">न्यूनतम अंक<br>MINIMUM MARKS</th>
+                                        <th colspan="2" class="p-1 border-r border-slate-900">अधिकतम अंक<br>MAXIMUM MARKS</th>
+                                        <th colspan="3" class="p-1 border-r border-slate-900">वार्षिक परीक्षा प्राप्तांक<br>Annual Exam Obtained Marks</th>
+                                        <th colspan="3" class="p-1 border-r border-slate-900">अधिभार आधारित परीक्षाफल<br>Weightage Based Result</th>
+                                        <th rowspan="2" class="p-1 border-r border-slate-900">अंतिम परिणाम<br>Final Result Total</th>
+                                        <th rowspan="2" class="p-1">विशेष<br>REMARKS</th>
+                                    </tr>
+                                    <tr class="border-t border-slate-900 font-bold">
+                                        <th class="p-1 border-r border-slate-900">TH</th>
+                                        <th class="p-1 border-r border-slate-900">PR</th>
+                                        <th class="p-1 border-r border-slate-900">TH</th>
+                                        <th class="p-1 border-r border-slate-900">PR</th>
+                                        <th class="p-1 border-r border-slate-900">TH</th>
+                                        <th class="p-1 border-r border-slate-900">PR</th>
+                                        <th class="p-1 border-r border-slate-900">Total</th>
+                                        <th class="p-1 border-r border-slate-900">त्रैमासिक (5%)</th>
+                                        <th class="p-1 border-r border-slate-900">अर्द्धवार्षिक (5%)</th>
+                                        <th class="p-1 border-r border-slate-900">वार्षिक (90%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(051) Hindi</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">59</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">78</td><td class="p-1 border-r border-slate-900">3.80</td><td class="p-1 border-r border-slate-900">4.00</td><td class="p-1 border-r border-slate-900">70.2</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">78</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(055) Urdu</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">64</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">83</td><td class="p-1 border-r border-slate-900">3.85</td><td class="p-1 border-r border-slate-900">3.00</td><td class="p-1 border-r border-slate-900">74.7</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">82</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(130) Political science</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">58</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">77</td><td class="p-1 border-r border-slate-900">3.60</td><td class="p-1 border-r border-slate-900">4.05</td><td class="p-1 border-r border-slate-900">69.3</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">77</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(140) Economics</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">35</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">54</td><td class="p-1 border-r border-slate-900">4.65</td><td class="p-1 border-r border-slate-900">3.85</td><td class="p-1 border-r border-slate-900">48.6</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">57</td><td class="p-1">-</td></tr>
+                                    <tr class="border-b-2 border-slate-900 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(166) Sociology</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">68</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">87</td><td class="p-1 border-r border-slate-900">4.70</td><td class="p-1 border-r border-slate-900">4.75</td><td class="p-1 border-r border-slate-900">78.3</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">88</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
+                                    <tr class="bg-slate-100 font-black"><td class="p-1 border-r border-slate-900 text-left">TOTAL</td><td class="p-1 border-r border-slate-900">130</td><td class="p-1 border-r border-slate-900">35</td><td class="p-1 border-r border-slate-900" colspan="8"></td><td class="p-1 border-r border-slate-900 text-blue-900 font-mono text-xs">382</td><td class="p-1"></td></tr>
+                                </tbody>
+                            </table>
+
+                            <div class="bg-slate-200 text-slate-900 text-center py-0.5 text-[9px] font-black uppercase border border-slate-900">ADDITIONAL SUBJECT</div>
+                            <table class="w-full border-x-2 border-b-2 border-slate-900 text-[10px] text-center border-collapse">
+                                <tr class="font-semibold">
+                                    <td class="p-1 border-r border-slate-900 w-36 text-left font-bold">(52) ENGLISH</td>
+                                    <td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td>
+                                    <td class="p-1 border-r border-slate-900">16</td><td class="p-1 border-r border-slate-900">18</td><td class="p-1 border-r border-slate-900 font-bold">34</td>
+                                    <td class="p-1 border-r border-slate-900">2.25</td><td class="p-1 border-r border-slate-900">2.30</td><td class="p-1 border-r border-slate-900">30.6</td>
+                                    <td class="p-1 border-r border-slate-900 font-black">35</td><td class="p-1 font-bold text-rose-600">FLDTH</td>
+                                </tr>
+                            </table>
+
+                            <!-- Result Block Table -->
+                            <div class="grid grid-cols-4 gap-2 pt-1">
+                                <div class="col-span-3">
+                                    <table class="w-full border-2 border-slate-900 text-[10px] text-center border-collapse">
+                                        <thead class="bg-slate-100 font-bold border-b border-slate-900">
+                                            <tr>
+                                                <th class="p-1 border-r border-slate-900">प्रकाशित तिथि<br>PUBLISH DATE</th>
+                                                <th class="p-1 border-r border-slate-900">परीक्षा परिणाम<br>EXAM RESULT</th>
+                                                <th class="p-1 border-r border-slate-900">पूर्णांक<br>MAX. MARKS</th>
+                                                <th class="p-1 border-r border-slate-900">कुल प्राप्तांक<br>TOTAL MARKS</th>
+                                                <th class="p-1 border-r border-slate-900">प्रतिशत<br>PERCENTAGE</th>
+                                                <th class="p-1 border-r border-slate-900">ग्रेड<br>GRADE</th>
+                                                <th class="p-1">श्रेणी<br>DIVISION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="font-extrabold text-xs">
+                                            <tr>
+                                                <td class="p-1 border-r border-slate-900 font-mono">23-03-2026</td>
+                                                <td class="p-1 border-r border-slate-900 text-emerald-700">Pass</td>
+                                                <td class="p-1 border-r border-slate-900 text-rose-700">500</td>
+                                                <td class="p-1 border-r border-slate-900 font-mono text-indigo-950">382</td>
+                                                <td class="p-1 border-r border-slate-900 font-mono text-emerald-700">76.4</td>
+                                                <td class="p-1 border-r border-slate-900">A</td>
+                                                <td class="p-1">First Division</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="text-[10px] font-bold border-x-2 border-b-2 border-slate-900 p-1 text-left bg-slate-50">
+                                        कुल प्राप्तांक शब्दों में TOTAL MARKS IN WORDS - <span class="font-black">Three Hundred Eighty Two</span>
+                                    </p>
+                                </div>
+
+                                <div class="col-span-1 border-2 border-slate-900 p-1 text-center space-y-1 flex flex-col justify-center bg-slate-50">
+                                    <p class="text-[8px] font-black leading-tight">पर्यावरण शिक्षा एवं आपदा प्रबंधन<br>ENVIRONMENTAL EDUCATION & DISASTER MANAGEMENT GRADE</p>
+                                    <span class="text-2xl font-black text-indigo-950">A+</span>
+                                </div>
+                            </div>
+
+                            <!-- Signatures Block -->
+                            <div class="pt-8 flex justify-between items-end text-[10px] font-bold text-slate-900">
+                                <div class="text-center"><div class="w-32 border-b-2 border-slate-900 mb-1"></div>SIGNATURE OF CLASS TEACHER</div>
+                                <div class="text-center"><div class="w-36 border-b-2 border-slate-900 mb-1"></div>SIGNATURE OF EXAM INCHARGE</div>
+                                <div class="text-center"><div class="w-36 border-b-2 border-slate-900 mb-1"></div>SEAL AND SIGNATURE OF PRINCIPAL</div>
+                            </div>
+
+                            <!-- Grading System Footer -->
+                            <table class="w-full border-2 border-slate-900 text-[8px] text-center font-bold border-collapse">
+                                <tr class="bg-slate-100 border-b border-slate-900">
+                                    <td class="p-1 border-r border-slate-900">DIVISION (श्रेणी)</td>
+                                    <td class="p-1 border-r border-slate-900" colspan="3">प्रथम श्रेणी (FIRST DIVISION: ≥60%)</td>
+                                    <td class="p-1 border-r border-slate-900">द्वितीय श्रेणी (SECOND: 45-59.9%)</td>
+                                    <td class="p-1" colspan="3">तृतीय श्रेणी (THIRD DIVISION: 33-44.9%)</td>
+                                </tr>
+                                <tr class="border-b border-slate-900">
+                                    <td class="p-1 border-r border-slate-900">प्राप्तांक प्रतिशत</td>
+                                    <td class="p-1 border-r border-slate-900">85% to 100%</td>
+                                    <td class="p-1 border-r border-slate-900">75% to 84.9%</td>
+                                    <td class="p-1 border-r border-slate-900">60% to 74.9%</td>
+                                    <td class="p-1 border-r border-slate-900">45% to 59.9%</td>
+                                    <td class="p-1 border-r border-slate-900">33% to 44.9%</td>
+                                    <td class="p-1 border-r border-slate-900">20% to 32.9%</td>
+                                    <td class="p-1">0% to 19.9%</td>
+                                </tr>
+                                <tr class="font-extrabold text-indigo-950">
+                                    <td class="p-1 border-r border-slate-900">GRADE (ग्रेड)</td>
+                                    <td class="p-1 border-r border-slate-900">A+</td>
+                                    <td class="p-1 border-r border-slate-900">A</td>
+                                    <td class="p-1 border-r border-slate-900">B</td>
+                                    <td class="p-1 border-r border-slate-900">C</td>
+                                    <td class="p-1 border-r border-slate-900">D</td>
+                                    <td class="p-1 border-r border-slate-900">E1</td>
+                                    <td class="p-1">E2</td>
+                                </tr>
+                            </table>
+                        </div>
+                    `;
+                } else {
+                    // CLASS 9 & 10 MARKSHEET FORMAT (MATCHING IMAGE 1)
+                    return `
+                        <div class="bg-white p-6 rounded-xl border-2 border-slate-900 shadow-xl max-w-4xl mx-auto space-y-3 text-slate-950 font-sans page-break">
+                            <div class="flex justify-between items-center border-b-2 border-slate-900 pb-2">
+                                <div class="w-16 h-16 flex items-center justify-center border-2 border-slate-900 rounded-full font-black text-xs">
+                                    MPB
+                                </div>
+                                <div class="text-center space-y-0.5">
+                                    <h2 class="text-base font-black tracking-wide">PMShri-GHSS GIRLS BEGAMGANJ(6 to 12)</h2>
+                                    <h3 class="text-xs font-bold">DISTRICT - Raisen (M.P.)</h3>
+                                    <h1 class="text-sm font-black underline tracking-wider">अंकसूची / MARKSHEET</h1>
+                                    <div class="flex items-center justify-center space-x-4 text-[10px] font-extrabold pt-0.5">
+                                        <span>February- (2026)</span>
+                                        <span>Class - 9</span>
+                                        <span>${session}</span>
+                                        <span>DISE CODE - 23340222855</span>
+                                    </div>
+                                </div>
+                                <div class="w-16 h-16 border border-slate-900 p-1 flex items-center justify-center text-[8px] text-center font-bold">
+                                    QR CODE
+                                </div>
+                            </div>
+
+                            <!-- Student Info Header Table -->
+                            <table class="w-full border-2 border-slate-900 text-center text-[10px] font-bold border-collapse">
+                                <tr class="bg-slate-100 border-b border-slate-900">
+                                    <td class="p-1 border-r border-slate-900">अनुक्रमांक / ROLL NO.</td>
+                                    <td class="p-1 border-r border-slate-900">नामांकन क्रमांक / ENROLMENT NO.</td>
+                                    <td class="p-1 border-r border-slate-900">समग्र आईडी / SSSMID</td>
+                                    <td class="p-1 border-r border-slate-900">प्रवेश क्रमांक / SCHOLAR NO.</td>
+                                    <td class="p-1 border-r border-slate-900">संस्था क्रमांक / SCHOOL CODE</td>
+                                    <td class="p-1">माध्यम / MEDIUM</td>
+                                </tr>
+                                <tr class="font-mono text-xs font-extrabold border-b-2 border-slate-900">
+                                    <td class="p-1 border-r border-slate-900">${st.rollNo || '9266510060201'}</td>
+                                    <td class="p-1 border-r border-slate-900">${st.enrollmentNo || 'A25/651006/197'}</td>
+                                    <td class="p-1 border-r border-slate-900">${st.childId || '155076454'}</td>
+                                    <td class="p-1 border-r border-slate-900">${st.scholarNo || '16626'}</td>
+                                    <td class="p-1 border-r border-slate-900">651006</td>
+                                    <td class="p-1">${st.medium || 'Hindi'}</td>
+                                </tr>
+                            </table>
+
+                            <div class="flex justify-between items-start gap-4 text-xs font-bold py-1">
+                                <div class="space-y-1.5 flex-1">
+                                    <p>श्री/श्रीमती/कुमारी SHRI/SMT/KUMARI - <span class="font-black uppercase">${st.nameEng || st.nameHindi}</span></p>
+                                    <p>पिता का नाम श्री FATHER'S NAME SHRI - <span class="font-black uppercase">${st.fatherName}</span></p>
+                                    <p>माता का नाम श्रीमती MOTHER'S NAME SMT. - <span class="font-black uppercase">${st.motherName}</span></p>
+                                    <p>जन्म तिथि DATE OF BIRTH - <span class="font-mono font-black">${st.dob}</span></p>
+                                </div>
+                                <div class="w-20 h-24 border-2 border-slate-900 p-0.5 flex-shrink-0 bg-slate-50">
+                                    <img src="${st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-900 text-white text-center py-0.5 text-[10px] font-black tracking-wider uppercase">EDUCATIONAL PERFORMANCE</div>
+
+                            <!-- Class 9 & 10 Subject Marks Table -->
+                            <table class="w-full border-2 border-slate-900 text-[10px] text-center border-collapse">
+                                <thead class="bg-slate-100 font-extrabold border-b-2 border-slate-900">
+                                    <tr>
+                                        <th rowspan="2" class="p-1.5 border-r border-slate-900 w-36 text-left">विषय<br>SUBJECT</th>
+                                        <th colspan="2" class="p-1 border-r border-slate-900">न्यूनतम अंक<br>MINIMUM MARKS</th>
+                                        <th colspan="2" class="p-1 border-r border-slate-900">अधिकतम अंक<br>MAXIMUM MARKS</th>
+                                        <th colspan="4" class="p-1 border-r border-slate-900">प्राप्तांक<br>OBTAINED MARKS</th>
+                                        <th colspan="2" class="p-1 border-r border-slate-900">अंतिम परिणाम<br>FINAL RESULT</th>
+                                        <th rowspan="2" class="p-1">विशेष<br>REMARKS</th>
+                                    </tr>
+                                    <tr class="border-t border-slate-900 font-bold">
+                                        <th class="p-1 border-r border-slate-900">TH</th>
+                                        <th class="p-1 border-r border-slate-900">PR</th>
+                                        <th class="p-1 border-r border-slate-900">TH</th>
+                                        <th class="p-1 border-r border-slate-900">PR</th>
+                                        <th class="p-1 border-r border-slate-900">वार्षिक परीक्षा<br>ANNUAL EXAM (TH/PR)</th>
+                                        <th class="p-1 border-r border-slate-900">त्रैमासिक परीक्षा 5%</th>
+                                        <th class="p-1 border-r border-slate-900">अर्द्धवार्षिक परीक्षा 5%</th>
+                                        <th class="p-1 border-r border-slate-900">TH</th>
+                                        <th class="p-1 border-r border-slate-900">PR</th>
+                                        <th class="p-1 border-r border-slate-900">कुल अंक GRAND TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(401) Hindi</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">49.00 / 14.00</td><td class="p-1 border-r border-slate-900">3.55</td><td class="p-1 border-r border-slate-900">3.30</td><td class="p-1 border-r border-slate-900 font-bold">49</td><td class="p-1 border-r border-slate-900 font-bold">21</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">70</td><td class="p-1">-</td></tr>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(411) English</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">36.00 / 14.00</td><td class="p-1 border-r border-slate-900">2.60</td><td class="p-1 border-r border-slate-900">3.10</td><td class="p-1 border-r border-slate-900 font-bold">36</td><td class="p-1 border-r border-slate-900 font-bold">20</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">56</td><td class="p-1">-</td></tr>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(512) Sanskrit</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">56.00 / 15.00</td><td class="p-1 border-r border-slate-900">2.65</td><td class="p-1 border-r border-slate-900">3.95</td><td class="p-1 border-r border-slate-900 font-bold">56</td><td class="p-1 border-r border-slate-900 font-bold">22</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">78</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(100) Maths (Standard)</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">36.00 / 14.00</td><td class="p-1 border-r border-slate-900">2.15</td><td class="p-1 border-r border-slate-900">2.70</td><td class="p-1 border-r border-slate-900 font-bold">36</td><td class="p-1 border-r border-slate-900 font-bold">19</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">55</td><td class="p-1">-</td></tr>
+                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(200) Science</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">42.00 / 14.00</td><td class="p-1 border-r border-slate-900">3.45</td><td class="p-1 border-r border-slate-900">2.65</td><td class="p-1 border-r border-slate-900 font-bold">42</td><td class="p-1 border-r border-slate-900 font-bold">20</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">62</td><td class="p-1">-</td></tr>
+                                    <tr class="border-b-2 border-slate-900 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(300) Social Science</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">43.00 / 14.00</td><td class="p-1 border-r border-slate-900">2.65</td><td class="p-1 border-r border-slate-900">2.55</td><td class="p-1 border-r border-slate-900 font-bold">43</td><td class="p-1 border-r border-slate-900 font-bold">19</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">62</td><td class="p-1">-</td></tr>
+                                    <tr class="bg-slate-100 font-black"><td class="p-1 border-r border-slate-900 text-left">TOTAL</td><td class="p-1 border-r border-slate-900">150</td><td class="p-1 border-r border-slate-900">48</td><td class="p-1 border-r border-slate-900" colspan="7"></td><td class="p-1 border-r border-slate-900 text-blue-900 font-mono text-xs">383</td><td class="p-1"></td></tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Result Block Table -->
+                            <div class="grid grid-cols-4 gap-2 pt-1">
+                                <div class="col-span-3">
+                                    <table class="w-full border-2 border-slate-900 text-[10px] text-center border-collapse">
+                                        <thead class="bg-slate-100 font-bold border-b border-slate-900">
+                                            <tr>
+                                                <th class="p-1 border-r border-slate-900">प्रकाशित तिथि<br>PUBLISH DATE</th>
+                                                <th class="p-1 border-r border-slate-900">परीक्षा परिणाम<br>EXAM RESULT</th>
+                                                <th class="p-1 border-r border-slate-900">पूर्णांक<br>MAX. MARKS</th>
+                                                <th class="p-1 border-r border-slate-900">कुल प्राप्तांक<br>TOTAL MARKS</th>
+                                                <th class="p-1 border-r border-slate-900">प्रतिशत<br>PERCENTAGE</th>
+                                                <th class="p-1 border-r border-slate-900">ग्रेड<br>GRADE</th>
+                                                <th class="p-1">श्रेणी<br>DIVISION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="font-extrabold text-xs">
+                                            <tr>
+                                                <td class="p-1 border-r border-slate-900 font-mono">23-03-2026</td>
+                                                <td class="p-1 border-r border-slate-900 text-emerald-700">Pass</td>
+                                                <td class="p-1 border-r border-slate-900 text-rose-700">600</td>
+                                                <td class="p-1 border-r border-slate-900 font-mono text-indigo-950">383</td>
+                                                <td class="p-1 border-r border-slate-900 font-mono text-emerald-700">63.83</td>
+                                                <td class="p-1 border-r border-slate-900">B</td>
+                                                <td class="p-1">First Division</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="text-[10px] font-bold border-x-2 border-b-2 border-slate-900 p-1 text-left bg-slate-50">
+                                        कुल प्राप्तांक शब्दों में TOTAL MARKS IN WORDS - <span class="font-black">Three Hundred Eighty Three</span>
+                                    </p>
+                                </div>
+
+                                <div class="col-span-1 border-2 border-slate-900 p-1 text-center space-y-1 flex flex-col justify-center bg-slate-50">
+                                    <p class="text-[8px] font-black leading-tight">पर्यावरण शिक्षा एवं आपदा प्रबंधन<br>ENVIRONMENTAL EDUCATION & DISASTER MANAGEMENT GRADE</p>
+                                    <span class="text-2xl font-black text-indigo-950">A</span>
+                                </div>
+                            </div>
+
+                            <!-- Signatures Block -->
+                            <div class="pt-8 flex justify-between items-end text-[10px] font-bold text-slate-900">
+                                <div class="text-center"><div class="w-32 border-b-2 border-slate-900 mb-1"></div>SIGNATURE OF CLASS TEACHER</div>
+                                <div class="text-center"><div class="w-36 border-b-2 border-slate-900 mb-1"></div>SIGNATURE OF EXAM INCHARGE</div>
+                                <div class="text-center"><div class="w-36 border-b-2 border-slate-900 mb-1"></div>SEAL AND SIGNATURE OF PRINCIPAL</div>
+                            </div>
+
+                            <!-- Grading System Footer -->
+                            <table class="w-full border-2 border-slate-900 text-[8px] text-center font-bold border-collapse">
+                                <tr class="bg-slate-100 border-b border-slate-900">
+                                    <td class="p-1 border-r border-slate-900">DIVISION (श्रेणी)</td>
+                                    <td class="p-1 border-r border-slate-900" colspan="3">प्रथम श्रेणी (FIRST DIVISION: ≥60%)</td>
+                                    <td class="p-1 border-r border-slate-900">द्वितीय श्रेणी (SECOND: 45-59.9%)</td>
+                                    <td class="p-1" colspan="3">तृतीय श्रेणी (THIRD DIVISION: 33-44.9%)</td>
+                                </tr>
+                                <tr class="border-b border-slate-900">
+                                    <td class="p-1 border-r border-slate-900">प्राप्तांक प्रतिशत</td>
+                                    <td class="p-1 border-r border-slate-900">85% to 100%</td>
+                                    <td class="p-1 border-r border-slate-900">75% to 84.9%</td>
+                                    <td class="p-1 border-r border-slate-900">60% to 74.9%</td>
+                                    <td class="p-1 border-r border-slate-900">45% to 59.9%</td>
+                                    <td class="p-1 border-r border-slate-900">33% to 44.9%</td>
+                                    <td class="p-1 border-r border-slate-900">20% to 32.9%</td>
+                                    <td class="p-1">0% to 19.9%</td>
+                                </tr>
+                                <tr class="font-extrabold text-indigo-950">
+                                    <td class="p-1 border-r border-slate-900">GRADE (ग्रेड)</td>
+                                    <td class="p-1 border-r border-slate-900">A+</td>
+                                    <td class="p-1 border-r border-slate-900">A</td>
+                                    <td class="p-1 border-r border-slate-900">B</td>
+                                    <td class="p-1 border-r border-slate-900">C</td>
+                                    <td class="p-1 border-r border-slate-900">D</td>
+                                    <td class="p-1 border-r border-slate-900">E1</td>
+                                    <td class="p-1">E2</td>
+                                </tr>
+                            </table>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
         function renderProfileCards() {
             const container = document.getElementById("exportableProfileCard");
             if (!container) return;
@@ -2605,74 +2943,6 @@
                     </div>
                 `;
             }).join('');
-        }
-
-        function renderMarksheets() {
-            const container = document.getElementById("exportableMarksheet");
-            if (!container) return;
-            const cls = document.getElementById("markClassFilter") ? document.getElementById("markClassFilter").value : "ALL";
-            const sec = document.getElementById("markSectionFilter") ? document.getElementById("markSectionFilter").value : "ALL";
-            const q = (document.getElementById("markSearchInput") ? document.getElementById("markSearchInput").value : "").toLowerCase().trim();
-            const cond = document.getElementById("markConditionFilter") ? document.getElementById("markConditionFilter").value : "ALL";
-            const sort = document.getElementById("markSortFilter") ? document.getElementById("markSortFilter").value : "percentDesc";
-
-            let list = Object.values(studentsData).filter(st => {
-                if (cls !== "ALL" && st.targetClass !== cls) return false;
-                if (sec !== "ALL" && st.section !== sec) return false;
-                if (cond === "DISTINCTION" && (!st.percentage || parseFloat(st.percentage) < 75)) return false;
-                if (cond === "FIRST" && (!st.percentage || parseFloat(st.percentage) < 60)) return false;
-                if (cond === "PASS" && st.provisionalResult !== "Pass") return false;
-                if (cond === "FAIL" && st.provisionalResult !== "Fail" && st.provisionalResult !== "Supp") return false;
-
-                if (q) {
-                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName}`.toLowerCase();
-                    if (!haystack.includes(q)) return false;
-                }
-                return true;
-            });
-
-            list.sort((a, b) => {
-                if (sort === "percentAsc") return (parseFloat(a.percentage) || 84.8) - (parseFloat(b.percentage) || 84.8);
-                if (sort === "rollAsc") return (parseInt(a.rollNo) || 0) - (parseInt(b.rollNo) || 0);
-                if (sort === "nameAsc") return (a.nameHindi || a.nameEng || "").localeCompare(b.nameHindi || b.nameEng || "");
-                return (parseFloat(b.percentage) || 84.8) - (parseFloat(a.percentage) || 84.8);
-            });
-
-            const badge = document.getElementById("markCountBadge");
-            if (badge) badge.innerText = `प्रदर्शित अंकसूची: ${list.length}`;
-
-            if (list.length === 0) {
-                container.innerHTML = `<div class="text-center p-6 bg-white rounded-xl border font-bold text-slate-500">कोई समेकित अंकसूची उपलब्ध नहीं है।</div>`;
-                return;
-            }
-
-            container.innerHTML = list.map(st => `
-                <div class="bg-white p-4 rounded-xl border-2 border-amber-800 shadow-md space-y-3 text-xs">
-                    <div class="text-center border-b pb-2 flex justify-between items-center">
-                        <div class="text-left">
-                            <h3 class="font-black text-amber-950 text-sm">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज</h3>
-                            <p class="text-[10px] text-slate-600 font-bold">समेकित अंकसूची विवरण (Statement of Marks) - सत्र 2025-2026</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="bg-amber-100 text-amber-900 font-mono text-xs font-black px-2 py-0.5 rounded border border-amber-300">84.8% (A+ GRADE)</span>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center font-bold">
-                        <p><strong>विद्यार्थी:</strong> ${st.nameHindi || st.nameEng} | <strong>पिता:</strong> ${st.fatherName}</p>
-                        <p class="font-mono">कक्षा: ${st.targetClass} (${st.section}) | स्कॉलर: ${st.scholarNo}</p>
-                    </div>
-                    <table class="w-full border text-center text-[10px] border-collapse">
-                        <tr class="bg-amber-950 text-white font-bold">
-                            <th class="p-1.5 border">विषय</th><th class="p-1.5 border">पूर्णांक</th><th class="p-1.5 border">प्राप्तांक</th><th class="p-1.5 border">परिणाम</th>
-                        </tr>
-                        <tr><td class="p-1 border font-bold">${st.sub1 || '401 - हिन्दी'}</td><td class="p-1 border">100</td><td class="p-1 border font-bold">85</td><td class="p-1 border text-emerald-700 font-bold">PASS</td></tr>
-                        <tr><td class="p-1 border font-bold">${st.sub2 || '411 - अंग्रेजी'}</td><td class="p-1 border">100</td><td class="p-1 border font-bold">78</td><td class="p-1 border text-emerald-700 font-bold">PASS</td></tr>
-                        <tr><td class="p-1 border font-bold">${st.sub3 || '100 - गणित'}</td><td class="p-1 border">100</td><td class="p-1 border font-bold">90</td><td class="p-1 border text-emerald-700 font-bold">PASS</td></tr>
-                        <tr><td class="p-1 border font-bold">${st.sub4 || '200 - विज्ञान'}</td><td class="p-1 border">100</td><td class="p-1 border font-bold">88</td><td class="p-1 border text-emerald-700 font-bold">PASS</td></tr>
-                        <tr><td class="p-1 border font-bold">${st.sub5 || '300 - सा.विज्ञान'}</td><td class="p-1 border">100</td><td class="p-1 border font-bold">83</td><td class="p-1 border text-emerald-700 font-bold">PASS</td></tr>
-                    </table>
-                </div>
-            `).join('');
         }
 
         function renderTeacherCard() {
