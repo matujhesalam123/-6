@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>स्टूडेंट डाटा मैनेजमेंट सिस्टम (SDMS) - मास्टर्स पोर्टल</title>
+    
+    <!-- Google Devanagari Font Support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- jsPDF & html2canvas for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; font-family: 'Noto Sans Devanagari', sans-serif !important; }
+            .content-section { border: none !important; box-shadow: none !important; display: block !important; }
+            .page-break { page-break-after: always; break-after: page; }
+            .letter-box { border-color: #000000 !important; }
+            .a4-container {
+                width: 210mm !important;
+                min-height: 297mm !important;
+                padding: 8mm 10mm !important;
+                border: none !important;
+                box-shadow: none !important;
+                margin: 0 auto !important;
+            }
+        }
+        
+        .tab-btn.active {
+            background-color: #1e1b4b;
+            color: #ffffff;
+            font-weight: 700;
+            border-left: 4px solid #facc15;
+        }
+
+        @keyframes goldGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(234, 179, 8, 0.7), inset 0 0 12px rgba(234, 179, 8, 0.4); border-color: #eab308; }
+            50% { box-shadow: 0 0 35px rgba(234, 179, 8, 0.95), inset 0 0 20px rgba(234, 179, 8, 0.6); border-color: #facc15; }
+        }
+        .gold-glow { animation: goldGlow 2s infinite ease-in-out; }
+
+        @keyframes silverGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(148, 163, 184, 0.6); border-color: #94a3b8; }
+            50% { box-shadow: 0 0 20px rgba(203, 213, 225, 0.9); border-color: #cbd5e1; }
+        }
+        .silver-glow { animation: silverGlow 2.5s infinite ease-in-out; }
+
+        @keyframes bronzeGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(217, 119, 6, 0.5); border-color: #d97706; }
+            50% { box-shadow: 0 0 18px rgba(245, 158, 11, 0.8); border-color: #f59e0b; }
+        }
+        .bronze-glow { animation: bronzeGlow 2.5s infinite ease-in-out; }
+
+        .letter-box-container {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin-top: 1px;
+            margin-bottom: 1px;
+        }
+
+        .letter-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 20px;
+            border: 1px solid #0f172a;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 20px;
+            margin-right: -1px;
+            background-color: #ffffff;
+            color: #0f172a;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            font-family: monospace, 'Noto Sans Devanagari', sans-serif;
+        }
+
+        .form-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .form-table th, .form-table td {
+            border: 1px solid #0f172a;
+            padding: 3px 5px;
+            vertical-align: middle;
+        }
+
+        .fill-line {
+            border-bottom: 1px dotted #0f172a;
+            display: inline-block;
+            font-weight: 700;
+            padding-left: 4px;
+            padding-right: 4px;
+            min-height: 18px;
+            vertical-align: bottom;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <header class="bg-indigo-950 text-white shadow-lg border-b border-indigo-800 sticky top-0 z-40 no-print">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showSection('dashboard')">
+                <div class="bg-yellow-500 text-indigo-950 p-1.5 rounded-lg font-black text-xl flex items-center justify-center shadow">
+                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-base font-extrabold tracking-wide text-yellow-400">SDMS - मास्टर्स स्टूडेंट डाटा मैनेजमेंट पोर्टल</h1>
+                    <p class="text-[10px] text-indigo-200" id="headerSchoolLabel">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज (रायसेन)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="hidden sm:flex items-center bg-indigo-900 rounded-lg px-2.5 py-1 text-xs border border-indigo-700">
+                    <span class="text-emerald-400 font-bold flex items-center space-x-1">
+                        <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+                        <span>उन्मुक्त मोड (खुला एक्सेस)</span>
+                    </span>
+                </div>
+
+                <button onclick="downloadJsonBackup()" class="bg-yellow-500 hover:bg-yellow-600 text-indigo-950 font-black text-xs px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
+                    <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>
+                    <span>बैकअप डाउनलोड</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 md:p-5 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+        <!-- PERSISTENT LEFT SIDEBAR PANEL -->
+        <aside class="md:col-span-1 bg-white rounded-xl shadow-sm p-3 border border-slate-200 no-print flex flex-col space-y-3 sticky top-16 h-fit">
+            
+            <!-- Quick Live Student Search & Selector -->
+            <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-2 space-y-1.5">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-indigo-900 flex items-center justify-between">
+                    <span>🔍 त्वरित छात्र खोजें:</span>
+                    <span id="quickStudentCountBadge" class="text-[9px] bg-indigo-200 text-indigo-950 px-1.5 py-0.2 rounded-full font-bold">0 छात्र</span>
+                </label>
+                <input type="text" id="sidebarSearchInput" oninput="filterSidebarStudentDropdown(this.value)" placeholder="नाम, स्कॉलर या रोल नंबर..." class="w-full text-xs px-2 py-1 border border-indigo-300 rounded outline-none focus:ring-1 focus:ring-indigo-600 font-semibold">
+                
+                <select id="sidebarStudentSelect" onchange="loadStudentData(this.value)" class="w-full bg-white border border-indigo-300 rounded px-2 py-1 text-xs font-bold text-indigo-950 outline-none">
+                </select>
+            </div>
+
+            <!-- Quick Teacher Search & Selector -->
+            <div class="bg-teal-50 border border-teal-200 rounded-lg p-2 space-y-1.5">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-teal-900 flex items-center justify-between">
+                    <span>👨‍🏫 त्वरित शिक्षक खोजें:</span>
+                    <span id="quickTeacherCountBadge" class="text-[9px] bg-teal-200 text-teal-950 px-1.5 py-0.2 rounded-full font-bold">0 शिक्षक</span>
+                </label>
+                <input type="text" id="sidebarTeacherSearchInput" oninput="filterSidebarTeacherDropdown(this.value)" placeholder="शिक्षक नाम या कोड..." class="w-full text-xs px-2 py-1 border border-teal-300 rounded outline-none focus:ring-1 focus:ring-teal-600 font-semibold">
+                
+                <select id="sidebarTeacherSelect" onchange="loadTeacherCardData(this.value)" class="w-full bg-white border border-teal-300 rounded px-2 py-1 text-xs font-bold text-teal-950 outline-none">
+                </select>
+            </div>
+
+            <nav class="space-y-1 text-xs font-bold" id="sidebarMenu">
+                <button onclick="showSection('dashboard')" id="btn-dashboard" class="tab-btn active w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 text-amber-500"></i>
+                    <span>मुख्य डैशबोर्ड</span>
+                </button>
+                <button onclick="showSection('student-entry')" id="btn-student-entry" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="user-plus" class="w-4 h-4 text-indigo-600"></i>
+                    <span>मास्टर्स छात्र ऑनलाइन फ़ॉर्म</span>
+                </button>
+                <button onclick="showSection('master-grid')" id="btn-master-grid" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="search-code" class="w-4 h-4 text-blue-600"></i>
+                    <span>मास्टर्स छात्र सर्च ग्रिड</span>
+                </button>
+                <button onclick="showSection('combined-forms')" id="btn-combined-forms" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="files" class="w-4 h-4 text-rose-600"></i>
+                    <span>तीनों फ़ॉर्म्स (1, 2 व 3 संयुक्त)</span>
+                </button>
+                <button onclick="showSection('profile-card')" id="btn-profile-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="id-card" class="w-4 h-4 text-purple-600"></i>
+                    <span>छात्र प्रोफाइल आईकार्ड</span>
+                </button>
+                <button onclick="showSection('admit-card')" id="btn-admit-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="ticket" class="w-4 h-4 text-rose-500"></i>
+                    <span>वार्षिक परीक्षा एडमिट कार्ड</span>
+                </button>
+                <button onclick="showSection('marksheet')" id="btn-marksheet" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
+                    <span>समेकित अंकसूची (Marksheet)</span>
+                </button>
+                <button onclick="showSection('teacher-card')" id="btn-teacher-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="user-check" class="w-4 h-4 text-teal-600"></i>
+                    <span>शिक्षक पहचान पत्र (ID Card)</span>
+                </button>
+                <button onclick="showSection('management-panel')" id="btn-management-panel" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="building" class="w-4 h-4 text-cyan-600"></i>
+                    <span>संस्था प्रमुख व शिक्षक प्रबंधन</span>
+                </button>
+                <button onclick="showSection('subject-master')" id="btn-subject-master" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="book-open" class="w-4 h-4 text-purple-600"></i>
+                    <span>1. विषय व विषय कोड मास्टर</span>
+                </button>
+                <button onclick="showSection('marks-config')" id="btn-marks-config" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="sliders" class="w-4 h-4 text-emerald-600"></i>
+                    <span>2. कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स</span>
+                </button>
+                <button onclick="showSection('exam-marks')" id="btn-exam-marks" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="pen-tool" class="w-4 h-4 text-rose-600"></i>
+                    <span>3. 5-स्तरीय परीक्षा अंक प्रविष्टि</span>
+                </button>
+                <button onclick="showSection('consolidated-report')" id="btn-consolidated-report" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-600"></i>
+                    <span>4. एकजाई शाला परिणाम रिपोर्ट</span>
+                </button>
+                <button onclick="showSection('class-exam-report')" id="btn-class-exam-report" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-600"></i>
+                    <span>5. कक्षा-सेक्शन विस्तृत रिपोर्ट</span>
+                </button>
+                <button onclick="showSection('book-master')" id="btn-book-master" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="library" class="w-4 h-4 text-amber-700"></i>
+                    <span>6. पुस्तकालय व पाठ्यपुस्तक मास्टर</span>
+                </button>
+                <button onclick="showSection('cloud-settings')" id="btn-cloud-settings" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="cloud" class="w-4 h-4 text-sky-600"></i>
+                    <span>7. क्लाउड व बैकअप सेटिंग्स</span>
+                </button>
+            </nav>
+
+            <div class="border-t border-slate-200 pt-2 text-[10px] text-slate-500 font-bold space-y-1">
+                <p class="text-indigo-900 uppercase tracking-wider font-extrabold">आधिकारिक प्रिंट फ़ॉर्म्स:</p>
+                <button onclick="showSection('form-mp-board')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">1. म.प्र. बोर्ड हाईस्कूल फॉर्म</button>
+                <button onclick="showSection('form-sssm')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">2. समग्र छात्रवृत्ति योजना फॉर्म</button>
+                <button onclick="showSection('form-pm-shri')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">3. पीएमश्री बेगमगंज प्रवेश फॉर्म</button>
+            </div>
+        </aside>
+
+        <main class="md:col-span-3 lg:col-span-4 space-y-4">
+
+            <!-- GLOBAL EXPORT TOOLBAR -->
+            <div class="bg-white p-2.5 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-2 no-print">
+                <div class="flex items-center space-x-1.5 text-xs font-bold text-slate-700">
+                    <i data-lucide="download" class="w-4 h-4 text-indigo-600"></i>
+                    <span id="currentActiveSectionTitle">अनुभाग: मुख्य डैशबोर्ड</span>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-1.5">
+                    <button onclick="globalPrintCurrentSection()" class="bg-slate-800 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-slate-900 shadow flex items-center space-x-1">
+                        <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                        <span>प्रिंट (Print)</span>
+                    </button>
+                    <button onclick="globalExportPDF()" class="bg-rose-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-rose-700 shadow flex items-center space-x-1">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                        <span>PDF</span>
+                    </button>
+                    <button onclick="globalExportExcel()" class="bg-emerald-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-emerald-700 shadow flex items-center space-x-1">
+                        <i data-lucide="sheet" class="w-3.5 h-3.5"></i>
+                        <span>Excel</span>
+                    </button>
+                    <button onclick="globalExportDoc()" class="bg-blue-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-blue-700 shadow flex items-center space-x-1">
+                        <i data-lucide="file-code" class="w-3.5 h-3.5"></i>
+                        <span>Doc</span>
+                    </button>
+                    <button onclick="globalExportImage()" class="bg-amber-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-amber-700 shadow flex items-center space-x-1">
+                        <i data-lucide="image" class="w-3.5 h-3.5"></i>
+                        <span>Image</span>
+                    </button>
+                    <button onclick="shareOnlineLinkToken()" class="bg-indigo-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-indigo-800 shadow flex items-center space-x-1">
+                        <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+                        <span>शेयर लिंक</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SECTION 1: DASHBOARD -->
+            <section id="section-dashboard" class="content-section space-y-4">
+                
+                <!-- OVERALL SCHOOL TOPPER SPOTLIGHT BANNER -->
+                <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-slate-950 p-4 rounded-2xl shadow-xl border-2 border-yellow-300 gold-glow relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img id="dashTopperPhoto" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-24 h-28 object-cover rounded-xl border-4 border-white shadow-2xl bg-white">
+                            <span class="absolute -top-3 -right-3 bg-red-600 text-white font-black text-xs px-2 py-0.5 rounded-full shadow border-2 border-white flex items-center space
