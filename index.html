@@ -838,19 +838,34 @@
 
             <!-- SECTION 6: ADMIT CARDS -->
             <section id="section-admit-card" class="content-section space-y-4 hidden">
-                <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-3 no-print">
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-3 no-print shadow-sm">
                     <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-2">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="ticket" class="w-4 h-4 text-rose-500"></i>
-                            <h3 class="text-xs font-bold text-slate-800">वार्षिक परीक्षा एडमिट कार्ड (Annual Exam Admit Cards)</h3>
+                            <i data-lucide="ticket" class="w-5 h-5 text-rose-600"></i>
+                            <div>
+                                <h3 class="text-xs font-black text-slate-900">परीक्षा प्रवेश पत्र प्रबंधन (Exam Admit Cards Generator)</h3>
+                                <p class="text-[10px] text-slate-500 font-semibold">त्रैमासिक, अर्द्धवार्षिक, प्री-बोर्ड व वार्षिक परीक्षा टाइमटेबल एडमिट कार्ड</p>
+                            </div>
                         </div>
-                        <span id="admitCountBadge" class="text-[10px] bg-rose-100 text-rose-900 font-extrabold px-2.5 py-0.5 rounded-full">प्रदर्शित एडमिट कार्ड: 0</span>
+                        <div class="flex items-center space-x-2">
+                            <span id="admitCountBadge" class="text-[10px] bg-rose-100 text-rose-900 font-extrabold px-3 py-1 rounded-full border border-rose-200">प्रदर्शित एडमिट कार्ड: 0</span>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs font-semibold">
+                    <!-- MULTI-LEVEL FILTER & BATCH SELECTION TOOLBAR -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 text-xs font-semibold">
                         <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">1. कक्षा चुनें:</label>
-                            <select id="admitClassFilter" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 font-bold bg-rose-50 text-rose-950 border-rose-300">
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">1. परीक्षा प्रकार चुनें:</label>
+                            <select id="admitExamTypeSelect" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 font-black bg-rose-50 text-rose-950 border-rose-300">
+                                <option value="annual">ANNUAL EXAM (वार्षिक परीक्षा)</option>
+                                <option value="preboard">PRE-BOARD EXAM (प्री-बोर्ड परीक्षा)</option>
+                                <option value="halfYearly">HALF YEARLY EXAM (अर्द्धवार्षिक परीक्षा)</option>
+                                <option value="quarterly">QUARTERLY EXAM (त्रैमासिक परीक्षा)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">2. कक्षा चुनें:</label>
+                            <select id="admitClassFilter" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 font-bold bg-slate-50 text-slate-900 border-slate-300">
                                 <option value="ALL">🏢 पूरे स्कूल की कक्षाएं (All Classes)</option>
                                 <option value="10th">कक्षा 10वीं</option>
                                 <option value="9th">कक्षा 9वीं</option>
@@ -859,8 +874,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">2. सेक्शन चुनें:</label>
-                            <select id="admitSectionFilter" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 font-bold bg-rose-50 text-rose-950 border-rose-300">
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">3. सेक्शन चुनें:</label>
+                            <select id="admitSectionFilter" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 font-bold bg-slate-50 text-slate-900 border-slate-300">
                                 <option value="ALL">समस्त सेक्शन (All Sections)</option>
                                 <option value="A">Section A</option>
                                 <option value="B">Section B</option>
@@ -868,30 +883,44 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">3. एडवांस खोजें:</label>
-                            <input type="text" id="admitSearchInput" oninput="renderAdmitCards()" placeholder="🔍 नाम, अनुक्रमांक, स्कॉलर..." class="w-full border rounded px-2 py-1 border-rose-300 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">4. कंडीशन फ़िल्टर:</label>
-                            <select id="admitConditionFilter" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 bg-rose-50 text-rose-950 border-rose-300 font-bold">
-                                <option value="ALL">समस्त प्रवेशी</option>
-                                <option value="PASS">Pass (उत्तीर्ण छात्र)</option>
-                                <option value="SUPP">Supplementary (पूरक)</option>
-                                <option value="REGULAR">संस्थागत (Regular)</option>
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">4. विशिष्ट छात्र चुनें:</label>
+                            <select id="admitStudentSelect" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 bg-slate-50 text-slate-900 border-slate-300 font-bold">
+                                <option value="ALL">-- सभी छात्र (Batch View) --</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-slate-600 text-[10px] font-bold mb-0.5">5. सॉर्टिंग क्रम:</label>
-                            <select id="admitSortFilter" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 bg-rose-50 text-rose-950 border-rose-300 font-bold">
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">5. लाइव खोजें:</label>
+                            <input type="text" id="admitSearchInput" oninput="renderAdmitCards()" placeholder="🔍 नाम, अनुक्रमांक, स्कॉलर..." class="w-full border rounded px-2 py-1 border-slate-300 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">6. सॉर्टिंग क्रम:</label>
+                            <select id="admitSortFilter" onchange="renderAdmitCards()" class="w-full border rounded px-2 py-1 bg-slate-50 text-slate-900 border-slate-300 font-bold">
                                 <option value="rollAsc">अनुक्रमांक (Roll No 1-9)</option>
                                 <option value="scholarAsc">स्कॉलर क्र. (1-9)</option>
                                 <option value="nameAsc">नाम (A-Z)</option>
                             </select>
                         </div>
                     </div>
+
+                    <!-- EXPORT BUTTONS FOR ADMIT CARDS -->
+                    <div class="flex flex-wrap items-center justify-end gap-1.5 border-t pt-2">
+                        <button onclick="globalPrintCurrentSection()" class="bg-slate-800 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-slate-900 shadow flex items-center space-x-1">
+                            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                            <span>एडमिट कार्ड प्रिंट करें</span>
+                        </button>
+                        <button onclick="globalExportPDF()" class="bg-rose-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-rose-700 shadow flex items-center space-x-1">
+                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                            <span>PDF डाउनलोड</span>
+                        </button>
+                        <button onclick="globalExportExcel()" class="bg-emerald-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-emerald-700 shadow flex items-center space-x-1">
+                            <i data-lucide="sheet" class="w-3.5 h-3.5"></i>
+                            <span>Excel सूची</span>
+                        </button>
+                    </div>
                 </div>
 
-                <div id="exportableAdmitCard" class="space-y-6">
+                <!-- EXPORTABLE ADMIT CARDS CONTAINER -->
+                <div id="exportableAdmitCard" class="space-y-8">
                 </div>
             </section>
 
@@ -1988,21 +2017,30 @@
         function renderAdmitCards() {
             const container = document.getElementById("exportableAdmitCard");
             if (!container) return;
+
+            const examType = document.getElementById("admitExamTypeSelect") ? document.getElementById("admitExamTypeSelect").value : "annual";
             const cls = document.getElementById("admitClassFilter") ? document.getElementById("admitClassFilter").value : "ALL";
             const sec = document.getElementById("admitSectionFilter") ? document.getElementById("admitSectionFilter").value : "ALL";
+            const selectedStudent = document.getElementById("admitStudentSelect") ? document.getElementById("admitStudentSelect").value : "ALL";
             const q = (document.getElementById("admitSearchInput") ? document.getElementById("admitSearchInput").value : "").toLowerCase().trim();
-            const cond = document.getElementById("admitConditionFilter") ? document.getElementById("admitConditionFilter").value : "ALL";
             const sort = document.getElementById("admitSortFilter") ? document.getElementById("admitSortFilter").value : "rollAsc";
+
+            // Populate Student Select Dropdown dynamically
+            const studentSelectElem = document.getElementById("admitStudentSelect");
+            if (studentSelectElem) {
+                const currentSel = studentSelectElem.value;
+                studentSelectElem.innerHTML = `<option value="ALL">-- सभी छात्र (Batch View) --</option>` +
+                    Object.values(studentsData).map(st => `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng} (${st.targetClass}-${st.section})</option>`).join('');
+                studentSelectElem.value = currentSel;
+            }
 
             let list = Object.values(studentsData).filter(st => {
                 if (cls !== "ALL" && st.targetClass !== cls) return false;
                 if (sec !== "ALL" && st.section !== sec) return false;
-                if (cond === "PASS" && st.provisionalResult !== "Pass") return false;
-                if (cond === "SUPP" && st.provisionalResult !== "Supp") return false;
-                if (cond === "REGULAR" && st.applicantType !== "1") return false;
+                if (selectedStudent !== "ALL" && st.id !== selectedStudent) return false;
 
                 if (q) {
-                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName}`.toLowerCase();
+                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.enrollmentNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName} ${st.motherName}`.toLowerCase();
                     if (!haystack.includes(q)) return false;
                 }
                 return true;
@@ -2018,43 +2056,158 @@
             if (badge) badge.innerText = `प्रदर्शित एडमिट कार्ड: ${list.length}`;
 
             if (list.length === 0) {
-                container.innerHTML = `<div class="text-center p-6 bg-white rounded-xl border font-bold text-slate-500">कोई एडमिट कार्ड उपलब्ध नहीं है।</div>`;
+                container.innerHTML = `<div class="text-center p-8 bg-white rounded-xl border border-slate-200 font-bold text-slate-500">कोई परीक्षा प्रवेश पत्र (Admit Card) मेल नहीं खाता। फ़िल्टर बदल कर प्रयास करें।</div>`;
                 return;
             }
 
-            container.innerHTML = list.map(st => `
-                <div class="bg-white p-4 rounded-xl border-2 border-rose-900 shadow-md space-y-3 text-xs">
-                    <div class="text-center border-b pb-2 flex justify-between items-center">
-                        <div class="text-left">
-                            <h3 class="font-black text-rose-950 text-sm">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज</h3>
-                            <p class="text-[10px] text-slate-600 font-bold">वार्षिक परीक्षा प्रवेश पत्र (Admit Card) - सत्र 2025-2026</p>
+            // EXAM TYPE LABELS & TIMETABLE SCHEDULE MAPPINGS
+            const examLabels = {
+                "annual": "ANNUAL EXAM",
+                "preboard": "PRE-BOARD EXAM",
+                "halfYearly": "HALF YEARLY EXAM",
+                "quarterly": "QUARTERLY EXAM"
+            };
+
+            const examSchedules = {
+                "annual": [
+                    { date: "03-06-2026", day: "Wednesday", time: "09:00 AM - 12:00 PM" },
+                    { date: "06-06-2026", day: "Saturday", time: "01:30 PM - 04:30 PM" },
+                    { date: "09-06-2026", day: "Tuesday", time: "09:00 AM - 12:00 PM" },
+                    { date: "10-06-2026", day: "Wednesday", time: "09:00 AM - 12:00 PM" },
+                    { date: "11-06-2026", day: "Thursday", time: "09:00 AM - 12:00 PM" },
+                    { date: "12-06-2026", day: "Friday", time: "09:00 AM - 12:00 PM" }
+                ],
+                "preboard": [
+                    { date: "15-01-2026", day: "Thursday", time: "09:00 AM - 12:00 PM" },
+                    { date: "17-01-2026", day: "Saturday", time: "09:00 AM - 12:00 PM" },
+                    { date: "19-01-2026", day: "Monday", time: "09:00 AM - 12:00 PM" },
+                    { date: "21-01-2026", day: "Wednesday", time: "09:00 AM - 12:00 PM" },
+                    { date: "23-01-2026", day: "Friday", time: "09:00 AM - 12:00 PM" },
+                    { date: "25-01-2026", day: "Sunday", time: "09:00 AM - 12:00 PM" }
+                ],
+                "halfYearly": [
+                    { date: "01-12-2025", day: "Monday", time: "09:00 AM - 12:00 PM" },
+                    { date: "03-12-2025", day: "Wednesday", time: "09:00 AM - 12:00 PM" },
+                    { date: "05-12-2025", day: "Friday", time: "09:00 AM - 12:00 PM" },
+                    { date: "08-12-2025", day: "Monday", time: "09:00 AM - 12:00 PM" },
+                    { date: "10-12-2025", day: "Wednesday", time: "09:00 AM - 12:00 PM" },
+                    { date: "12-12-2025", day: "Friday", time: "09:00 AM - 12:00 PM" }
+                ],
+                "quarterly": [
+                    { date: "15-09-2025", day: "Monday", time: "09:00 AM - 12:00 PM" },
+                    { date: "17-09-2025", day: "Wednesday", time: "09:00 AM - 12:00 PM" },
+                    { date: "19-09-2025", day: "Friday", time: "09:00 AM - 12:00 PM" },
+                    { date: "22-09-2025", day: "Monday", time: "09:00 AM - 12:00 PM" },
+                    { date: "24-09-2025", day: "Wednesday", time: "09:00 AM - 12:00 PM" },
+                    { date: "26-09-2025", day: "Friday", time: "09:00 AM - 12:00 PM" }
+                ]
+            };
+
+            const currentSchedule = examSchedules[examType] || examSchedules["annual"];
+
+            container.innerHTML = list.map(st => {
+                const rawSubjects = [
+                    st.sub1 || '401 - हिन्दी',
+                    st.sub2 || '411 - अंग्रेजी',
+                    st.sub3 || '100 - गणित / समाजशास्त्र',
+                    st.sub4 || '200 - विज्ञान / अर्थशास्त्र',
+                    st.sub5 || '300 - सा.विज्ञान / राजनीति',
+                    st.sub6 || '501 - संस्कृत / उर्दू'
+                ];
+
+                const formattedSubjects = rawSubjects.map(subStr => {
+                    if (subStr.includes('-')) {
+                        const parts = subStr.split('-');
+                        const code = parts[0].trim();
+                        const name = parts.slice(1).join('-').trim();
+                        return `(${code}) ${name}`;
+                    }
+                    return subStr;
+                });
+
+                return `
+                    <div class="bg-white p-4 rounded-xl border-2 border-slate-900 shadow-lg relative overflow-hidden text-slate-950 font-sans max-w-4xl mx-auto page-break">
+                        
+                        <!-- CIRCULAR WATERMARK EMBLEM -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none z-0">
+                            <div class="w-64 h-64 border-8 border-slate-900 rounded-full flex items-center justify-center text-center p-4">
+                                <span class="font-extrabold text-xs tracking-wider uppercase">लोक शिक्षण संचालनालय मध्य प्रदेश</span>
+                            </div>
                         </div>
-                        <span class="bg-rose-100 text-rose-900 font-black text-[10px] px-2 py-0.5 rounded border border-rose-300">कक्षा: ${st.targetClass} (${st.section})</span>
-                    </div>
-                    <div class="flex justify-between items-start space-x-4">
-                        <div class="space-y-1.5 flex-1 font-semibold">
-                            <p><strong>विद्यार्थी का नाम:</strong> <span class="font-black text-rose-950">${st.nameHindi || st.nameEng}</span></p>
-                            <p><strong>पिता का नाम:</strong> ${st.fatherName}</p>
-                            <p><strong>अनुक्रमांक (Roll No):</strong> <span class="font-mono font-bold text-indigo-900">${st.rollNo || '1001'}</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>स्कॉलर नं.:</strong> <span class="font-mono font-bold">${st.scholarNo}</span></p>
-                            <p><strong>नामांकन क्रमांक:</strong> <span class="font-mono">${st.enrollmentNo || 'MP2025/101'}</span></p>
+
+                        <!-- ADMIT CARD TOP HEADER -->
+                        <div class="text-center relative z-10 border-b-2 border-slate-900 pb-2 mb-2">
+                            <h2 class="text-base md:text-lg font-black tracking-wide uppercase">ADMIT CARD 2025-26</h2>
+                            <h3 class="text-xs font-bold uppercase tracking-tight">PMSHRI-GHSS GIRLS BEGAMGANJ(6 TO 12) - (23340222855)</h3>
+                            <h4 class="text-xs font-extrabold text-slate-800">Exam Center Name: PMShri-GHSS GIRLS BEGAMGANJ(6 to 12)</h4>
                         </div>
-                        <img src="${st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-20 h-24 object-cover border-2 border-rose-900 rounded shadow">
+
+                        <!-- STUDENT DETAILS & PHOTO GRID -->
+                        <div class="flex justify-between items-start gap-3 relative z-10 text-xs font-bold pb-2">
+                            <div class="grid grid-cols-3 gap-x-4 gap-y-1 flex-1 leading-snug">
+                                <div><span class="text-slate-600 font-semibold">Roll No :</span> <span class="font-black font-mono text-sm text-indigo-950">${st.rollNo || '11266510060206'}</span></div>
+                                <div><span class="text-slate-600 font-semibold">Enrollment No. :</span> <span class="font-mono">${st.enrollmentNo || 'A22/651006/245'}</span></div>
+                                <div><span class="text-slate-600 font-semibold">Scholar No. :</span> <span class="font-black font-mono">${st.scholarNo || '13354'}</span></div>
+
+                                <div><span class="text-slate-600 font-semibold">Student Name :</span> <span class="font-black text-indigo-950 uppercase">${st.nameEng || st.nameHindi || 'Mantasha bee'}</span></div>
+                                <div><span class="text-slate-600 font-semibold">Father's Name :</span> <span>${st.fatherName || 'Mohammad Irfan'}</span></div>
+                                <div><span class="text-slate-600 font-semibold">Mother's Name :</span> <span>${st.motherName || 'Shanaz Bee'}</span></div>
+
+                                <div><span class="text-slate-600 font-semibold">Class :</span> <span class="font-black">Class -${st.targetClass || '11'}-${st.section || 'B'}</span></div>
+                                <div><span class="text-slate-600 font-semibold">Medium :</span> <span>${st.medium || 'Hindi'}</span></div>
+                                <div><span class="text-slate-600 font-semibold">Date of Birth :</span> <span class="font-mono">${st.dob || '15-08-2008'}</span></div>
+
+                                <div class="col-span-3"><span class="text-slate-600 font-semibold">Stream :</span> <span class="font-extrabold text-rose-900">${st.targetClass === '11th' || st.targetClass === '12th' ? 'Humanities / Arts' : 'General Academic'}</span></div>
+                            </div>
+
+                            <div class="border-2 border-slate-900 p-0.5 text-center w-24 h-28 bg-slate-50 flex-shrink-0 flex flex-col justify-between shadow-sm">
+                                <img src="${st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+
+                        <!-- EXAM TYPE CENTER BADGE -->
+                        <div class="text-center relative z-10 my-2">
+                            <span class="bg-slate-200 text-slate-950 px-6 py-1 border-2 border-slate-900 font-black text-xs uppercase tracking-widest inline-block shadow-sm">
+                                ${examLabels[examType]}
+                            </span>
+                        </div>
+
+                        <!-- TIMETABLE TABLE GRID -->
+                        <div class="relative z-10 overflow-x-auto my-2">
+                            <table class="w-full border-collapse border-2 border-slate-900 text-xs text-left">
+                                <thead>
+                                    <tr class="border-b-2 border-slate-900 bg-slate-100 font-black">
+                                        <th class="p-1.5 border-r-2 border-slate-900 text-center w-12">S.N.</th>
+                                        <th class="p-1.5 border-r-2 border-slate-900 text-center w-28">Date</th>
+                                        <th class="p-1.5 border-r-2 border-slate-900 text-center w-28">Day</th>
+                                        <th class="p-1.5 border-r-2 border-slate-900 text-center w-40">Time</th>
+                                        <th class="p-1.5 font-black">Subject Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${formattedSubjects.map((sub, idx) => {
+                                        const schedule = currentSchedule[idx] || { date: "15-06-2026", day: "Monday", time: "09:00 AM - 12:00 PM" };
+                                        return `
+                                            <tr class="border-b border-slate-900 font-bold hover:bg-slate-50">
+                                                <td class="p-1.5 border-r-2 border-slate-900 text-center font-extrabold">${idx + 1}</td>
+                                                <td class="p-1.5 border-r-2 border-slate-900 text-center font-mono">${schedule.date}</td>
+                                                <td class="p-1.5 border-r-2 border-slate-900 text-center">${schedule.day}</td>
+                                                <td class="p-1.5 border-r-2 border-slate-900 text-center font-mono">${schedule.time}</td>
+                                                <td class="p-1.5 font-black text-indigo-950">${sub}</td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- INSTRUCTIONS FOOTER -->
+                        <div class="relative z-10 pt-2 text-[11px] font-bold text-slate-900">
+                            <p class="leading-relaxed"><span class="font-extrabold underline">निर्देश-</span> परीक्षा केन्द्र पर परीक्षार्थी को निर्धारित समय से 30 मिनट पूर्व उपस्थित होना अनिवार्य है।</p>
+                        </div>
                     </div>
-                    <table class="w-full border text-center text-[10px] border-collapse">
-                        <tr class="bg-rose-950 text-white font-bold">
-                            <th class="p-1 border">1st Sub</th><th class="p-1 border">2nd Sub</th><th class="p-1 border">3rd Sub</th><th class="p-1 border">4th Sub</th><th class="p-1 border">5th Sub</th><th class="p-1 border">6th Sub</th>
-                        </tr>
-                        <tr class="font-bold">
-                            <td class="p-1 border">${st.sub1 || '401'}</td>
-                            <td class="p-1 border">${st.sub2 || '411'}</td>
-                            <td class="p-1 border">${st.sub3 || '100'}</td>
-                            <td class="p-1 border">${st.sub4 || '200'}</td>
-                            <td class="p-1 border">${st.sub5 || '300'}</td>
-                            <td class="p-1 border">${st.sub6 || '501'}</td>
-                        </tr>
-                    </table>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function renderMarksheets() {
