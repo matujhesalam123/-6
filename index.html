@@ -327,7 +327,7 @@
                             <i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i>
                             <span>मास्टर्स ऑनलाइन छात्र पंजीयन फॉर्म (Online Student Entry Form)</span>
                         </h2>
-                        <span class="text-xs text-slate-500 font-semibold">* समस्त फ़ील्ड्स उपलब्ध</span>
+                        <span class="text-xs text-slate-500 font-semibold">* समस्त 50+ फ़ील्ड्स उपलब्ध</span>
                     </div>
 
                     <form id="studentRegistrationForm" onsubmit="saveStudentForm(event)" class="space-y-4 text-xs font-semibold">
@@ -968,172 +968,203 @@
     <div id="toastContainer" class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none no-print"></div>
 
     <script>
-        function handleCombClassChange() {
-            // Reset individual student dropdown selection when class filter changes
-            const selDropdown = document.getElementById('combStudentSelect');
-            if (selDropdown) selDropdown.value = 'ALL_CLASS';
-            renderCombinedFormsBatch();
-        }
-
-        function renderCombinedFormsBatch() {
-            const container = document.getElementById('combinedFormsContainer');
-            if (!container) return;
-
-            const classFilter = document.getElementById('combClassFilter') ? document.getElementById('combClassFilter').value : '10th';
-            const secFilter = document.getElementById('combSectionFilter') ? document.getElementById('combSectionFilter').value : 'ALL';
-            const stuSelect = document.getElementById('combStudentSelect') ? document.getElementById('combStudentSelect').value : 'ALL_CLASS';
-            const searchQ = (document.getElementById('combSearchInput') ? document.getElementById('combSearchInput').value : '').toLowerCase().trim();
-
-            let list = Object.values(studentsData);
-
-            // 1. Filter by Class
-            if (classFilter !== 'ALL') {
-                list = list.filter(s => s.targetClass === classFilter);
+        // Sample Student Database Populated with 50+ Columns
+        let studentsData = {
+            "STU1001": {
+                id: "STU1001",
+                scholarNo: "8821",
+                rollNo: "10201",
+                enrollmentNo: "N2601221",
+                srNo: "101",
+                targetClass: "10th",
+                section: "A",
+                applicantType: "1",
+                applicantType2: "पुनः प्रवेशी",
+                applicantType3: "स्थाई",
+                provisionalResult: "Pass",
+                tcStatus: "YES",
+                gapCertificate: "NO",
+                lastYearPassType: "Regular",
+                medium: "HINDI",
+                admissionDate: "2026-07-01",
+                nameHindi: "पूजा पटेल",
+                nameEng: "POOJA PATEL",
+                fatherName: "दिनेश पटेल",
+                fatherNameEng: "DINESH PATEL",
+                motherName: "सुनीता पटेल",
+                motherNameEng: "SUNITA PATEL",
+                dob: "2010-08-15",
+                gender: "FEMALE",
+                category: "OBC",
+                caste: "कुर्मी",
+                mobile: "9826123456",
+                email: "pooja.patel@gmail.com",
+                bloodGroup: "B+",
+                address: "वार्ड क्र. 04, बेगमगंज",
+                apaarId: "998811223344",
+                childId: "108821945",
+                familyId: "30882194",
+                aadhaar: "882199441122",
+                bankName: "SBI BEGUMGANJ",
+                bankAccount: "30123456789",
+                bankIfsc: "SBIN0001020",
+                annualIncome: "45000",
+                bplStatus: "NO",
+                ladliLaxmi: "YES",
+                ladliLaxmiNo: "LL-8821-2022",
+                cwsnStatus: "NO",
+                hostelStatus: "NO",
+                covidStatus: "NO",
+                mpTassStatus: "YES",
+                mpTassNo: "MPT-88210",
+                scholarshipStatus: "YES",
+                sambalStatus: "YES",
+                sambalNo: "SMB-998877",
+                area: "शहरी",
+                feesPaid: "100",
+                remarks: "नियमित छात्रा",
+                sub1: "HINDI (050)",
+                sub2: "ENGLISH (200)",
+                sub3: "SANSKRIT (512)",
+                sub4: "MATHEMATICS (100)",
+                sub5: "SCIENCE (110)",
+                sub6: "SOCIAL SCIENCE (300)",
+                receivedBooks: ["हिन्दी सुगम पाठ", "English Reader", "Sanskrit Bharati", "Ganit Class 10", "Vigyan Class 10", "Samajik Vigyan"],
+                photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
+            },
+            "STU1002": {
+                id: "STU1002",
+                scholarNo: "8822",
+                rollNo: "10202",
+                enrollmentNo: "N2601222",
+                srNo: "102",
+                targetClass: "10th",
+                section: "A",
+                applicantType: "1",
+                applicantType2: "नवीन",
+                applicantType3: "स्थाई",
+                provisionalResult: "Pass",
+                tcStatus: "YES",
+                gapCertificate: "NO",
+                lastYearPassType: "Regular",
+                medium: "HINDI",
+                admissionDate: "2026-07-02",
+                nameHindi: "आरती शर्मा",
+                nameEng: "AARTI SHARMA",
+                fatherName: "रामबाबू शर्मा",
+                fatherNameEng: "RAMBABU SHARMA",
+                motherName: "गीता शर्मा",
+                motherNameEng: "GEETA SHARMA",
+                dob: "2010-03-22",
+                gender: "FEMALE",
+                category: "GEN",
+                caste: "ब्राह्मण",
+                mobile: "9425123456",
+                email: "aarti.sharma@gmail.com",
+                bloodGroup: "O+",
+                address: "स्टेशन रोड, बेगमगंज",
+                apaarId: "998811223355",
+                childId: "108821946",
+                familyId: "30882195",
+                aadhaar: "882199441133",
+                bankName: "PNB BEGUMGANJ",
+                bankAccount: "40123456789",
+                bankIfsc: "PUNB0010200",
+                annualIncome: "60000",
+                bplStatus: "NO",
+                ladliLaxmi: "NO",
+                ladliLaxmiNo: "-",
+                cwsnStatus: "NO",
+                hostelStatus: "NO",
+                covidStatus: "NO",
+                mpTassStatus: "NO",
+                mpTassNo: "-",
+                scholarshipStatus: "NO",
+                sambalStatus: "NO",
+                sambalNo: "-",
+                area: "शहरी",
+                feesPaid: "100",
+                remarks: "प्रवेशित",
+                sub1: "HINDI (050)",
+                sub2: "ENGLISH (200)",
+                sub3: "SANSKRIT (512)",
+                sub4: "MATHEMATICS (100)",
+                sub5: "SCIENCE (110)",
+                sub6: "SOCIAL SCIENCE (300)",
+                receivedBooks: ["हिन्दी सुगम पाठ", "English Reader", "Sanskrit Bharati"],
+                photoUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
             }
-
-            // 2. Filter by Section
-            if (secFilter !== 'ALL') {
-                list = list.filter(s => s.section === secFilter);
-            }
-
-            // 3. Filter by Search Query
-            if (searchQ) {
-                list = list.filter(s => 
-                    (s.nameHindi || '').toLowerCase().includes(searchQ) ||
-                    (s.nameEng || '').toLowerCase().includes(searchQ) ||
-                    (s.scholarNo || '').toLowerCase().includes(searchQ) ||
-                    (s.rollNo || '').toLowerCase().includes(searchQ)
-                );
-            }
-
-            // 4. Update the individual student selector dropdown dynamically
-            const selDropdown = document.getElementById('combStudentSelect');
-            if (selDropdown) {
-                const currentVal = selDropdown.value;
-                let optionsHTML = `<option value="ALL_CLASS">-- चयनित फिल्टर अनुसार सभी छात्र (${list.length}) --</option>`;
-                list.forEach(s => {
-                    optionsHTML += `<option value="${s.id}" ${currentVal === s.id ? 'selected' : ''}>${s.nameHindi} (स्कॉलर: ${s.scholarNo}) - Cls ${s.targetClass}-${s.section}</option>`;
-                });
-                selDropdown.innerHTML = optionsHTML;
-            }
-
-            // 5. Filter for a single selected student if chosen
-            if (stuSelect !== 'ALL_CLASS' && stuSelect !== '') {
-                list = list.filter(s => s.id === stuSelect);
-            }
-
-            // Update badge count display
-            const countDisplay = document.getElementById('combBatchCountDisplay');
-            if (countDisplay) {
-                countDisplay.innerText = `प्रदर्शित छात्र: ${list.length} रिकॉर्ड (कुल 3 फ़ॉर्म/छात्र = ${list.length * 3} फ़ॉर्म्स)`;
-            }
-
-            if (list.length === 0) {
-                container.innerHTML = `
-                    <div class="bg-white p-8 rounded-xl border border-rose-200 text-center text-rose-600 font-bold shadow-sm space-y-2">
-                        <i data-lucide="alert-circle" class="w-8 h-8 text-rose-500 mx-auto"></i>
-                        <p class="text-sm">चयनित कक्षा, सेक्शन या खोज फ़िल्टर हेतु कोई छात्र रिकॉर्ड उपलब्ध नहीं है।</p>
-                        <p class="text-xs text-slate-500 font-normal">कृपया टूलबार में कक्षा या फ़िल्टर बदलकर पुनः प्रयास करें।</p>
-                    </div>
-                `;
-                lucide.createIcons();
-                return;
-            }
-
-            // Render all 3 official forms for each student in the batch
-            container.innerHTML = list.map(st => renderSingleStudentCombinedFormsHTML(st)).join('<div class="page-break my-8 border-b-2 border-dashed border-slate-300 no-print"></div>');
-            lucide.createIcons();
-        }
-
-        // BATCH EXPORT FUNCTIONS FOR COMBINED FORMS
-        function exportCombinedFormsPDF() {
-            window.print();
-        }
-
-        function exportCombinedFormsExcel() {
-            const classFilter = document.getElementById('combClassFilter') ? document.getElementById('combClassFilter').value : '10th';
-            const secFilter = document.getElementById('combSectionFilter') ? document.getElementById('combSectionFilter').value : 'ALL';
-            
-            let list = Object.values(studentsData);
-            if (classFilter !== 'ALL') list = list.filter(s => s.targetClass === classFilter);
-            if (secFilter !== 'ALL') list = list.filter(s => s.section === secFilter);
-
-            const exportData = list.map(s => ({
-                "Scholar No": s.scholarNo,
-                "Roll No": s.rollNo,
-                "Class": s.targetClass,
-                "Section": s.section,
-                "Student Name (Hindi)": s.nameHindi,
-                "Student Name (English)": s.nameEng,
-                "Father Name": s.fatherName,
-                "Mother Name": s.motherName,
-                "DOB": s.dob,
-                "Gender": s.gender,
-                "Category": s.category,
-                "Mobile": s.mobile,
-                "Aadhaar": s.aadhaar,
-                "Child SSMID": s.childId,
-                "Family SSMID": s.familyId,
-                "Bank Account": s.bankAccount,
-                "Bank IFSC": s.bankIfsc,
-                "Address": s.address
-            }));
-
-            const ws = XLSX.utils.json_to_sheet(exportData);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Combined_Forms_Batch");
-            XLSX.writeFile(wb, `Combined_Forms_${classFilter}_${secFilter}.xlsx`);
-            showToast("संयुक्त फ़ॉर्म्स का बैच Excel डाउनलोड हो गया है!", "success");
-        }
-
-        function exportCombinedFormsWord() {
-            const container = document.getElementById('combinedFormsContainer');
-            if (!container) return;
-
-            const htmlContent = `
-                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head><meta charset='utf-8'><title>Combined Official Forms Batch</title>
-                <style>
-                    body { font-family: sans-serif; font-size: 10pt; }
-                    .letter-box { border: 1px solid #000; padding: 2px 4px; display: inline-block; font-weight: bold; }
-                    table { border-collapse: collapse; width: 100%; }
-                    td, th { border: 1px solid #000; padding: 4px; }
-                </style>
-                </head>
-                <body>
-                    ${container.innerHTML}
-                </body>
-                </html>
-            `;
-
-            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `SDMS_Combined_Forms_Batch.doc`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            showToast("संयुक्त फ़ॉर्म्स Word Document (.doc) डाउनलोड हो गया है!", "success");
-        }
-
-        function exportCombinedFormsImage() {
-            const container = document.getElementById('combinedFormsContainer');
-            if (!container) return;
-
-            showToast("इमेज तैयार हो रही है, कृपया प्रतीक्षा करें...", "success");
-            html2canvas(container, { scale: 1.5, useCORS: true }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `SDMS_Combined_Forms_Batch.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                showToast("PNG फोटो सफलतापूर्वक डाउनलोड हुई!", "success");
-            }).catch(err => {
-                console.error(err);
-                showToast("इमेज जनरेट करने में त्रुटि हुई। कृपया प्रिंट उपयोग करें।", "error");
-            });
-        }
         };
+
+        // Grid Sorting & Column Filtering State
+        let gridSortKey = '';
+        let gridSortAsc = true;
+        let gridColFilters = {};
+        let currentActiveSection = 'section-dashboard';
+
+        // Complete 50+ Columns Configuration for Master Excel Search Grid
+        const gridColumnsConfig = [
+            { key: 'photoUrl', label: 'PHOTO', sortable: false },
+            { key: 'scholarNo', label: 'SCHOLAR NO.', sortable: true },
+            { key: 'rollNo', label: 'RollNumber', sortable: true },
+            { key: 'enrollmentNo', label: 'enrollment', sortable: true },
+            { key: 'srNo', label: 'Sr.No.', sortable: true },
+            { key: 'targetClass', label: 'कक्षा', sortable: true },
+            { key: 'section', label: 'सेक्शन', sortable: true },
+            { key: 'applicantType', label: 'प्रवेश प्रकार 1', sortable: true },
+            { key: 'applicantType2', label: 'प्रवेश प्रकार 2', sortable: true },
+            { key: 'applicantType3', label: 'प्रवेश प्रकार 3', sortable: true },
+            { key: 'provisionalResult', label: 'अस्थाई रिजल्ट', sortable: true },
+            { key: 'tcStatus', label: 'T.C.', sortable: true },
+            { key: 'gapCertificate', label: 'गैप प्रमाण पत्र', sortable: true },
+            { key: 'lastYearPassType', label: 'गत वर्ष पास', sortable: true },
+            { key: 'medium', label: 'MEDIUM', sortable: true },
+            { key: 'admissionDate', label: 'प्रवेश दिनांक', sortable: true },
+            { key: 'nameHindi', label: 'Candidate Name (हिन्दी)', sortable: true },
+            { key: 'nameEng', label: 'Candidate Name (ENG)', sortable: true },
+            { key: 'fatherName', label: 'father name', sortable: true },
+            { key: 'fatherNameEng', label: 'FATHER NAME (ENG)', sortable: true },
+            { key: 'motherName', label: 'mother name', sortable: true },
+            { key: 'motherNameEng', label: 'MOTHER NAME (ENG)', sortable: true },
+            { key: 'dob', label: 'DOB', sortable: true },
+            { key: 'gender', label: 'SEX', sortable: true },
+            { key: 'category', label: 'CATEGORY', sortable: true },
+            { key: 'caste', label: 'CAST', sortable: true },
+            { key: 'mobile', label: 'MOBILE', sortable: true },
+            { key: 'email', label: 'EMAIL ID', sortable: true },
+            { key: 'bloodGroup', label: 'ब्लड ग्रुप', sortable: true },
+            { key: 'address', label: 'ADDRESS', sortable: true },
+            { key: 'apaarId', label: 'APAAR ID', sortable: true },
+            { key: 'childId', label: 'CHILD ID', sortable: true },
+            { key: 'familyId', label: 'समग्र ID', sortable: true },
+            { key: 'aadhaar', label: 'AADHAAR', sortable: true },
+            { key: 'bankName', label: 'बैंक का नाम', sortable: true },
+            { key: 'bankAccount', label: 'A/C NO', sortable: true },
+            { key: 'bankIfsc', label: 'IFSC', sortable: true },
+            { key: 'annualIncome', label: 'INCOME', sortable: true },
+            { key: 'bplStatus', label: 'BPL', sortable: true },
+            { key: 'ladliLaxmi', label: 'L LAXMI', sortable: true },
+            { key: 'ladliLaxmiNo', label: 'L लक्ष्मी क्रमांक', sortable: true },
+            { key: 'cwsnStatus', label: 'विकलांग', sortable: true },
+            { key: 'hostelStatus', label: 'छात्राबासी', sortable: true },
+            { key: 'covidStatus', label: 'COVID 19', sortable: true },
+            { key: 'mpTassStatus', label: 'MP TASS', sortable: true },
+            { key: 'mpTassNo', label: 'MP TASS NO.', sortable: true },
+            { key: 'scholarshipStatus', label: 'छात्रवृत्ति', sortable: true },
+            { key: 'sambalStatus', label: 'SAMBAL', sortable: true },
+            { key: 'sambalNo', label: 'संबल क्रमांक', sortable: true },
+            { key: 'area', label: 'एरिया', sortable: true },
+            { key: 'feesPaid', label: 'फीस', sortable: true },
+            { key: 'remarks', label: 'रिमार्क', sortable: true },
+            { key: 'sub1', label: '1sub', sortable: true },
+            { key: 'sub2', label: '2sub', sortable: true },
+            { key: 'sub3', label: '3sub', sortable: true },
+            { key: 'sub4', label: '4sub', sortable: true },
+            { key: 'sub5', label: '5sub', sortable: true },
+            { key: 'sub6', label: '6sub', sortable: true },
+            { key: 'receivedBooks', label: 'प्राप्त पुस्तकें', sortable: false },
+            { key: 'actions', label: 'कार्यवाही (Actions)', sortable: false }
+        ];
 
         function showSection(sectionId) {
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
@@ -1416,13 +1447,23 @@
             return (str || '').replace(/[^a-zA-Z\s]/g, '').trim().toUpperCase();
         }
 
+        function handleCombClassChange() {
+            const selDropdown = document.getElementById('combStudentSelect');
+            if (selDropdown) selDropdown.value = 'ALL_CLASS';
+            renderCombinedFormsBatch();
+        }
+
         function renderCombinedFormsBatch() {
             const container = document.getElementById('combinedFormsContainer');
+            if (!container) return;
+
             const classFilter = document.getElementById('combClassFilter') ? document.getElementById('combClassFilter').value : '10th';
             const secFilter = document.getElementById('combSectionFilter') ? document.getElementById('combSectionFilter').value : 'ALL';
             const stuSelect = document.getElementById('combStudentSelect') ? document.getElementById('combStudentSelect').value : 'ALL_CLASS';
+            const searchQ = (document.getElementById('combSearchInput') ? document.getElementById('combSearchInput').value : '').toLowerCase().trim();
 
             let list = Object.values(studentsData);
+
             if (classFilter !== 'ALL') {
                 list = list.filter(s => s.targetClass === classFilter);
             }
@@ -1430,23 +1471,46 @@
                 list = list.filter(s => s.section === secFilter);
             }
 
-            // Update student dropdown options
-            const selDropdown = document.getElementById('combStudentSelect');
-            if (selDropdown) {
-                selDropdown.innerHTML = `<option value="ALL_CLASS">-- चयनित कक्षा के सभी छात्र (${list.length}) --</option>` +
-                    list.map(s => `<option value="${s.id}">${s.nameHindi} (${s.scholarNo})</option>`).join('');
+            if (searchQ) {
+                list = list.filter(s => 
+                    (s.nameHindi || '').toLowerCase().includes(searchQ) ||
+                    (s.nameEng || '').toLowerCase().includes(searchQ) ||
+                    (s.scholarNo || '').toLowerCase().includes(searchQ) ||
+                    (s.rollNo || '').toLowerCase().includes(searchQ)
+                );
             }
 
-            if (stuSelect !== 'ALL_CLASS') {
+            const selDropdown = document.getElementById('combStudentSelect');
+            if (selDropdown) {
+                const currentVal = selDropdown.value;
+                let optionsHTML = `<option value="ALL_CLASS">-- चयनित फिल्टर अनुसार सभी छात्र (${list.length}) --</option>`;
+                list.forEach(s => {
+                    optionsHTML += `<option value="${s.id}" ${currentVal === s.id ? 'selected' : ''}>${s.nameHindi} (${s.scholarNo}) - Cls ${s.targetClass}-${s.section}</option>`;
+                });
+                selDropdown.innerHTML = optionsHTML;
+            }
+
+            if (stuSelect !== 'ALL_CLASS' && stuSelect !== '') {
                 list = list.filter(s => s.id === stuSelect);
             }
 
+            const countDisplay = document.getElementById('combBatchCountDisplay');
+            if (countDisplay) {
+                countDisplay.innerText = `प्रदर्शित छात्र: ${list.length} रिकॉर्ड (कुल 3 फ़ॉर्म/छात्र = ${list.length * 3} फ़ॉर्म्स)`;
+            }
+
             if (list.length === 0) {
-                container.innerHTML = `<div class="bg-white p-8 rounded-xl border text-center text-rose-600 font-bold">चयनित फ़िल्टर हेतु कोई छात्र रिकॉर्ड उपलब्ध नहीं है।</div>`;
+                container.innerHTML = `
+                    <div class="bg-white p-8 rounded-xl border border-rose-200 text-center text-rose-600 font-bold shadow-sm space-y-2">
+                        <i data-lucide="alert-circle" class="w-8 h-8 text-rose-500 mx-auto"></i>
+                        <p class="text-sm">चयनित कक्षा, सेक्शन या खोज फ़िल्टर हेतु कोई छात्र रिकॉर्ड उपलब्ध नहीं है।</p>
+                    </div>
+                `;
+                lucide.createIcons();
                 return;
             }
 
-            container.innerHTML = list.map(st => renderSingleStudentCombinedFormsHTML(st)).join('<div class="page-break my-6"></div>');
+            container.innerHTML = list.map(st => renderSingleStudentCombinedFormsHTML(st)).join('<div class="page-break my-8 border-b-2 border-dashed border-slate-300 no-print"></div>');
             lucide.createIcons();
         }
 
@@ -1460,18 +1524,14 @@
             return `
                 <div class="space-y-6">
                     
-                    <!-- ========================================== -->
-                    <!-- FORM 1: MP BOARD EXAM FORM (HIGH SCHOOL)  -->
-                    <!-- ========================================== -->
+                    <!-- FORM 1: MP BOARD EXAM FORM (HIGH SCHOOL) -->
                     <div class="a4-container text-black font-sans text-[9px] leading-snug space-y-1.5 border border-black">
-                        <!-- Logo & Header -->
                         <div class="text-center relative border-b border-black pb-1">
                             <div class="w-8 h-8 rounded-full border border-black mx-auto flex items-center justify-center font-bold text-[8px] mb-0.5">MPB</div>
                             <div class="font-bold text-xs uppercase tracking-wide">माध्यमिक शिक्षा मण्डल, मध्य प्रदेश, भोपाल</div>
                             <div class="font-extrabold text-sm uppercase">आवेदन पत्र हाईस्कूल परीक्षा</div>
                         </div>
 
-                        <!-- Item 1: Top Code Header Box -->
                         <div class="border border-black p-1 space-y-1">
                             <div class="bg-black text-white text-[9px] font-bold px-1 inline-block uppercase">संबंधित कोड नंबर ही खाने में भरिये</div>
                             <div class="grid grid-cols-12 gap-1 items-center text-[9px]">
@@ -1495,7 +1555,6 @@
                             </div>
                         </div>
 
-                        <!-- Item 2, 3, 4: Candidate, Father, Mother English Names -->
                         <div class="space-y-1 pt-0.5">
                             <div>
                                 <span class="font-bold">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
@@ -1511,7 +1570,6 @@
                             </div>
                         </div>
 
-                        <!-- Item 5: DOB -->
                         <div class="flex items-center justify-between border-y border-black py-0.5">
                             <div>
                                 <span class="font-bold">5. जन्म तिथि (अंकों में):</span> ${createLetterBoxesHTML(dobFormatted, 8)}
@@ -1521,7 +1579,6 @@
                             </div>
                         </div>
 
-                        <!-- Item 6: Codes, District, Block, Roll Number & Medium -->
                         <div class="space-y-1">
                             <div class="grid grid-cols-12 gap-1 text-[8.5px] items-center">
                                 <div class="col-span-3">जिला कोड: ${createLetterBoxesHTML('34', 3)}</div>
@@ -1534,13 +1591,8 @@
                                 <div>विकास खण्ड का नाम: <span class="dotted-line">बेगमगंज (02)</span></div>
                                 <div>माध्यम (हिंदी -1, अंग्रेजी -2, उर्दू -3): ${createLetterBoxesHTML(st.medium === 'ENGLISH' ? '2' : (st.medium === 'URDU' ? '3' : '1'), 1)}</div>
                             </div>
-                            <div class="text-[8px] border-t border-black pt-0.5">
-                                केवल माध्यमिक शिक्षा मण्डल, म.प्र. से अनुत्तीर्ण अथवा श्रेणी सुधार हेतु उत्तीर्ण छात्र का अनुक्रमांक-<br>
-                                10वीं का रोल नं. ${createLetterBoxesHTML(st.rollNo || '', 10)} वर्ष- ${createLetterBoxesHTML('2025', 4)}
-                            </div>
                         </div>
 
-                        <!-- Item 7: Language & Subjects Grid -->
                         <div class="border border-black p-1 space-y-1">
                             <span class="font-bold">7. भाषा विषय :-</span>
                             <div class="grid grid-cols-12 gap-2 text-[8.5px] items-center">
@@ -1549,21 +1601,18 @@
                                     <div class="flex justify-between items-center"><span>द्वितीय भाषा: <span class="font-bold">${st.sub2 || 'ENGLISH'}</span></span> ${createLetterBoxesHTML('200', 3)}</div>
                                     <div class="flex justify-between items-center"><span>तृतीय भाषा: <span class="font-bold">${st.sub3 || 'SANSKRIT'}</span></span> ${createLetterBoxesHTML('512', 3)}</div>
                                 </div>
-                                <div class="col-span-4 border-l border-black pl-2 text-[7.5px] space-y-1">
-                                    <span class="font-bold block">केवल नेत्रहीन, मूक-बधिर छात्र हेतु:</span>
-                                    <div class="flex gap-1">${createLetterBoxesHTML('-', 3)} ${createLetterBoxesHTML('-', 3)}</div>
-                                    <div class="leading-tight">(केवल नेत्रहीन, मूक-बधिर छात्र गणित विषय कोड 100 अथवा विज्ञान विषय कोड 200 के स्थान पर संगीत विषय कोड 161 अथवा पेंटिंग विषय कोड 162 ले सकते है। अन्य सभी छात्रों को गणित, विज्ञान एवं सामाजिक विज्ञान विषय अनिवार्य है।)</div>
+                                <div class="col-span-4 border-l border-black pl-2 text-[7.5px]">
+                                    <span class="font-bold block">केवल नेत्रहीन/मूक-बधिर छात्र हेतु:</span>
+                                    <div class="flex gap-1 my-0.5">${createLetterBoxesHTML('-', 3)} ${createLetterBoxesHTML('-', 3)}</div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Item 8: SSMID & Sambal -->
                         <div class="flex justify-between items-center border-b border-black pb-0.5">
                             <div><span class="font-bold">8. समग्र आई.डी. (SSMID) :-</span> ${createLetterBoxesHTML(st.childId || '', 9)}</div>
                             <div><span class="font-bold">संबल क्रमांक:</span> <span class="dotted-line font-mono">${st.sambalNo || '-'}</span></div>
                         </div>
 
-                        <!-- Item 9: Address & Digital Photo Box -->
                         <div class="grid grid-cols-12 gap-2 pt-0.5">
                             <div class="col-span-8 border border-black p-1 space-y-1 text-[8.5px]">
                                 <span class="font-bold block">9. पत्र व्यवहार का पता:-</span>
@@ -1571,21 +1620,18 @@
                                     <div>House No. : <span class="dotted-line">${st.address || '-'}</span></div>
                                     <div>Colony : <span class="dotted-line">वार्ड क्र 04</span></div>
                                     <div>Town : <span class="dotted-line">बेगमगंज</span></div>
-                                    <div>Block : <span class="dotted-line">बेगमगंज</span></div>
                                     <div>District : <span class="dotted-line">रायसेन</span></div>
-                                    <div>Phone No. : <span class="dotted-line font-mono">${st.mobile || ''}</span></div>
                                 </div>
                                 <div class="flex items-center gap-1 pt-0.5">Pin: ${createLetterBoxesHTML('464881', 6)}</div>
-                                <div>Email-Id: <span class="dotted-line font-mono">${st.email || '-'}</span></div>
                             </div>
 
                             <div class="col-span-4 border border-black h-36 p-1 text-center flex flex-col justify-between bg-white">
                                 <div>
-                                    <span class="block text-[7.5px] font-bold leading-tight">परीक्षार्थी का नवीनतम नाम, दिनांकयुक्त डिजिटल फोटो</span>
+                                    <span class="block text-[7.5px] font-bold leading-tight">परीक्षार्थी का फोटो</span>
                                     <img src="${st.photoUrl}" class="w-20 h-22 object-cover mx-auto my-1 border border-black">
                                 </div>
                                 <div class="border-t border-black pt-0.5 text-[7.5px] font-bold">
-                                    कालम के अंदर छात्र के हस्ताक्षर
+                                    छात्र के हस्ताक्षर
                                 </div>
                             </div>
                         </div>
@@ -1593,153 +1639,77 @@
 
                     <div class="page-break"></div>
 
-                    <!-- ========================================== -->
-                    <!-- FORM 2: SSSM SCHOLARSHIP FORM (SAMAKIT)    -->
-                    <!-- ========================================== -->
+                    <!-- FORM 2: SSSM SCHOLARSHIP FORM -->
                     <div class="a4-container text-black font-sans text-[9px] leading-tight space-y-1.5 border border-black">
-                        <!-- Header Box -->
                         <div class="flex items-center justify-between border-b border-black pb-1">
                             <div class="w-12 h-12 rounded-full border border-black flex items-center justify-center font-black text-xs">SSSM</div>
                             <div class="text-center">
                                 <h1 class="text-xs font-black uppercase tracking-wide">मध्यप्रदेश शासन-समग्र सामाजिक सुरक्षा मिशन</h1>
                                 <h2 class="text-sm font-extrabold uppercase">समेकित छात्रवृत्ति योजना आवेदन पत्र</h2>
-                                <div class="text-[9px] font-bold">Child SSSM.ID: <span class="font-mono text-xs border border-black px-2">${st.childId || '123456789'}</span> ( कक्षा 9 से 10 )</div>
+                                <div class="text-[9px] font-bold">Child SSSM.ID: <span class="font-mono text-xs border border-black px-2">${st.childId || '123456789'}</span></div>
                             </div>
                             <div class="w-16 h-20 border border-black text-center text-[7px] p-0.5 flex flex-col justify-between bg-white">
                                 <img src="${st.photoUrl}" class="w-12 h-14 object-cover mx-auto border border-black">
-                                <span class="font-bold leading-none">पासपोर्ट साईज फोटो संस्था प्रमुख द्वारा अभिप्रमाणित</span>
+                                <span class="font-bold leading-none">पासपोर्ट फोटो</span>
                             </div>
                         </div>
 
-                        <!-- Grid Table Part 1: Administrative Details -->
                         <table class="w-full border-collapse border border-black text-[8px]">
                             <tr>
                                 <td class="border border-black p-0.5">1. संभाग: <span class="font-bold">भोपाल</span></td>
                                 <td class="border border-black p-0.5">2. जिला: <span class="font-bold">रायसेन</span></td>
                                 <td class="border border-black p-0.5">3. विकासखण्ड: <span class="font-bold">बेगमगंज</span></td>
-                                <td class="border border-black p-0.5">4. क्षेत्र ग्रामीण/शहरी: <span class="font-bold">${st.area || 'शहरी'}</span></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-black p-0.5" colspan="2">5. नगर निगम/नगर पालिका/जनपद पंचायत: <span class="font-bold">बेगमगंज</span></td>
-                                <td class="border border-black p-0.5">6. ग्राम पंचायत/जोन: <span class="font-bold">X-X-X-X</span></td>
-                                <td class="border border-black p-0.5">7. वार्ड/ग्राम: <span class="font-bold">X-X-X-X</span></td>
                             </tr>
                             <tr>
                                 <td class="border border-black p-0.5" colspan="2">8. संकुल का नाम: <span class="font-bold">शा.क.उ.मा.वि. बेगमगंज</span></td>
-                                <td class="border border-black p-0.5" colspan="2">9. संकुल का U-डाइस कोड: <span class="font-bold font-mono">23340222855</span></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-black p-0.5" colspan="2">10. शाला का प्रकार (शास/अशासकीय ): <span class="font-bold">शासकीय</span></td>
-                                <td class="border border-black p-0.5" colspan="2">11. सी.बी.एस.ई/स्टेट बोर्ड/अन्य: <span class="font-bold">स्टेट बोर्ड</span></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-black p-0.5" colspan="2">12. शाला का नाम: <span class="font-bold">शा.क.उ.मा.वि. बेगमगंज</span></td>
-                                <td class="border border-black p-0.5" colspan="2">13. शाला का डाइस कोड: <span class="font-bold font-mono">23340222855</span></td>
+                                <td class="border border-black p-0.5">9. डाइस कोड: <span class="font-bold font-mono">23340222855</span></td>
                             </tr>
                         </table>
 
-                        <!-- Grid Table Part 2: Student Personal Profile -->
                         <table class="w-full border-collapse border border-black text-[8px]">
                             <tr>
-                                <td class="border border-black p-0.5" colspan="3">1. विद्यार्थी का नाम ( हिन्दी ): <span class="font-bold text-[9.5px]">${st.nameHindi}</span></td>
-                                <td class="border border-black p-0.5">2. लिंग (F/M): <span class="font-bold">${st.gender === 'FEMALE' ? 'F' : 'M'}</span></td>
+                                <td class="border border-black p-0.5" colspan="3">1. विद्यार्थी नाम (हिन्दी): <span class="font-bold text-[9.5px]">${st.nameHindi}</span></td>
+                                <td class="border border-black p-0.5">2. लिंग: <span class="font-bold">${st.gender}</span></td>
                             </tr>
                             <tr>
                                 <td class="border border-black p-0.5" colspan="4">
-                                    (अंग्रेजी केपीटल लेटर में):
+                                    FULL NAME (ENGLISH):
                                     <div class="mt-0.5">${createLetterBoxesHTML(engName, 32)}</div>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-black p-0.5">3. जन्म तिथि: <span class="font-bold font-mono">${st.dob}</span></td>
-                                <td class="border border-black p-0.5">4. संवर्ग / (अजा/अजजा/पिछड़ा/सामान्य): <span class="font-bold">${st.category}</span></td>
-                                <td class="border border-black p-0.5">घुम/अर्द्धघुम/विमु जाति है (हाँ/नहीं): <span class="font-bold">NO</span></td>
-                                <td class="border border-black p-0.5">5. म.प्र. का मूल निवासी ( हाँ/नहीं ): <span class="font-bold">हाँ</span></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-black p-0.5">6. कक्षा: <span class="font-bold font-mono">${st.targetClass}</span></td>
-                                <td class="border border-black p-0.5">वर्तमान कक्षा में प्रवेश/दिनांक: <span class="font-bold font-mono">${st.admissionDate || '01/07/2026'}</span></td>
-                                <td class="border border-black p-0.5">7. शाला में प्रवेश क्र./दिनांक: <span class="font-bold font-mono">${st.scholarNo}</span></td>
-                                <td class="border border-black p-0.5">8. छात्रावासी/गैर छात्रावासी: <span class="font-bold">${st.hostelStatus === 'YES' ? 'छात्राबासी' : 'गैर छात्रावासी'}</span></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-black p-0.5" colspan="2">9. आधार कार्ड क्रं.: <span class="font-bold font-mono">${st.aadhaar || '-'}</span></td>
-                                <td class="border border-black p-0.5">10. नि:शक्तता का प्रकार: <span class="font-bold">${st.cwsnStatus || 'NO'}</span></td>
-                                <td class="border border-black p-0.5">11. नि:शक्तता का प्रतिशत: <span class="font-bold">-</span></td>
+                                <td class="border border-black p-0.5">4. वर्ग: <span class="font-bold">${st.category}</span></td>
+                                <td class="border border-black p-0.5" colspan="2">5. मूल निवासी: <span class="font-bold">हाँ</span></td>
                             </tr>
                         </table>
 
-                        <!-- Grid Table Part 3: Family & Socio-Economic -->
                         <table class="w-full border-collapse border border-black text-[8px]">
                             <tr>
-                                <td class="border border-black p-0.5">1. पिता/पालक का नाम: <span class="font-bold">${st.fatherName}</span></td>
-                                <td class="border border-black p-0.5">3. अभिभावक की समस्त स्रोतों से वार्षिक आय: <span class="font-bold font-mono">₹ ${st.annualIncome || '45000'}</span></td>
+                                <td class="border border-black p-0.5">1. पिता/पालक: <span class="font-bold">${st.fatherName}</span></td>
+                                <td class="border border-black p-0.5">2. वार्षिक आय: <span class="font-bold font-mono">₹ ${st.annualIncome || '45000'}</span></td>
                             </tr>
                             <tr>
-                                <td class="border border-black p-0.5">2. माता का नाम: <span class="font-bold">${st.motherName}</span></td>
-                                <td class="border border-black p-0.5">4. पिता/पालक का व्यवसाय: <span class="font-bold">कृषि / मजदूरी</span></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-black p-0.5">5. बी.पी.एल कार्डधारी ( हाँ/नहीं ): <span class="font-bold">${st.bplStatus || 'NO'}</span></td>
-                                <td class="border border-black p-0.5">कार्ड क्रं./दिनांक: <span class="font-mono">BPL-88210</span></td>
-                                <td class="border border-black p-0.5">6. पत्र व्यवहार का पूर्ण पता: <span class="font-bold">${st.address || '-'}</span></td>
-                                <td class="border border-black p-0.5">7. मोबाईल नं. (अनिवार्य है): <span class="font-bold font-mono">${st.mobile || ''}</span></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-black p-0.5" colspan="2">8. संबल कार्ड क्रमांक: <span class="font-bold font-mono">${st.sambalNo || '-'}</span></td>
-                                <td class="border border-black p-0.5" colspan="2">9. कर्मकार मंडल कार्ड यदि है तो क्रमांक: <span class="font-mono">-</span></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-black p-0.5" colspan="4">10. भाई बहन की संख्या : कुल भाई <span class="dotted-line font-bold font-mono">1</span> बहन <span class="dotted-line font-bold font-mono">2</span></td>
+                                <td class="border border-black p-0.5">3. माता का नाम: <span class="font-bold">${st.motherName}</span></td>
+                                <td class="border border-black p-0.5">4. बी.पी.एल.: <span class="font-bold">${st.bplStatus || 'NO'}</span></td>
                             </tr>
                         </table>
 
-                        <!-- Grid Table Part 4: Last Year Exam Record -->
-                        <div class="border border-black p-1">
-                            <span class="font-bold block text-[8.5px] mb-0.5">गत कक्षा की वार्षिक परीक्षा का विवरण :-</span>
-                            <table class="w-full border-collapse border border-black text-[7.5px] text-center">
-                                <tr class="bg-slate-50 font-bold">
-                                    <td class="border border-black p-0.5">1. परीक्षा का नाम</td>
-                                    <td class="border border-black p-0.5">2. संस्था का नाम</td>
-                                    <td class="border border-black p-0.5">3. वर्ष</td>
-                                    <td class="border border-black p-0.5">4. उत्तीर्ण/अनुत्तीर्ण</td>
-                                    <td class="border border-black p-0.5">5. उत्तीर्ण प्रतिशत</td>
-                                    <td class="border border-black p-0.5">6. मण्डल का नाम</td>
-                                </tr>
-                                <tr>
-                                    <td class="border border-black p-0.5 font-bold">${st.targetClass === '10th' ? '9th Class' : 'Previous Exam'}</td>
-                                    <td class="border border-black p-0.5">शा.क.उ.मा.वि. बेगमगंज</td>
-                                    <td class="border border-black p-0.5 font-mono">2025-26</td>
-                                    <td class="border border-black p-0.5 font-bold">${st.provisionalResult || 'उत्तीर्ण'}</td>
-                                    <td class="border border-black p-0.5 font-mono font-bold">88.40%</td>
-                                    <td class="border border-black p-0.5">म.प्र. बोर्ड भोपाल</td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <!-- Grid Table Part 5: Bank Account Details -->
                         <div class="border border-black p-1 space-y-1">
-                            <span class="font-bold block text-[8.5px]">छात्रा के बैंक खाते/पोस्ट ऑफिस खाते का विवरण :-</span>
+                            <span class="font-bold block text-[8.5px]">छात्रा का बैंक खाता विवरण :-</span>
                             <div class="grid grid-cols-12 gap-1 text-[8px]">
-                                <div class="col-span-6">1. बैंक/पोस्ट ऑफिस का नाम: <span class="font-bold">${st.bankName || 'SBI BEGUMGANJ'}</span></div>
-                                <div class="col-span-6">2. शाखा का नाम: <span class="font-bold">बेगमगंज मुख्य शाखा</span></div>
+                                <div class="col-span-6">1. बैंक नाम: <span class="font-bold">${st.bankName || 'SBI BEGUMGANJ'}</span></div>
+                                <div class="col-span-6">2. IFSC: <span class="font-bold font-mono">${st.bankIfsc || 'SBIN0001020'}</span></div>
                             </div>
                             <div class="flex items-center space-x-2 text-[8px]">
-                                <span>3. बैंक का आई.एफ.एस.सी. कोड:</span>
-                                <div>${createLetterBoxesHTML(st.bankIfsc || 'SBIN0001020', 11)}</div>
-                                <span>4. बैंक का प्रकार (राष्ट्रीय/सहकारी/ग्रामीण): <span class="font-bold">राष्ट्रीयकृत</span></span>
-                            </div>
-                            <div class="flex items-center space-x-2 text-[8px]">
-                                <span>6. बैंक/पोस्ट ऑफिस खाता क्रमांक:</span>
+                                <span>3. खाता क्रमांक:</span>
                                 <div>${createLetterBoxesHTML(st.bankAccount || '30123456789', 16)}</div>
                             </div>
                         </div>
 
-                        <!-- Declaration & Signatures -->
-                        <div class="border-t border-black pt-1 space-y-3">
-                            <div class="text-[8.5px] text-justify leading-snug">
-                                <span class="font-bold block text-[9px] text-center">पालक का घोषणा पत्र</span>
-                                मैं <span class="dotted-line font-bold">${st.fatherName}</span> एतद् द्वारा घोषणा करता हूँ कि इस आवेदन पत्र में दी गई सभी सूचना तथा आवेदन के समर्थन में मेरे द्वारा जमा किये गये सभी प्रमाण पत्र मेरी सर्वोत्तम जानकारी तथा विश्वास में सत्य है।
+                        <div class="border-t border-black pt-2 space-y-4">
+                            <div class="text-[8.5px] text-justify">
+                                मैं <span class="dotted-line font-bold">${st.fatherName}</span> एतद् द्वारा घोषणा करता हूँ कि इस आवेदन में दी गई जानकारी पूर्णतः सत्य है।
                             </div>
 
                             <div class="flex justify-between items-end pt-3 text-[9px] font-bold">
@@ -1751,17 +1721,13 @@
 
                     <div class="page-break"></div>
 
-                    <!-- ========================================== -->
-                    <!-- FORM 3: PM SHRI SCHOOL ADMISSION FORM       -->
-                    <!-- ========================================== -->
+                    <!-- FORM 3: PM SHRI ADMISSION FORM -->
                     <div class="a4-container text-black font-sans text-[9px] leading-snug space-y-1.5 border border-black">
-                        <!-- Top Header Center -->
                         <div class="text-center border-b border-black pb-1">
                             <h1 class="text-sm font-black uppercase tracking-wide">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय.बेगमगंज</h1>
                             <h2 class="text-xs font-bold">जिला रायसेन (म.प्र.)</h2>
                         </div>
 
-                        <!-- Header Request & Photo Grid -->
                         <div class="grid grid-cols-12 gap-2 border-b border-black pb-1 items-start">
                             <div class="col-span-8 space-y-1 text-[8.5px]">
                                 <div class="flex justify-between">
@@ -1771,109 +1737,50 @@
                                 <div class="font-bold">
                                     छात्रा को कक्षा ..................में प्रवेश दिया जाये। प्रवेश दिनांक.................... <strong class="font-mono text-black">${st.admissionDate || '01/07/2026'}</strong>
                                 </div>
-                                <div class="pt-0.5 text-black font-semibold leading-tight">
-                                    प्रति,<br>
-                                    प्राचार्य महोदय,<br>
-                                    पीएम श्री शास. क. उ. मा. वि. बेगमगंज<br>
-                                    जिला रायसेन (म.प्र.)
-                                </div>
                             </div>
 
                             <div class="col-span-4 border border-black h-32 flex flex-col items-center justify-between p-1 text-center bg-white">
-                                <span class="text-[7.5px] font-bold leading-none">डिजिटल कैमरे से लिया गया रंगीन फोटो नाम एवं दिनांक सहित</span>
+                                <span class="text-[7.5px] font-bold leading-none">नवीनतम फोटो</span>
                                 <img src="${st.photoUrl}" class="w-18 h-22 object-cover border border-black my-auto">
                             </div>
                         </div>
 
-                        <!-- Statement Paragraph -->
-                        <div class="text-[9px] font-medium italic">
-                            महोदय,<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;मैं सत्र 2026–27 में आपकी संस्था में कक्षा ..................में प्रवेश लेना चाहती हूँ मेरा विवरण निम्नानुसार है—
-                        </div>
-
-                        <!-- All 23 Numbered Points Matching Photo -->
                         <div class="space-y-0.5 text-[8.5px]">
-                            <div>1.छात्रा का नाम कु................................................................................................................... <strong class="text-black">${st.nameHindi}</strong></div>
-                            <div>2. पिता का नाम श्री ................................................................................................................... <strong class="text-black">${st.fatherName}</strong></div>
-                            <div>3. माता का नाम श्रीमती ................................................................................................................... <strong class="text-black">${st.motherName}</strong></div>
+                            <div>1. छात्रा का नाम कु.: <strong class="text-black">${st.nameHindi}</strong></div>
+                            <div>2. पिता का नाम श्री: <strong class="text-black">${st.fatherName}</strong></div>
+                            <div>3. माता का नाम श्रीमती: <strong class="text-black">${st.motherName}</strong></div>
                             <div class="flex justify-between">
-                                <span>4. जाति ............................................. <strong class="text-black">${st.caste || '-'}</strong></span>
-                                <span>वर्ग SC/ST/OBC/GEN---------------- <strong class="text-black">${st.category || 'OBC'}</strong></span>
+                                <span>4. जाति: <strong class="text-black">${st.caste || '-'}</strong></span>
+                                <span>वर्ग: <strong class="text-black">${st.category || 'OBC'}</strong></span>
                             </div>
-                            <div>5. जन्मतारिख : ........../............/................ (शब्दों में) ..................................................................... <strong class="font-mono text-black">${st.dob}</strong></div>
-                            <div class="flex justify-between">
-                                <span>6. अंतिम उत्तीर्ण कक्षा ....................................................... <strong class="text-black">${st.targetClass === '10th' ? '9th Class' : '8th Class'}</strong></span>
-                                <span>वर्ष ......................................................... <strong class="font-mono text-black">2025-26</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>7. पूर्व विद्यालय का नाम :- ............................................. <strong class="text-black">शा.क.उ.मा.वि. बेगमगंज</strong></span>
-                                <span>पूर्व विद्यालय का डाइस कोड .............................. <strong class="font-mono text-black">23340222855</strong></span>
-                            </div>
-                            <div>8. कक्षा जिसमें प्रवेश लेना चाहती है: ................................................................................................. <strong class="font-mono text-black">${st.targetClass} (${st.section})</strong></div>
+                            <div>5. जन्मतारिख: <strong class="font-mono text-black">${st.dob}</strong></div>
+                            <div>6. कक्षा जिसमें प्रवेश लेना चाहती है: <strong class="font-mono text-black">${st.targetClass} (${st.section})</strong></div>
                             
-                            <!-- Point 9: 6 Subjects Grid -->
                             <div>
                                 <span class="font-bold">9. विषय:--</span>
                                 <div class="grid grid-cols-3 gap-x-2 gap-y-0.5 pl-4 pt-0.5 font-bold">
-                                    <div>1. .................................... <span class="text-black">${st.sub1 || 'HINDI'}</span></div>
-                                    <div>2. .................................... <span class="text-black">${st.sub2 || 'ENGLISH'}</span></div>
-                                    <div>3. .................................... <span class="text-black">${st.sub3 || 'SANSKRIT'}</span></div>
-                                    <div>4. .................................... <span class="text-black">${st.sub4 || 'MATHEMATICS'}</span></div>
-                                    <div>5. .................................... <span class="text-black">${st.sub5 || 'SCIENCE'}</span></div>
-                                    <div>6. .................................... <span class="text-black">${st.sub6 || 'SOCIAL SCIENCE'}</span></div>
+                                    <div>1. <span class="text-black">${st.sub1 || 'HINDI'}</span></div>
+                                    <div>2. <span class="text-black">${st.sub2 || 'ENGLISH'}</span></div>
+                                    <div>3. <span class="text-black">${st.sub3 || 'SANSKRIT'}</span></div>
+                                    <div>4. <span class="text-black">${st.sub4 || 'MATHEMATICS'}</span></div>
+                                    <div>5. <span class="text-black">${st.sub5 || 'SCIENCE'}</span></div>
+                                    <div>6. <span class="text-black">${st.sub6 || 'SOCIAL SCIENCE'}</span></div>
                                 </div>
                             </div>
 
+                            <div>16. व्हाट्सएप मोबाईल नं.: <strong class="font-mono text-black">${st.mobile || ''}</strong></div>
                             <div class="flex justify-between">
-                                <span>10. मातृभाषा .................... <strong class="text-black">हिन्दी</strong></span>
-                                <span>माध्यम .................... <strong class="text-black">${st.medium || 'HINDI'}</strong></span>
-                                <span>राष्ट्रीयता .................... <strong class="text-black">भारतीय</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>11. पिता का व्यवसाय .................... <strong class="text-black">कृषि / मजदूरी</strong></span>
-                                <span>वार्षिक आय .................... <strong class="font-mono text-black">₹ ${st.annualIncome || '45000'}</strong></span>
+                                <span>17. बैंक खाता क्र.: <strong class="font-mono text-black">${st.bankAccount || '-'}</strong></span>
+                                <span>IFSC: <strong class="font-mono uppercase text-black">${st.bankIfsc || 'SBIN0001020'}</strong></span>
                             </div>
                             <div class="flex justify-between">
-                                <span>12. पिता/पालक का स्थाई पता :ग्राम /वार्ड .................... <strong class="text-black">${st.address || '-'}</strong></span>
-                                <span>पोस्ट .................... <strong class="text-black">बेगमगंज</strong></span>
+                                <span>20. Child ID: <strong class="font-mono text-black">${st.childId || '-'}</strong></span>
+                                <span>परिवार ID: <strong class="font-mono text-black">${st.familyId || '-'}</strong></span>
                             </div>
-                            <div class="flex justify-between">
-                                <span>13. तहसील .................... <strong class="text-black">बेगमगंज</strong></span>
-                                <span>जिला.................... <strong class="text-black">रायसेन</strong></span>
-                                <span>पिन .................... <strong class="font-mono text-black">464881</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>14. वर्तमान पता ग्राम/वार्ड .................... <strong class="text-black">${st.address || '-'}</strong></span>
-                                <span>पोस्ट .................... <strong class="text-black">बेगमगंज</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>15. तहसील .................... <strong class="text-black">बेगमगंज</strong></span>
-                                <span>जिला.................... <strong class="text-black">रायसेन</strong></span>
-                                <span>पिन .................... <strong class="font-mono text-black">464881</strong></span>
-                            </div>
-                            <div>16. छात्रा/पालक का व्हॉट्स ऐप वाला मोबा.नं. (अभिभावक) .................... <strong class="font-mono text-black">${st.mobile || ''}</strong></div>
-                            <div class="flex justify-between">
-                                <span>17. छात्रा का बैंक खाता क्रमांक .................... <strong class="font-mono text-black">${st.bankAccount || '-'}</strong></span>
-                                <span>बैंक का नाम .................... <strong class="text-black">${st.bankName || 'SBI BEGUMGANJ'}</strong></span>
-                            </div>
-                            <div>19. IFSC .................... <strong class="font-mono uppercase text-black">${st.bankIfsc || 'SBIN0001020'}</strong></div>
-                            <div class="flex justify-between">
-                                <span>20. Child ID .................... <strong class="font-mono text-black">${st.childId || '-'}</strong></span>
-                                <span>परिवार ID.................... <strong class="font-mono text-black">${st.familyId || '-'}</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>21. छात्रा का आधार कार्ड क्रमांक .................... <strong class="font-mono text-black">${st.aadhaar || '-'}</strong></span>
-                                <span>ब्लड ग्रुप .................... <strong class="text-black">${st.bloodGroup || 'B+'}</strong></span>
-                            </div>
-                            <div>
-                                22. लाड़ली लक्ष्मी योजना में नाम हाँ या नहीं .................... <strong class="text-black">${st.ladliLaxmi || 'NO'}</strong><br>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;यदि हाँ है तो प्रमाण पत्र क्रमांक .................... <strong class="font-mono text-black">${st.ladliLaxmiNo || '-'}</strong> वर्ष .................... लिखें।
-                            </div>
-                            <div>23. संबल कार्ड है हाँ या नहीं ........हाँ तो फोटो कॉपी संलग्न करें। <strong class="font-mono text-black">${st.sambalNo || '-'}</strong></div>
+                            <div>21. आधार कार्ड क्रमांक: <strong class="font-mono text-black">${st.aadhaar || '-'}</strong></div>
                         </div>
 
-                        <!-- Bottom Signatures -->
-                        <div class="flex justify-between items-end pt-4 font-bold text-[9px]">
+                        <div class="flex justify-between items-end pt-6 font-bold text-[9px]">
                             <div>हस्ताक्षर पालक</div>
                             <div>हस्ताक्षर छात्रा</div>
                         </div>
@@ -1881,6 +1788,94 @@
 
                 </div>
             `;
+        }
+
+        function exportCombinedFormsPDF() {
+            window.print();
+        }
+
+        function exportCombinedFormsExcel() {
+            const classFilter = document.getElementById('combClassFilter') ? document.getElementById('combClassFilter').value : '10th';
+            const secFilter = document.getElementById('combSectionFilter') ? document.getElementById('combSectionFilter').value : 'ALL';
+            
+            let list = Object.values(studentsData);
+            if (classFilter !== 'ALL') list = list.filter(s => s.targetClass === classFilter);
+            if (secFilter !== 'ALL') list = list.filter(s => s.section === secFilter);
+
+            const exportData = list.map(s => ({
+                "Scholar No": s.scholarNo,
+                "Roll No": s.rollNo,
+                "Class": s.targetClass,
+                "Section": s.section,
+                "Student Name (Hindi)": s.nameHindi,
+                "Student Name (English)": s.nameEng,
+                "Father Name": s.fatherName,
+                "Mother Name": s.motherName,
+                "DOB": s.dob,
+                "Gender": s.gender,
+                "Category": s.category,
+                "Mobile": s.mobile,
+                "Aadhaar": s.aadhaar,
+                "Child SSMID": s.childId,
+                "Family SSMID": s.familyId,
+                "Bank Account": s.bankAccount,
+                "Bank IFSC": s.bankIfsc,
+                "Address": s.address
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Combined_Forms_Batch");
+            XLSX.writeFile(wb, `Combined_Forms_${classFilter}_${secFilter}.xlsx`);
+            showToast("संयुक्त फ़ॉर्म्स का बैच Excel डाउनलोड हो गया है!", "success");
+        }
+
+        function exportCombinedFormsWord() {
+            const container = document.getElementById('combinedFormsContainer');
+            if (!container) return;
+
+            const htmlContent = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>Combined Official Forms Batch</title>
+                <style>
+                    body { font-family: sans-serif; font-size: 10pt; }
+                    .letter-box { border: 1px solid #000; padding: 2px 4px; display: inline-block; font-weight: bold; }
+                    table { border-collapse: collapse; width: 100%; }
+                    td, th { border: 1px solid #000; padding: 4px; }
+                </style>
+                </head>
+                <body>
+                    ${container.innerHTML}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SDMS_Combined_Forms_Batch.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast("संयुक्त फ़ॉर्म्स Word Document (.doc) डाउनलोड हो गया है!", "success");
+        }
+
+        function exportCombinedFormsImage() {
+            const container = document.getElementById('combinedFormsContainer');
+            if (!container) return;
+
+            showToast("इमेज तैयार हो रही है, कृपया प्रतीक्षा करें...", "success");
+            html2canvas(container, { scale: 1.5, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `SDMS_Combined_Forms_Batch.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast("PNG फोटो सफलतापूर्वक डाउनलोड हुई!", "success");
+            }).catch(err => {
+                console.error(err);
+                showToast("इमेज जनरेट करने में त्रुटि हुई। कृपया प्रिंट उपयोग करें।", "error");
+            });
         }
 
         function showToast(msg, type = "success") {
