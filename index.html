@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>स्टूडेंट डाटा मैनेजमेंट सिस्टम (SDMS) - मास्टर्स पोर्टल</title>
     
-    <!-- Google Devanagari Font Support -->
+    <!-- Google Devanagari & Latin Fonts Support -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,7 +22,7 @@
 
     <style>
         body {
-            font-family: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Noto Sans Devanagari', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -67,6 +67,7 @@
             vertical-align: middle;
             margin-top: 1px;
             margin-bottom: 1px;
+            flex-wrap: nowrap;
         }
 
         .letter-box {
@@ -85,7 +86,7 @@
             color: #0f172a;
             box-sizing: border-box;
             flex-shrink: 0;
-            font-family: monospace, 'Noto Sans Devanagari', sans-serif;
+            font-family: monospace, 'Inter', 'Noto Sans Devanagari', sans-serif;
         }
 
         .form-table {
@@ -174,6 +175,7 @@
                 </select>
             </div>
 
+            <!-- Main Navigation Links -->
             <nav class="space-y-1 text-xs font-bold" id="sidebarMenu">
                 <button onclick="showSection('dashboard')" id="btn-dashboard" class="tab-btn active w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="layout-dashboard" class="w-4 h-4 text-amber-500"></i>
@@ -249,6 +251,7 @@
             </div>
         </aside>
 
+        <!-- MAIN DISPLAY AREA FOR ALL 17 SECTIONS -->
         <main class="md:col-span-3 lg:col-span-4 space-y-4">
 
             <!-- GLOBAL EXPORT TOOLBAR -->
@@ -286,7 +289,6 @@
                 </div>
             </div>
 
-            <!-- SECTION 1: DASHBOARD -->
             <section id="section-dashboard" class="content-section space-y-4">
                 
                 <!-- OVERALL SCHOOL TOPPER SPOTLIGHT BANNER -->
@@ -528,12 +530,20 @@
                                     <input type="text" id="f_nameEng" required class="w-full border rounded px-2 py-1 font-bold uppercase">
                                 </div>
                                 <div>
-                                    <label class="text-slate-700 block">father name (पिता का नाम) *</label>
+                                    <label class="text-slate-700 block">father name (पिता का नाम - हिन्दी) *</label>
                                     <input type="text" id="f_fatherName" required class="w-full border rounded px-2 py-1 font-bold">
                                 </div>
                                 <div>
-                                    <label class="text-slate-700 block">mother name (माता का नाम) *</label>
+                                    <label class="text-slate-700 block">FATHER NAME IN ENGLISH (अंग्रेजी)</label>
+                                    <input type="text" id="f_fatherNameEng" class="w-full border rounded px-2 py-1 font-bold uppercase" placeholder="e.g. RAM SHARMA">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">mother name (माता का नाम - हिन्दी) *</label>
                                     <input type="text" id="f_motherName" required class="w-full border rounded px-2 py-1 font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">MOTHER NAME IN ENGLISH (अंग्रेजी)</label>
+                                    <input type="text" id="f_motherNameEng" class="w-full border rounded px-2 py-1 font-bold uppercase" placeholder="e.g. SITA SHARMA">
                                 </div>
                                 <div>
                                     <label class="text-slate-700 block">DOB (जन्म तिथि) *</label>
@@ -720,19 +730,19 @@
                                 </div>
                                 <div>
                                     <label class="text-slate-700 block">3sub (तृतीय विषय + कोड)</label>
-                                    <input type="text" id="f_sub3" value="100 - गणित / संस्कृत" class="w-full border rounded px-2 py-1 font-bold">
+                                    <input type="text" id="f_sub3" value="100 - गणित" class="w-full border rounded px-2 py-1 font-bold">
                                 </div>
                                 <div>
                                     <label class="text-slate-700 block">4sub (चतुर्थ विषय + कोड)</label>
-                                    <input type="text" id="f_sub4" value="200 - विज्ञान / भौतिकी" class="w-full border rounded px-2 py-1 font-bold">
+                                    <input type="text" id="f_sub4" value="200 - विज्ञान" class="w-full border rounded px-2 py-1 font-bold">
                                 </div>
                                 <div>
                                     <label class="text-slate-700 block">5sub (पंचम विषय + कोड)</label>
-                                    <input type="text" id="f_sub5" value="300 - सामाजिक विज्ञान / रसायन" class="w-full border rounded px-2 py-1 font-bold">
+                                    <input type="text" id="f_sub5" value="300 - सामाजिक विज्ञान" class="w-full border rounded px-2 py-1 font-bold">
                                 </div>
                                 <div>
                                     <label class="text-slate-700 block">6sub (षष्ठ विषय / वोकेशनल + कोड)</label>
-                                    <input type="text" id="f_sub6" value="501 - संस्कृत / ब्यूटी & वेलनेस" class="w-full border rounded px-2 py-1 font-bold">
+                                    <input type="text" id="f_sub6" value="501 - संस्कृत" class="w-full border rounded px-2 py-1 font-bold">
                                 </div>
                             </div>
                         </div>
@@ -760,7 +770,7 @@
                     <div class="flex flex-wrap items-center justify-between border-b pb-2 gap-2">
                         <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
                             <i data-lucide="search-code" class="w-4 h-4 text-blue-600"></i>
-                            <span>मास्टर्स छात्र विस्तृत सर्च ग्रिड (Complete 18-Column Excel Grid)</span>
+                            <span>मास्टर्स छात्र विस्तृत सर्च ग्रिड (Complete Excel Grid)</span>
                         </h2>
 
                         <div class="flex flex-wrap items-center gap-2">
@@ -819,17 +829,64 @@
                 </div>
             </section>
 
-            <section id="section-combined-forms" class="content-section space-y-6 hidden">
-                <div class="bg-slate-200 p-2 rounded-xl text-center no-print">
-                    <span class="text-xs font-black text-indigo-950">तीनों आधिकारिक प्रिंट फ़ॉर्म्स (1, 2 एवं 3) एक के नीचे दूसरा क्रमानुसार पेज ब्रेक सहित जनरेटेड:</span>
+            <section id="section-combined-forms" class="content-section space-y-4 hidden">
+                
+                <!-- MULTI-STUDENT SELECTOR TOOLBAR FOR COMBINED FORMS -->
+                <div class="bg-white p-3 rounded-xl border border-slate-300 shadow-sm space-y-2 no-print">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="files" class="w-5 h-5 text-rose-600"></i>
+                            <h3 class="text-xs font-black text-indigo-950">तीनों आधिकारिक प्रिंट फ़ॉर्म्स (1, 2 व 3) - बहु-छात्र चयन टूलबार</h3>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+                            <div>
+                                <label class="text-[10px] text-slate-500 block uppercase">प्रदर्शन मोड:</label>
+                                <select id="combinedModeSelect" onchange="handleCombinedFormsModeChange()" class="border border-indigo-300 rounded px-2 py-1 font-bold bg-indigo-50 text-indigo-950">
+                                    <option value="single">1. एक छात्र का फ़ॉर्म देखें</option>
+                                    <option value="classSec">2. पूरी कक्षा व सेक्शन के फ़ॉर्म्स देखें</option>
+                                    <option value="all">3. पूरे स्कूल के सभी फ़ॉर्म्स देखें</option>
+                                </select>
+                            </div>
+
+                            <div id="combSingleStudentWrapper">
+                                <label class="text-[10px] text-slate-500 block uppercase">छात्र चुनें:</label>
+                                <select id="combinedStudentSelect" onchange="renderCombinedOfficialForms()" class="border border-indigo-300 rounded px-2 py-1 font-bold bg-white text-slate-900 min-w-[180px]">
+                                </select>
+                            </div>
+
+                            <div id="combClassSecWrapper" class="hidden flex items-center space-x-1">
+                                <div>
+                                    <label class="text-[10px] text-slate-500 block uppercase">कक्षा:</label>
+                                    <select id="combinedClassSelect" onchange="renderCombinedOfficialForms()" class="border border-indigo-300 rounded px-2 py-1 font-bold bg-white text-slate-900">
+                                        <option value="ALL">समस्त कक्षाएं</option>
+                                        <option value="10th">10th Standard</option>
+                                        <option value="9th">9th Standard</option>
+                                        <option value="11th">11th Standard</option>
+                                        <option value="12th">12th Standard</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-500 block uppercase">सेक्शन:</label>
+                                    <select id="combinedSectionSelect" onchange="renderCombinedOfficialForms()" class="border border-indigo-300 rounded px-2 py-1 font-bold bg-white text-slate-900">
+                                        <option value="ALL">समस्त सेक्शन</option>
+                                        <option value="A">Section A</option>
+                                        <option value="B">Section B</option>
+                                        <option value="C">Section C</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs text-indigo-900 font-bold pt-1">
+                        <span id="combinedFormsCountSummary">प्रदर्शित छात्र फ़ॉर्म्स: 1 परिणाम</span>
+                        <span class="text-[11px] text-slate-500 font-normal">नोट: प्रिंट/PDF करने पर प्रत्येक छात्र के तीनों फ़ॉर्म्स (1, 2 व 3) A4 पेजों पर क्रमानुसार प्रिंट होंगे।</span>
+                    </div>
                 </div>
 
+                <!-- COMBINED FORMS RENDER CONTAINER -->
                 <div id="exportableCombinedForms" class="space-y-8 bg-white p-4 rounded-xl border border-slate-300 shadow-lg">
-                    <div id="combinedForm1Container"></div>
-                    <div class="page-break my-6 border-b-2 border-dashed border-slate-400"></div>
-                    <div id="combinedForm2Container"></div>
-                    <div class="page-break my-6 border-b-2 border-dashed border-slate-400"></div>
-                    <div id="combinedForm3Container"></div>
                 </div>
             </section>
 
@@ -1153,7 +1210,7 @@
         let activeSection = "dashboard";
         let currentStudentId = "101";
 
-        // HELPER TO SANITIZE STRINGS TO CLEAN UPPERCASE ENGLISH ONLY
+        // HELPER TO SANITIZE STRINGS TO CLEAN UPPERCASE ENGLISH ONLY FOR MP BOARD FORM
         function cleanEnglishOnly(str) {
             if (!str) return '';
             let clean = str.toString()
@@ -1404,12 +1461,19 @@
         function populateSidebarSelectors() {
             const studentSelect = document.getElementById("sidebarStudentSelect");
             const teacherSelect = document.getElementById("sidebarTeacherSelect");
+            const combinedSelect = document.getElementById("combinedStudentSelect");
             
+            const studentListHtml = Object.values(studentsData).map(st => 
+                `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng} (${st.targetClass}-${st.section})</option>`
+            ).join('');
+
             if (studentSelect) {
-                studentSelect.innerHTML = Object.values(studentsData).map(st => 
-                    `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng} (${st.targetClass}-${st.section})</option>`
-                ).join('');
+                studentSelect.innerHTML = studentListHtml;
                 document.getElementById("quickStudentCountBadge").innerText = `${Object.keys(studentsData).length} छात्र`;
+            }
+
+            if (combinedSelect) {
+                combinedSelect.innerHTML = studentListHtml;
             }
 
             if (teacherSelect) {
@@ -1495,7 +1559,7 @@
         function renderTopperSpotlight() {
             const list = Object.values(studentsData);
             if (list.length === 0) return;
-            const topper = list[0]; // Sample Top student
+            const topper = list[0];
             document.getElementById("dashTopperPhoto").src = topper.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
             document.getElementById("dashTopperName").innerText = topper.nameHindi || topper.nameEng;
             document.getElementById("dashTopperDetails").innerText = `पिता: ${topper.fatherName} | कक्षा: ${topper.targetClass} - ${topper.section} | स्कॉलर क्र.: ${topper.scholarNo}`;
@@ -1608,7 +1672,9 @@
             document.getElementById("f_nameHindi").value = st.nameHindi || '';
             document.getElementById("f_nameEng").value = st.nameEng || '';
             document.getElementById("f_fatherName").value = st.fatherName || '';
+            document.getElementById("f_fatherNameEng").value = st.fatherNameEng || cleanEnglishOnly(st.fatherName);
             document.getElementById("f_motherName").value = st.motherName || '';
+            document.getElementById("f_motherNameEng").value = st.motherNameEng || cleanEnglishOnly(st.motherName);
             document.getElementById("f_dob").value = st.dob || '';
             document.getElementById("f_gender").value = st.gender || 'FEMALE';
             document.getElementById("f_category").value = st.category || 'OBC';
@@ -1641,6 +1707,9 @@
         function handleMasterStudentSave(e) {
             e.preventDefault();
             const scholar = document.getElementById("f_scholarNo").value;
+            const fEng = document.getElementById("f_fatherNameEng").value;
+            const mEng = document.getElementById("f_motherNameEng").value;
+
             studentsData[scholar] = {
                 id: scholar,
                 scholarNo: scholar,
@@ -1651,7 +1720,9 @@
                 nameHindi: document.getElementById("f_nameHindi").value,
                 nameEng: document.getElementById("f_nameEng").value,
                 fatherName: document.getElementById("f_fatherName").value,
+                fatherNameEng: fEng || cleanEnglishOnly(document.getElementById("f_fatherName").value),
                 motherName: document.getElementById("f_motherName").value,
+                motherNameEng: mEng || cleanEnglishOnly(document.getElementById("f_motherName").value),
                 dob: document.getElementById("f_dob").value,
                 gender: document.getElementById("f_gender").value,
                 category: document.getElementById("f_category").value,
@@ -1690,44 +1761,96 @@
         }
 
         function makeLetterBoxes(str, minLength = 20) {
-                        <!-- Part 2: Personal Details -->
-                        <div class="bg-indigo-50/50 p-3 rounded-lg border border-indigo-200 space-y-2">
-                            <h3 class="font-extrabold text-indigo-900 text-xs uppercase tracking-wider">2. व्यक्तिगत जानकारी (Personal Details):</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
-                                <div>
-                                    <label class="text-slate-700 block">Candidate (नाम हिन्दी में)</label>
-                                    <input type="text" id="f_nameHindi" class="w-full border rounded px-2 py-1 font-bold">
-                                </div>
-                                <div>
-                                    <label class="text-slate-700 block">Candidate (FULL NAME IN ENGLISH) *</label>
-                                    <input type="text" id="f_nameEng" required class="w-full border rounded px-2 py-1 font-bold uppercase">
-                                </div>
-                                <div>
-                                    <label class="text-slate-700 block">father name (पिता का नाम - हिन्दी) *</label>
-                                    <input type="text" id="f_fatherName" required class="w-full border rounded px-2 py-1 font-bold">
-                                </div>
-                                <div>
-                                    <label class="text-slate-700 block">FATHER NAME IN ENGLISH (अंग्रेजी)</label>
-                                    <input type="text" id="f_fatherNameEng" class="w-full border rounded px-2 py-1 font-bold uppercase" placeholder="e.g. RAM SHARMA">
-                                </div>
-                                <div>
-                                    <label class="text-slate-700 block">mother name (माता का नाम - हिन्दी) *</label>
-                                    <input type="text" id="f_motherName" required class="w-full border rounded px-2 py-1 font-bold">
-                                </div>
-                                <div>
-                                    <label class="text-slate-700 block">MOTHER NAME IN ENGLISH (अंग्रेजी)</label>
-                                    <input type="text" id="f_motherNameEng" class="w-full border rounded px-2 py-1 font-bold uppercase" placeholder="e.g. SITA SHARMA">
-                                </div>
-                                <div>
-                                    <label class="text-slate-700 block">DOB (जन्म तिथि) *</label>
-                                    <input type="date" id="f_dob" required class="w-full border rounded px-2 py-1 font-bold">
-                                </div>
-                                <div>
-                                    <label class="text-slate-700 block">SEX (लिंग)</label>
-                                    <select id="f_gender" class="w-full border rounded px-2 py-1 bg-white font-bold">
-                                        <option value="FEMALE">FEMALE (बालिका)</option>
-                                        <option value="MALE">MALE (बालक)</option>
-                                    </select>
+            let cleanStr = (str || '').toString().trim();
+            let html = '<div class="letter-box-container">';
+            let length = Math.max(cleanStr.length, minLength);
+            for (let i = 0; i < length; i++) {
+                let char = cleanStr[i] || '';
+                html += `<div class="letter-box">${char}</div>`;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function handleCombinedFormsModeChange() {
+            const mode = document.getElementById("combinedModeSelect").value;
+            const singleWrap = document.getElementById("combSingleStudentWrapper");
+            const classSecWrap = document.getElementById("combClassSecWrapper");
+
+            if (mode === "single") {
+                singleWrap.classList.remove("hidden");
+                classSecWrap.classList.add("hidden");
+            } else if (mode === "classSec") {
+                singleWrap.classList.add("hidden");
+                classSecWrap.classList.remove("hidden");
+            } else {
+                singleWrap.classList.add("hidden");
+                classSecWrap.classList.add("hidden");
+            }
+            renderCombinedOfficialForms();
+        }
+
+        function renderCombinedOfficialForms() {
+            const container = document.getElementById("exportableCombinedForms");
+            if (!container) return;
+
+            const mode = document.getElementById("combinedModeSelect") ? document.getElementById("combinedModeSelect").value : "single";
+            let list = Object.values(studentsData);
+
+            if (mode === "single") {
+                const selId = document.getElementById("combinedStudentSelect") ? document.getElementById("combinedStudentSelect").value : currentStudentId;
+                list = list.filter(s => s.id === selId);
+            } else if (mode === "classSec") {
+                const targetCls = document.getElementById("combinedClassSelect").value;
+                const targetSec = document.getElementById("combinedSectionSelect").value;
+                list = list.filter(s => {
+                    if (targetCls !== "ALL" && s.targetClass !== targetCls) return false;
+                    if (targetSec !== "ALL" && s.section !== targetSec) return false;
+                    return true;
+                });
+            }
+
+            document.getElementById("combinedFormsCountSummary").innerText = `प्रदर्शित छात्र फ़ॉर्म्स: ${list.length} परिणाम`;
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-rose-600 font-bold border border-dashed border-rose-300 rounded-xl">चयनित फ़िल्टर हेतु कोई छात्र फॉर्म उपलब्ध नहीं है।</div>`;
+                return;
+            }
+
+            container.innerHTML = list.map((st, idx) => `
+                <div class="student-forms-block space-y-8 ${idx > 0 ? 'page-break pt-6 border-t-4 border-slate-900' : ''}">
+                    <!-- FORM 1: MP BOARD HIGH SCHOOL FORM -->
+                    ${buildSingleOfficialFormHtml(st, 'mp-board')}
+
+                    <div class="page-break my-6 border-b-2 border-dashed border-slate-400"></div>
+
+                    <!-- FORM 2: SSSM SCHOLARSHIP FORM -->
+                    ${buildSingleOfficialFormHtml(st, 'sssm')}
+
+                    <div class="page-break my-6 border-b-2 border-dashed border-slate-400"></div>
+
+                    <!-- FORM 3: PM SHRI ADMISSION FORM -->
+                    ${buildSingleOfficialFormHtml(st, 'pm-shri')}
+                </div>
+            `).join('');
+        }
+
+        function buildSingleOfficialFormHtml(st, formType) {
+            if (formType === 'pm-shri') {
+                return `
+                    <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-3 text-xs text-slate-950 shadow-md">
+                        <!-- Top Header centered -->
+                        <div class="text-center border-b-2 border-slate-900 pb-2">
+                            <h1 class="text-base font-black text-slate-950 tracking-wide uppercase">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज</h1>
+                            <h2 class="text-xs font-bold text-slate-900">जिला रायसेन (म.प्र.)</h2>
+                        </div>
+
+                        <!-- Top Details Grid and Photo Box -->
+                        <div class="flex justify-between items-start gap-4">
+                            <div class="space-y-1 text-xs font-semibold flex-1">
+                                <div class="flex items-center space-x-6">
+                                    <p>स्कॉलर नं.: <span class="fill-line min-w-[80px] font-bold font-mono">${st.scholarNo || '............'}</span></p>
+                                    <p>कक्षाध्यापक: <span class="fill-line min-w-[120px] font-bold">....................</span></p>
                                 </div>
                                 <div class="pt-1">
                                     <p class="leading-loose">छात्रा को कक्षा <span class="fill-line min-w-[60px] font-bold text-center">${st.targetClass || '......'}</span> में प्रवेश दिया जाये। &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; प्रवेश दिनांक: <span class="fill-line min-w-[110px]">${st.admissionDate || '............'}</span></p>
@@ -1789,7 +1912,7 @@
                     </div>
                 `;
             } else if (formType === 'sssm') {
-                container.innerHTML = `
+                return `
                     <div class="p-4 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
                         <div class="flex justify-between items-center border-b-2 border-slate-900 pb-1">
                             <div class="flex items-center space-x-2">
@@ -1846,7 +1969,7 @@
                                 <td>2. लिंग (F/M): <strong>${st.gender === 'FEMALE' ? 'F' : 'M'}</strong></td>
                             </tr>
                             <tr>
-                                <td colspan="4">(अंग्रेजी केपीटल लेटर में): <div class="mt-1">${makeLetterBoxes(st.nameEng, 30)}</div></td>
+                                <td colspan="4">(अंग्रेजी केपीटल लेटर में): <div class="mt-1">${makeLetterBoxes(cleanEnglishOnly(st.nameEng), 30)}</div></td>
                             </tr>
                             <tr>
                                 <td>3. जन्म तिथि: <strong>${st.dob || ''}</strong></td>
@@ -1875,7 +1998,7 @@
                             </tr>
                             <tr>
                                 <td>5. बी.पी.एल कार्डधारी: <strong>${st.bplStatus || 'NO'}</strong></td>
-                                <td colspan="2">6. पता: <strong>${st.address || ''}</strong></td>
+                                <td colspan="2">6. पत्र व्यवहार का पूर्ण पता: <strong>${st.address || ''}</strong></td>
                                 <td>7. मोबाईल नं.: <strong>${st.mobile || ''}</strong></td>
                             </tr>
                             <tr>
@@ -1934,121 +2057,11 @@
                     </div>
                 `;
             } else if (formType === 'mp-board') {
-                container.innerHTML = `
-                    <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
-                        <div class="text-center border-b-2 border-slate-900 pb-2 relative">
-                            <div class="w-8 h-8 mx-auto border-2 border-slate-900 rounded-full flex items-center justify-center font-black text-[8px] mb-1">MPB</div>
-                            <h1 class="text-xs font-black">माध्यमिक शिक्षा मण्डल, मध्य प्रदेश, भोपाल</h1>
-                            <h2 class="text-xs font-bold">आवेदन पत्र हाईस्कूल परीक्षा</h2>
-                            <div class="bg-slate-900 text-white text-[8px] font-bold px-2 py-0.5 inline-block rounded mt-1">सम्बंधित कोड नम्बर ही खाने में भरिये</div>
-                        </div>
-
-                        <!-- Point 1: Applicant Type & Details -->
-                        <div class="border border-slate-800 p-1.5 space-y-1">
-                            <div class="flex flex-wrap items-center justify-between text-[8px] font-bold">
-                                <span>1. आवेदक का प्रकार:</span>
-                                <span>नियमित-1 [✓]</span>
-                                <span>स्वाध्यायी-2 [ ]</span>
-                                <span>नियमित (10वीं फेल)-3 [ ]</span>
-                                <span>स्वाध्यायी (10वीं फेल)-4 [ ]</span>
-                                <span>श्रेणी सुधार-5 [ ]</span>
-                            </div>
-                            <div class="flex flex-wrap items-center justify-between text-[8px]">
-                                <span>म.प्र. मूलनिवासी? <strong>हाँ [✓]</strong></span>
-                                <span>CWSN Code: <span class="border px-1">00</span></span>
-                                <span>Section: <span class="border px-1">${st.section || 'A'}</span></span>
-                                <span>रोल नंबर: <span class="border px-1">${st.rollNo || '1001'}</span></span>
-                                <span>परिणाम: <span class="border px-1">Pass</span></span>
-                                <span>श्रेणी: <span class="border px-1">First</span></span>
-                            </div>
-                        </div>
-
-                        <!-- Point 2: Candidate Name -->
-                        <div>
-                            <span class="font-bold block mb-0.5">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
-                            ${makeLetterBoxes(st.nameEng, 30)}
-                        </div>
-
-                        <!-- Point 3: Father Name -->
-                        <div>
-                            <span class="font-bold block mb-0.5">3. पिता का पूरा नाम FULL NAME OF FATHER:</span>
-                            ${makeLetterBoxes(st.fatherName, 30)}
-                        </div>
-
-        function loadStudentData(stId) {
-            currentStudentId = stId;
-            const st = studentsData[stId];
-            if (!st) return;
-            document.getElementById("f_scholarNo").value = st.scholarNo || '';
-            document.getElementById("f_rollNo").value = st.rollNo || '';
-            document.getElementById("f_enrollmentNo").value = st.enrollmentNo || '';
-            document.getElementById("f_targetClass").value = st.targetClass || '10th';
-            document.getElementById("f_section").value = st.section || 'A';
-            document.getElementById("f_srNo").value = st.srNo || '';
-            document.getElementById("f_nameHindi").value = st.nameHindi || '';
-            document.getElementById("f_nameEng").value = st.nameEng || '';
-            document.getElementById("f_fatherName").value = st.fatherName || '';
-            document.getElementById("f_fatherNameEng").value = st.fatherNameEng || cleanEnglishOnly(st.fatherName);
-            document.getElementById("f_motherName").value = st.motherName || '';
-            document.getElementById("f_motherNameEng").value = st.motherNameEng || cleanEnglishOnly(st.motherName);
-            document.getElementById("f_dob").value = st.dob || '';
-            document.getElementById("f_gender").value = st.gender || 'FEMALE';
-            document.getElementById("f_category").value = st.category || 'OBC';
-            document.getElementById("f_caste").value = st.caste || '';
-            document.getElementById("f_mobile").value = st.mobile || '';
-            document.getElementById("f_email").value = st.email || '';
-            document.getElementById("f_apaarId").value = st.apaarId || '';
-            document.getElementById("f_childId").value = st.childId || '';
-            document.getElementById("f_familyId").value = st.familyId || '';
-            document.getElementById("f_aadhaar").value = st.aadhaar || '';
-            document.getElementById("f_bankName").value = st.bankName || '';
-            document.getElementById("f_bankAccount").value = st.bankAccount || '';
-            document.getElementById("f_bankIfsc").value = st.bankIfsc || '';
-            document.getElementById("f_address").value = st.address || '';
-            document.getElementById("formPhotoPreview").src = st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
-            
-            renderFormClassBookCheckboxes(st.targetClass);
-        }
-
-        function handleMasterStudentSave(e) {
-            e.preventDefault();
-            const scholar = document.getElementById("f_scholarNo").value;
-            const fEng = document.getElementById("f_fatherNameEng").value;
-            const mEng = document.getElementById("f_motherNameEng").value;
-            
-            studentsData[scholar] = {
-                id: scholar,
-                scholarNo: scholar,
-                rollNo: document.getElementById("f_rollNo").value,
-                enrollmentNo: document.getElementById("f_enrollmentNo").value,
-                targetClass: document.getElementById("f_targetClass").value,
-                section: document.getElementById("f_section").value,
-                nameHindi: document.getElementById("f_nameHindi").value,
-                nameEng: document.getElementById("f_nameEng").value,
-                fatherName: document.getElementById("f_fatherName").value,
-                fatherNameEng: fEng || cleanEnglishOnly(document.getElementById("f_fatherName").value),
-                motherName: document.getElementById("f_motherName").value,
-                motherNameEng: mEng || cleanEnglishOnly(document.getElementById("f_motherName").value),
-                dob: document.getElementById("f_dob").value,
-                gender: document.getElementById("f_gender").value,
-                category: document.getElementById("f_category").value,
-                mobile: document.getElementById("f_mobile").value,
-                apaarId: document.getElementById("f_apaarId").value,
-                childId: document.getElementById("f_childId").value,
-                aadhaar: document.getElementById("f_aadhaar").value,
-                address: document.getElementById("f_address").value,
-                photoUrl: document.getElementById("formPhotoPreview").src
-            };
-            populateSidebarSelectors();
-            showToast("छात्र रिकॉर्ड सफलतापूर्वक सुरक्षित किया गया!");
-            showSection("master-grid");
-        }
-            } else if (formType === 'mp-board') {
                 const candidateEng = cleanEnglishOnly(st.nameEng);
                 const fatherEng = cleanEnglishOnly(st.fatherNameEng || st.fatherName);
                 const motherEng = cleanEnglishOnly(st.motherNameEng || st.motherName);
 
-                container.innerHTML = `
+                return `
                     <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
                         <div class="text-center border-b-2 border-slate-900 pb-2 relative">
                             <div class="w-8 h-8 mx-auto border-2 border-slate-900 rounded-full flex items-center justify-center font-black text-[8px] mb-1">MPB</div>
@@ -2077,19 +2090,19 @@
                             </div>
                         </div>
 
-                        <!-- Point 2: Candidate Name (PURE ENGLISH ONLY) -->
+                        <!-- Point 2: Candidate Name (ENGLISH ONLY) -->
                         <div>
                             <span class="font-bold block mb-0.5">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
                             ${makeLetterBoxes(candidateEng, 30)}
                         </div>
 
-                        <!-- Point 3: Father Name (PURE ENGLISH ONLY) -->
+                        <!-- Point 3: Father Name (ENGLISH ONLY) -->
                         <div>
                             <span class="font-bold block mb-0.5">3. पिता का पूरा नाम FULL NAME OF FATHER:</span>
                             ${makeLetterBoxes(fatherEng, 30)}
                         </div>
 
-                        <!-- Point 4: Mother Name (PURE ENGLISH ONLY) -->
+                        <!-- Point 4: Mother Name (ENGLISH ONLY) -->
                         <div>
                             <span class="font-bold block mb-0.5">4. माता का पूरा नाम FULL NAME OF MOTHER:</span>
                             ${makeLetterBoxes(motherEng, 30)}
@@ -2106,8 +2119,116 @@
                                 <div class="border-b border-slate-800 text-[9px] font-bold pb-0.5">पंद्रह मई दो हजार नौ</div>
                             </div>
                         </div>
-                        <img src="${st.photoUrl || ''}" class="w-16 h-20 object-cover border">
+
+                        <!-- Point 6: School Code & District Code -->
+                        <div class="grid grid-cols-2 gap-2 border p-1 text-[8px]">
+                            <div>जिला कोड: <strong>42 (रायसेन)</strong></div>
+                            <div>विकासखण्ड कोड: <strong>01 (बेगमगंज)</strong></div>
+                            <div>शाला कोड: <strong>23340222855</strong></div>
+                            <div>माध्यम: <strong>1. हिन्दी [✓]</strong></div>
+                        </div>
+
+                        <!-- Point 7: Language & Subjects -->
+                        <div class="border border-slate-800 p-1">
+                            <span class="font-bold block mb-1">7. भाषा व विषय :-</span>
+                            <div class="grid grid-cols-3 gap-1 text-[9px]">
+                                <div>1. ${st.sub1 || '401-हिन्दी'}</div>
+                                <div>2. ${st.sub2 || '411-अंग्रेजी'}</div>
+                                <div>3. ${st.sub3 || '100-गणित'}</div>
+                                <div>4. ${st.sub4 || '200-विज्ञान'}</div>
+                                <div>5. ${st.sub5 || '300-सामाजिक विज्ञान'}</div>
+                                <div>6. ${st.sub6 || '501-संस्कृत'}</div>
+                            </div>
+                        </div>
+
+                        <!-- Point 8: SSMID & Sambal -->
+                        <div class="flex justify-between items-center text-[9px] font-bold">
+                            <div>8. समग्र आई.डी. (SSMID): <span class="font-mono">${st.childId || ''}</span></div>
+                            <div>संबल क्रमांक: <span class="font-mono">${st.sambalNo || 'N/A'}</span></div>
+                        </div>
+
+                        <!-- Point 9: Photo and Signature -->
+                        <div class="flex justify-between items-center pt-2">
+                            <div class="text-[8px] space-y-0.5">
+                                <p>आवेदक का पता: ${st.address || ''}</p>
+                                <p>मोबाइल नंबर: ${st.mobile || ''}</p>
+                            </div>
+                            <div class="border-2 border-slate-900 w-24 h-28 text-center p-1 text-[8px] bg-slate-50 flex flex-col justify-between">
+                                ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-18 h-20 object-cover mx-auto">` : ''}
+                                <span>परीक्षार्थी फोटो व हस्ताक्षर</span>
+                            </div>
+                        </div>
                     </div>
+                `;
+            }
+        }
+
+        function renderIndividualForm(formType) {
+            const container = document.getElementById(`form${formType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('')}Container`);
+            if (!container) return;
+            const st = studentsData[currentStudentId] || Object.values(studentsData)[0];
+            container.innerHTML = buildSingleOfficialFormHtml(st, formType);
+        }
+
+        function renderProfileCards() {
+            const container = document.getElementById("exportableProfileCard");
+            if (!container) return;
+            const cls = document.getElementById("pcardClassFilter").value;
+            let list = Object.values(studentsData);
+            if (cls !== "ALL") list = list.filter(st => st.targetClass === cls);
+
+            container.innerHTML = list.map(st => `
+                <div class="bg-white p-4 rounded-xl border-2 border-indigo-900 shadow-md space-y-3 relative overflow-hidden">
+                    <div class="bg-indigo-950 text-white -m-4 mb-3 p-2 text-center border-b-2 border-yellow-400 flex justify-between items-center px-3">
+                        <span class="text-[9px] bg-yellow-500 text-indigo-950 font-black px-1.5 py-0.2 rounded">SDMS ID</span>
+                        <h3 class="text-xs font-black">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज</h3>
+                    </div>
+
+                    <div class="flex items-start space-x-3 text-xs">
+                        <img src="${st.photoUrl || ''}" class="w-20 h-24 object-cover rounded border-2 border-indigo-950">
+                        <div class="space-y-1 font-bold">
+                            <h4 class="text-sm font-extrabold text-indigo-950">${st.nameHindi || st.nameEng}</h4>
+                            <p class="text-[10px] text-slate-500">स्कॉलर क्र.: <span class="font-mono text-indigo-900">${st.scholarNo}</span> | कक्षा: ${st.targetClass} (${st.section})</p>
+                            <p class="text-[10px]">पिता: ${st.fatherName}</p>
+                            <p class="text-[10px]">माता: ${st.motherName}</p>
+                            <p class="text-[10px] font-mono">मोबाईल: ${st.mobile}</p>
+                            <p class="text-[10px] font-mono text-indigo-900">Child ID: ${st.childId}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAdmitCards() {
+            const container = document.getElementById("exportableAdmitCard");
+            if (!container) return;
+            const cls = document.getElementById("admitClassFilter").value;
+            let list = Object.values(studentsData);
+            if (cls !== "ALL") list = list.filter(st => st.targetClass === cls);
+
+            container.innerHTML = list.map(st => `
+                <div class="bg-white p-4 rounded-xl border-2 border-rose-900 shadow-md space-y-3 text-xs">
+                    <div class="text-center font-bold border-b pb-2">
+                        <h3 class="text-sm font-black text-rose-950">वार्षिक परीक्षा प्रवेश पत्र (ADMIT CARD) - सत्र 2025-2026</h3>
+                        <p class="text-[10px] text-slate-600">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज (रायसेन)</p>
+                    </div>
+
+                    <div class="flex justify-between items-center font-semibold">
+                        <div class="space-y-1">
+                            <p><strong>परीक्षार्थी का नाम:</strong> ${st.nameHindi || st.nameEng}</p>
+                            <p><strong>पिता का नाम:</strong> ${st.fatherName}</p>
+                            <p><strong>अनुक्रमांक (Roll No):</strong> <span class="font-mono font-bold text-rose-900">${st.rollNo || '1001'}</span></p>
+                            <p><strong>कक्षा/सेक्शन:</strong> ${st.targetClass} - ${st.section}</p>
+                        </div>
+                        <img src="${st.photoUrl || ''}" class="w-18 h-22 object-cover border-2 border-rose-900">
+                    </div>
+
+                    <table class="w-full border text-center text-[10px]">
+                        <tr class="bg-rose-100 font-bold"><td>क्र.</td><td>विषय का नाम</td><td>परीक्षा तिथि</td><td>समय</td></tr>
+                        <tr><td>1</td><td>${st.sub1 || 'हिन्दी'}</td><td>01-Mar-2026</td><td>09:00 AM - 12:00 PM</td></tr>
+                        <tr><td>2</td><td>${st.sub2 || 'अंग्रेजी'}</td><td>05-Mar-2026</td><td>09:00 AM - 12:00 PM</td></tr>
+                        <tr><td>3</td><td>${st.sub3 || 'गणित'}</td><td>09-Mar-2026</td><td>09:00 AM - 12:00 PM</td></tr>
+                    </table>
                 </div>
             `).join('');
         }
@@ -2115,25 +2236,33 @@
         function renderMarksheets() {
             const container = document.getElementById("exportableMarksheet");
             if (!container) return;
-            container.innerHTML = Object.values(studentsData).map(st => `
+            const cls = document.getElementById("markClassFilter").value;
+            let list = Object.values(studentsData);
+            if (cls !== "ALL") list = list.filter(st => st.targetClass === cls);
+
+            container.innerHTML = list.map(st => `
                 <div class="bg-white p-4 rounded-xl border-2 border-amber-800 shadow-md space-y-2 text-xs">
                     <div class="text-center font-bold border-b pb-1">
                         <h3>समेकित अंकसूची (Statement of Marks)</h3>
-                        <p class="text-[10px]">सत्र 2025-2026</p>
+                        <p class="text-[10px]">सत्र 2025-2026 - वार्षिक परीक्षा</p>
                     </div>
-                    <p><strong>छात्र:</strong> ${st.nameHindi || st.nameEng} | <strong>स्कॉलर:</strong> ${st.scholarNo}</p>
+                    <p><strong>छात्र:</strong> ${st.nameHindi || st.nameEng} | <strong>स्कॉलर:</strong> ${st.scholarNo} | <strong>कक्षा:</strong> ${st.targetClass}</p>
                     <table class="w-full border text-center text-[10px]">
-                        <tr class="bg-amber-100 font-bold"><td>विषय</td><td>प्राप्तांक</td><td>पूर्णांक</td></tr>
-                        <tr><td>हिन्दी</td><td>85</td><td>100</td></tr>
-                        <tr><td>अंग्रेजी</td><td>78</td><td>100</td></tr>
-                        <tr><td>गणित</td><td>90</td><td>100</td></tr>
+                        <tr class="bg-amber-100 font-bold"><td>विषय</td><td>थ्योरी प्राप्तांक</td><td>प्रैक्टिकल प्राप्तांक</td><td>कुल प्राप्तांक</td></tr>
+                        <tr><td>${st.sub1 || 'हिन्दी'}</td><td>68/75</td><td>20/25</td><td class="font-bold">88/100</td></tr>
+                        <tr><td>${st.sub2 || 'अंग्रेजी'}</td><td>60/75</td><td>22/25</td><td class="font-bold">82/100</td></tr>
+                        <tr><td>${st.sub3 || 'गणित'}</td><td>70/75</td><td>24/25</td><td class="font-bold">94/100</td></tr>
                     </table>
+                    <div class="flex justify-between font-bold pt-1 text-emerald-800">
+                        <span>कुल प्राप्तांक: 424 / 500</span>
+                        <span>प्रतिशत: 84.8% (A+ FIRST)</span>
+                    </div>
                 </div>
             `).join('');
         }
 
         function renderTeacherCard() {
-            // Already rendered in HTML template
+            // Static Teacher Card template
         }
 
         function renderManagementPanel() {
@@ -2146,7 +2275,7 @@
                     </thead>
                     <tbody>
                         ${Object.values(teachersData).map(tc => `
-                            <tr class="border-b">
+                            <tr class="border-b font-semibold">
                                 <td class="p-2 font-mono">${tc.code}</td>
                                 <td class="p-2 font-bold">${tc.name}</td>
                                 <td class="p-2">${tc.subject}</td>
@@ -2163,13 +2292,14 @@
             const container = document.getElementById("subjectMasterContainer");
             if (!container) return;
             container.innerHTML = `
-                <table class="w-full text-xs border">
+                <table class="w-full text-xs border font-semibold">
                     <thead class="bg-purple-900 text-white font-bold">
                         <tr><th class="p-2">क्र.</th><th class="p-2">विषय कोड</th><th class="p-2">विषय का नाम</th><th class="p-2">थ्योरी पूर्णांक</th><th class="p-2">प्रैक्टिकल पूर्णांक</th></tr>
                     </thead>
                     <tbody>
                         <tr class="border-b"><td class="p-2">1</td><td class="p-2 font-mono">401</td><td class="p-2 font-bold">प्रथम भाषा - हिन्दी</td><td class="p-2">75</td><td class="p-2">25</td></tr>
                         <tr class="border-b"><td class="p-2">2</td><td class="p-2 font-mono">411</td><td class="p-2 font-bold">द्वितीय भाषा - अंग्रेजी</td><td class="p-2">75</td><td class="p-2">25</td></tr>
+                        <tr class="border-b"><td class="p-2">3</td><td class="p-2 font-mono">100</td><td class="p-2 font-bold">गणित</td><td class="p-2">75</td><td class="p-2">25</td></tr>
                     </tbody>
                 </table>
             `;
@@ -2179,7 +2309,7 @@
             const container = document.getElementById("marksConfigContainer");
             if (!container) return;
             container.innerHTML = `
-                <table class="w-full text-xs border">
+                <table class="w-full text-xs border font-semibold">
                     <thead class="bg-emerald-900 text-white font-bold">
                         <tr><th class="p-2">विषय</th><th class="p-2">थ्योरी Max</th><th class="p-2">थ्योरी Pass</th><th class="p-2">प्रैक्टिकल Max</th><th class="p-2">प्रैक्टिकल Pass</th></tr>
                     </thead>
@@ -2195,13 +2325,13 @@
             const container = document.getElementById("examMarksEntryTableContainer");
             if (!container) return;
             container.innerHTML = `
-                <table class="w-full text-xs border">
+                <table class="w-full text-xs border font-semibold">
                     <thead class="bg-rose-950 text-white font-bold">
                         <tr><th class="p-2">स्कॉलर</th><th class="p-2">छात्र का नाम</th><th class="p-2">हिन्दी</th><th class="p-2">अंग्रेजी</th><th class="p-2">गणित</th><th class="p-2">कुल प्राप्तांक</th></tr>
                     </thead>
                     <tbody>
                         ${Object.values(studentsData).map(st => `
-                            <tr class="border-b font-semibold">
+                            <tr class="border-b">
                                 <td class="p-2 font-mono">${st.scholarNo}</td>
                                 <td class="p-2 font-bold">${st.nameHindi || st.nameEng}</td>
                                 <td class="p-2"><input type="number" value="68" class="w-12 border px-1"></td>
@@ -2261,13 +2391,13 @@
             const cls = document.getElementById("bookMasterClassSelect").value;
             const books = booksMasterData[cls] || [];
             container.innerHTML = `
-                <table class="w-full text-xs border">
+                <table class="w-full text-xs border font-semibold">
                     <thead class="bg-amber-950 text-white font-bold">
                         <tr><th class="p-2">क्र.</th><th class="p-2">पुस्तक का शीर्षक</th><th class="p-2">विषय कोड</th><th class="p-2">माध्यम</th></tr>
                     </thead>
                     <tbody>
                         ${books.map((b, idx) => `
-                            <tr class="border-b font-semibold">
+                            <tr class="border-b">
                                 <td class="p-2">${idx + 1}</td>
                                 <td class="p-2 font-bold text-amber-950">${b.title}</td>
                                 <td class="p-2 font-mono">${b.sub}</td>
