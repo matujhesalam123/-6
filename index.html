@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>स्टूडेंट डाटा मैनेजमेंट सिस्टम (SDMS) - मास्टर्स पोर्टल</title>
     
+    <!-- Google Devanagari Font Support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
@@ -16,12 +21,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
+        body {
+            font-family: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
-            body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
+            body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; font-family: 'Noto Sans Devanagari', sans-serif !important; }
             .content-section { border: none !important; box-shadow: none !important; display: block !important; }
             .page-break { page-break-after: always; break-after: page; }
+            .letter-box { border-color: #000000 !important; }
         }
         
         .tab-btn.active {
@@ -49,23 +61,52 @@
         }
         .bronze-glow { animation: bronzeGlow 2.5s infinite ease-in-out; }
 
+        .letter-box-container {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin-top: 1px;
+            margin-bottom: 1px;
+        }
+
         .letter-box {
-            display: inline-block;
-            width: 15px;
-            height: 19px;
-            border: 1px solid #1e293b;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 20px;
+            border: 1px solid #0f172a;
             text-align: center;
             font-size: 10px;
-            font-weight: bold;
-            line-height: 19px;
-            margin-right: 1px;
+            font-weight: 700;
+            line-height: 20px;
+            margin-right: -1px;
             background-color: #ffffff;
             color: #0f172a;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            font-family: monospace, 'Noto Sans Devanagari', sans-serif;
+        }
+
+        .form-table {
+            border-collapse: collapse;
+            width: 100%;
         }
 
         .form-table th, .form-table td {
-            border: 1px solid #334155;
-            padding: 2px 4px;
+            border: 1px solid #0f172a;
+            padding: 3px 5px;
+            vertical-align: middle;
+        }
+
+        .fill-line {
+            border-bottom: 1px dotted #0f172a;
+            display: inline-block;
+            font-weight: 700;
+            padding-left: 4px;
+            padding-right: 4px;
+            min-height: 18px;
+            vertical-align: bottom;
         }
 
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -1632,13 +1673,13 @@
 
         function makeLetterBoxes(str, minLength = 20) {
             let val = (str || '').toString().toUpperCase();
-            let html = '';
+            let boxesHtml = '';
             let len = Math.max(val.length, minLength);
             for (let i = 0; i < len; i++) {
                 let char = val[i] !== undefined && val[i] !== '' ? val[i] : '&nbsp;';
-                html += `<span class="letter-box">${char}</span>`;
+                boxesHtml += `<span class="letter-box">${char}</span>`;
             }
-            return html;
+            return `<div class="letter-box-container">${boxesHtml}</div>`;
         }
 
         function renderCombinedOfficialForms() {
@@ -1656,57 +1697,64 @@
 
             if (formType === 'pm-shri') {
                 container.innerHTML = `
-                    <div class="p-6 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-3 text-xs font-serif text-slate-950 shadow-md">
-                        <div class="flex justify-between items-start border-b-2 border-slate-900 pb-2">
-                            <div class="space-y-1">
-                                <p class="text-[11px] font-bold">स्काॅलर नं.: <span class="font-mono font-black text-sm underline">${st.scholarNo || '............'}</span></p>
-                                <p class="text-[11px] font-bold">कक्षाध्यापक: ............................</p>
-                                <p class="text-[11px] font-bold mt-2">छात्रा को कक्षा <span class="font-bold underline">${st.targetClass || '........'} - ${st.section || 'A'}</span> में प्रवेश दिया जाये। &nbsp;&nbsp;&nbsp;&nbsp; प्रवेश दिनांक: <span class="font-bold underline">${st.admissionDate || '............'}</span></p>
+                    <div class="p-6 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-3 text-xs text-slate-950 shadow-md">
+                        <!-- Top Header Section (School Title Centered) -->
+                        <div class="text-center border-b border-slate-900 pb-2">
+                            <h1 class="text-base font-black tracking-wide leading-tight">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज</h1>
+                            <h2 class="text-xs font-bold mt-0.5">जिला रायसेन (म.प्र.)</h2>
+                        </div>
+
+                        <!-- Top Details & Photo Grid -->
+                        <div class="flex justify-between items-start border-b-2 border-slate-900 pb-3 gap-4">
+                            <div class="space-y-2 flex-1 text-xs font-bold leading-relaxed">
+                                <div class="flex flex-wrap items-center gap-6">
+                                    <p>स्काॅलर नं.: <span class="fill-line min-w-[110px] font-mono text-sm">${st.scholarNo || '............'}</span></p>
+                                    <p>कक्षाध्यापक: <span class="fill-line min-w-[130px]">....................</span></p>
+                                </div>
+                                <div class="pt-1">
+                                    <p class="leading-loose">छात्रा को कक्षा <span class="fill-line min-w-[60px] font-bold text-center">${st.targetClass || '......'}</span> में प्रवेश दिया जाये। &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; प्रवेश दिनांक: <span class="fill-line min-w-[110px]">${st.admissionDate || '............'}</span></p>
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <h1 class="text-base font-black tracking-wide leading-tight">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय.बेगमगंज</h1>
-                                <h2 class="text-sm font-bold">जिला रायसेन (म.प्र.)</h2>
-                            </div>
-                            <div class="border-2 border-slate-900 p-2 text-center w-32 h-36 flex flex-col justify-center items-center text-[10px] bg-slate-50 font-sans">
-                                ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-24 h-28 object-cover mb-1 border">` : ''}
-                                <span>डिजिटल कैमरे से लिया गया रंगीन फोटो नाम एवं दिनांक सहित</span>
+                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 flex flex-col justify-center items-center text-[9px] bg-slate-50 flex-shrink-0">
+                                ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-22 h-26 object-cover mb-1 border border-slate-400">` : ''}
+                                <span class="leading-tight">डिजिटल कैमरे से लिया गया रंगीन फोटो नाम एवं दिनांक सहित</span>
                             </div>
                         </div>
 
-                        <div class="space-y-1 border-b pb-2">
+                        <div class="space-y-1 border-b border-slate-300 pb-2">
                             <p>प्रति,</p>
                             <p class="font-bold pl-4">प्राचार्य महोदय,</p>
                             <p class="font-bold pl-4">पीएम श्री शास. क. उ. मा. वि. बेगमगंज, जिला रायसेन (म.प्र.)</p>
                             <p class="pt-1">महोदय,</p>
-                            <p class="pl-4">मै सत्र 2026–27 में आपकी संस्था में कक्षा <span class="font-bold underline">${st.targetClass || '......'}</span> में प्रवेश लेना चाहती हूँ मेरा विवरण निम्नानुसार है–</p>
+                            <p class="pl-4">मै सत्र 2026–27 में आपकी संस्था में कक्षा <span class="fill-line min-w-[50px] font-bold text-center">${st.targetClass || '......'}</span> में प्रवेश लेना चाहती हूँ मेरा विवरण निम्नानुसार है–</p>
                         </div>
 
-                        <div class="space-y-1 text-xs font-sans leading-relaxed">
-                            <p><strong>1. छात्रा का नाम कु:</strong> <span class="font-bold text-sm border-b border-dotted border-slate-800 pr-8">${st.nameHindi || ''} (${st.nameEng || ''})</span></p>
-                            <p><strong>2. पिता का नाम श्री:</strong> <span class="font-bold border-b border-dotted border-slate-800 pr-8">${st.fatherName || ''}</span></p>
-                            <p><strong>3. माता का नाम श्रीमती:</strong> <span class="font-bold border-b border-dotted border-slate-800 pr-8">${st.motherName || ''}</span></p>
-                            <p><strong>4. जाति:</strong> <span class="font-bold pr-6">${st.caste || '............'}</span> <strong>वर्ग:</strong> <span class="font-bold border border-slate-800 px-2 py-0.5">${st.category || 'GEN'}</span></p>
-                            <p><strong>5. जन्मतिथि:</strong> <span class="font-mono font-bold pr-4">${st.dob || '../../....'}</span> <strong>(शब्दों में):</strong> <span class="border-b border-dotted border-slate-800 pr-8">................................</span></p>
-                            <p><strong>6. अंतिम उत्तीर्ण कक्षा:</strong> <span class="font-bold pr-6">....................</span> <strong>वर्ष:</strong> <span class="font-bold">....................</span></p>
-                            <p><strong>7. पूर्व विद्यालय का नाम :-</strong> <span class="font-bold pr-6">..................................................</span> <strong>पूर्व विद्यालय का डाइस कोड:</strong> <span class="font-mono">....................</span></p>
-                            <p><strong>8. कक्षा जिसमें प्रवेश लेना चाहती है:</strong> <span class="font-bold text-sm underline">${st.targetClass || '......'} (${st.section || 'A'})</span></p>
-                            <p><strong>9. विषय:--</strong> 1. <span class="font-bold underline pr-2">${st.sub1 || '......'}</span> 2. <span class="font-bold underline pr-2">${st.sub2 || '......'}</span> 3. <span class="font-bold underline pr-2">${st.sub3 || '......'}</span> 4. <span class="font-bold underline pr-2">${st.sub4 || '......'}</span> 5. <span class="font-bold underline pr-2">${st.sub5 || '......'}</span> 6. <span class="font-bold underline">${st.sub6 || '......'}</span></p>
-                            <p><strong>10. मातृभाषा:</strong> <span class="font-bold pr-4">हिन्दी</span> <strong>माध्यम:</strong> <span class="font-bold pr-4">${st.medium || 'HINDI'}</span> <strong>राष्ट्रीयता:</strong> <span class="font-bold">भारतीय</span></p>
-                            <p><strong>11. पिता का व्यवसाय:</strong> <span class="font-bold pr-6">....................</span> <strong>वार्षिक आय:</strong> <span class="font-bold">₹ ${st.annualIncome || '............'}</span></p>
-                            <p><strong>12. पिता/पालक का स्थाई पता :ग्राम / वार्ड:</strong> <span class="font-bold pr-4">${st.address || '............'}</span> <strong>पोस्ट:</strong> <span class="font-bold">............</span></p>
-                            <p><strong>13. तहसील:</strong> <span class="font-bold pr-4">बेगमगंज</span> <strong>जिला:</strong> <span class="font-bold pr-4">रायसेन</span> <strong>पिन:</strong> <span class="font-mono font-bold">464881</span></p>
-                            <p><strong>14. वर्तमान पता ग्राम/वार्ड:</strong> <span class="font-bold pr-4">${st.address || '............'}</span> <strong>पोस्ट:</strong> <span class="font-bold">............</span></p>
-                            <p><strong>15. तहसील:</strong> <span class="font-bold pr-4">बेगमगंज</span> <strong>जिला:</strong> <span class="font-bold pr-4">रायसेन</span> <strong>पिन:</strong> <span class="font-mono font-bold">464881</span></p>
-                            <p><strong>16. छात्रा/पालक का व्हॉटस एप वाला मोबा.नं. (अनिवार्य है):</strong> <span class="font-mono font-bold text-sm underline">${st.mobile || '....................'}</span></p>
-                            <p><strong>17. छात्रा का बैंक खाता क्रमांक:</strong> <span class="font-mono font-bold underline pr-4">${st.bankAccount || '....................'}</span> <strong>बैंक का नाम:</strong> <span class="font-bold">${st.bankName || '....................'}</span></p>
-                            <p><strong>19. IFSC:</strong> <span class="font-mono font-bold underline">${st.bankIfsc || '....................'}</span></p>
-                            <p><strong>20. Child ID:</strong> <span class="font-mono font-bold underline pr-6">${st.childId || '....................'}</span> <strong>परिवार ID:</strong> <span class="font-mono font-bold underline">${st.familyId || '....................'}</span></p>
-                            <p><strong>21. छात्रा का आधार कार्ड क्रमांक:</strong> <span class="font-mono font-bold underline pr-6">${st.aadhaar || '....................'}</span> <strong>ब्लड ग्रुप:</strong> <span class="font-bold">${st.bloodGroup || '....'}</span></p>
-                            <p><strong>22. लाड़ली लक्ष्मी योजना में नाम हाँ या नहीं:</strong> <span class="font-bold pr-4">${st.ladliLaxmi || 'NO'}</span> <strong>यदि हाँ है तो प्रमाण पत्र क्रमांक:</strong> <span class="font-mono">${st.ladliLaxmiNo || '..........'}</span> <strong>वर्ष:</strong> ..... लिखें।</p>
-                            <p><strong>23. संबल कार्ड है हाँ या नहीं:</strong> <span class="font-bold">${st.sambalStatus || 'NO'}</span> ........हाँ तो फोटो कॉपी संलग्न करें।</p>
+                        <div class="space-y-1.5 text-xs leading-relaxed">
+                            <p><strong>1. छात्रा का नाम कु:</strong> <span class="fill-line min-w-[320px] font-bold text-sm">${st.nameHindi || ''} (${st.nameEng || ''})</span></p>
+                            <p><strong>2. पिता का नाम श्री:</strong> <span class="fill-line min-w-[320px] font-bold">${st.fatherName || ''}</span></p>
+                            <p><strong>3. माता का नाम श्रीमती:</strong> <span class="fill-line min-w-[320px] font-bold">${st.motherName || ''}</span></p>
+                            <p><strong>4. जाति:</strong> <span class="fill-line min-w-[120px] font-bold">${st.caste || '............'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>वर्ग:</strong> <span class="border-2 border-slate-900 px-2 py-0.5 font-black">${st.category || 'GEN'}</span></p>
+                            <p><strong>5. जन्मतिथि:</strong> <span class="fill-line min-w-[100px] font-mono font-bold">${st.dob || '../../....'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>(शब्दों में):</strong> <span class="fill-line min-w-[200px]">................................</span></p>
+                            <p><strong>6. अंतिम उत्तीर्ण कक्षा:</strong> <span class="fill-line min-w-[120px] font-bold">....................</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>वर्ष:</strong> <span class="fill-line min-w-[80px] font-bold">....................</span></p>
+                            <p><strong>7. पूर्व विद्यालय का नाम :-</strong> <span class="fill-line min-w-[220px] font-bold">........................................</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पूर्व विद्यालय का डाइस कोड:</strong> <span class="fill-line min-w-[100px] font-mono">....................</span></p>
+                            <p><strong>8. कक्षा जिसमें प्रवेश लेना चाहती है:</strong> <span class="fill-line min-w-[100px] font-bold text-sm text-center">${st.targetClass || '......'} (${st.section || 'A'})</span></p>
+                            <p><strong>9. विषय:--</strong> 1. <span class="fill-line min-w-[80px] font-bold">${st.sub1 || '......'}</span> &nbsp; 2. <span class="fill-line min-w-[80px] font-bold">${st.sub2 || '......'}</span> &nbsp; 3. <span class="fill-line min-w-[80px] font-bold">${st.sub3 || '......'}</span> &nbsp; 4. <span class="fill-line min-w-[80px] font-bold">${st.sub4 || '......'}</span> &nbsp; 5. <span class="fill-line min-w-[80px] font-bold">${st.sub5 || '......'}</span> &nbsp; 6. <span class="fill-line min-w-[80px] font-bold">${st.sub6 || '......'}</span></p>
+                            <p><strong>10. मातृभाषा:</strong> <span class="fill-line min-w-[80px] font-bold">हिन्दी</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>माध्यम:</strong> <span class="fill-line min-w-[80px] font-bold">${st.medium || 'HINDI'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>राष्ट्रीयता:</strong> <span class="fill-line min-w-[80px] font-bold">भारतीय</span></p>
+                            <p><strong>11. पिता का व्यवसाय:</strong> <span class="fill-line min-w-[120px] font-bold">....................</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>वार्षिक आय:</strong> <span class="fill-line min-w-[100px] font-bold">₹ ${st.annualIncome || '............'}</span></p>
+                            <p><strong>12. पिता/पालक का स्थाई पता :ग्राम / वार्ड:</strong> <span class="fill-line min-w-[180px] font-bold">${st.address || '............'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पोस्ट:</strong> <span class="fill-line min-w-[100px]">............</span></p>
+                            <p><strong>13. तहसील:</strong> <span class="fill-line min-w-[100px] font-bold">बेगमगंज</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>जिला:</strong> <span class="fill-line min-w-[100px] font-bold">रायसेन</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पिन:</strong> <span class="fill-line min-w-[80px] font-mono font-bold">464881</span></p>
+                            <p><strong>14. वर्तमान पता ग्राम/वार्ड:</strong> <span class="fill-line min-w-[180px] font-bold">${st.address || '............'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पोस्ट:</strong> <span class="fill-line min-w-[100px]">............</span></p>
+                            <p><strong>15. तहसील:</strong> <span class="fill-line min-w-[100px] font-bold">बेगमगंज</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>जिला:</strong> <span class="fill-line min-w-[100px] font-bold">रायसेन</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पिन:</strong> <span class="fill-line min-w-[80px] font-mono font-bold">464881</span></p>
+                            <p><strong>16. छात्रा/पालक का व्हॉटस एप वाला मोबा.नं. (अनिवार्य है):</strong> <span class="fill-line min-w-[200px] font-mono font-bold text-sm">${st.mobile || '....................'}</span></p>
+                            <p><strong>17. छात्रा का बैंक खाता क्रमांक:</strong> <span class="fill-line min-w-[180px] font-mono font-bold">${st.bankAccount || '....................'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>बैंक का नाम:</strong> <span class="fill-line min-w-[180px] font-bold">${st.bankName || '....................'}</span></p>
+                            <p><strong>19. IFSC:</strong> <span class="fill-line min-w-[180px] font-mono font-bold">${st.bankIfsc || '....................'}</span></p>
+                            <p><strong>20. Child ID:</strong> <span class="fill-line min-w-[140px] font-mono font-bold">${st.childId || '....................'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>परिवार ID:</strong> <span class="fill-line min-w-[140px] font-mono font-bold">${st.familyId || '....................'}</span></p>
+                            <p><strong>21. छात्रा का आधार कार्ड क्रमांक:</strong> <span class="fill-line min-w-[180px] font-mono font-bold">${st.aadhaar || '....................'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>ब्लड ग्रुप:</strong> <span class="fill-line min-w-[60px] font-bold">${st.bloodGroup || '....'}</span></p>
+                            <p><strong>22. लाड़ली लक्ष्मी योजना में नाम हाँ या नहीं:</strong> <span class="fill-line min-w-[60px] font-bold">${st.ladliLaxmi || 'NO'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>यदि हाँ है तो प्रमाण पत्र क्रमांक:</strong> <span class="fill-line min-w-[120px] font-mono">${st.ladliLaxmiNo || '..........'}</span></p>
+                            <p><strong>23. संबल कार्ड है हाँ या नहीं:</strong> <span class="fill-line min-w-[60px] font-bold">${st.sambalStatus || 'NO'}</span> ........हाँ तो फोटो कॉपी संलग्न करें।</p>
                         </div>
 
-                        <div class="pt-8 flex justify-between items-end text-xs font-bold font-sans">
+                        <div class="pt-8 flex justify-between items-end text-xs font-bold">
                             <div class="text-center">
                                 <div class="w-32 border-b border-slate-900 mb-1"></div>
                                 <p>हस्ताक्षर छात्रा</p>
@@ -1724,7 +1772,7 @@
                 `;
             } else if (formType === 'sssm') {
                 container.innerHTML = `
-                    <div class="p-4 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] font-sans text-slate-950 shadow-md">
+                    <div class="p-4 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
                         <div class="flex justify-between items-center border-b-2 border-slate-900 pb-1">
                             <div class="flex items-center space-x-2">
                                 <div class="border-2 border-slate-900 rounded-full w-10 h-10 flex items-center justify-center font-black text-xs">
@@ -1735,18 +1783,19 @@
                                     <h2 class="text-xs font-bold">समेकित छात्रवृत्ति योजना आवेदन पत्र ( कक्षा 9 से 10 )</h2>
                                 </div>
                             </div>
-                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 text-[9px] bg-slate-50">
-                                <span>पासपोर्ट साइज फोटो संस्था प्रमुख द्वारा अभिप्रमाणित</span>
+                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 text-[9px] bg-slate-50 flex-shrink-0 flex flex-col justify-between">
+                                ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-20 h-22 object-cover mx-auto border border-slate-300">` : ''}
+                                <span class="leading-tight">पासपोर्ट साइज फोटो संस्था प्रमुख द्वारा अभिप्रमाणित</span>
                             </div>
                         </div>
 
                         <div class="flex items-center space-x-2 font-bold py-1">
                             <span>Child SSSM.ID :</span>
-                            <div>${makeLetterBoxes(st.childId, 9)}</div>
+                            ${makeLetterBoxes(st.childId, 9)}
                         </div>
 
                         <!-- 13 Points Top Grid Table -->
-                        <table class="w-full form-table text-[9px] font-bold">
+                        <table class="form-table text-[9px] font-bold">
                             <tr>
                                 <td>1. संभाग: <span class="font-extrabold">भोपाल</span></td>
                                 <td>2. जिला: <span class="font-extrabold">रायसेन</span></td>
@@ -1773,13 +1822,13 @@
                         </table>
 
                         <!-- Student Personal Table -->
-                        <table class="w-full form-table text-[9px]">
+                        <table class="form-table text-[9px]">
                             <tr>
                                 <td colspan="3">1. विद्यार्थी का नाम ( हिन्दी ): <strong>${st.nameHindi || ''}</strong></td>
                                 <td>2. लिंग (F/M): <strong>${st.gender === 'FEMALE' ? 'F' : 'M'}</strong></td>
                             </tr>
                             <tr>
-                                <td colspan="4">(अंग्रेजी केपीटल लेटर में): <div class="mt-0.5">${makeLetterBoxes(st.nameEng, 30)}</div></td>
+                                <td colspan="4">(अंग्रेजी केपीटल लेटर में): <div class="mt-1">${makeLetterBoxes(st.nameEng, 30)}</div></td>
                             </tr>
                             <tr>
                                 <td>3. जन्म तिथि: <strong>${st.dob || ''}</strong></td>
@@ -1821,7 +1870,7 @@
                         </table>
 
                         <p class="font-bold underline">गत कक्षा की वार्षिक परीक्षा का विवरण :-</p>
-                        <table class="w-full form-table text-[9px] text-center">
+                        <table class="form-table text-[9px] text-center">
                             <tr class="bg-slate-100 font-bold">
                                 <td>1. परीक्षा का नाम</td>
                                 <td>2. संस्था का नाम</td>
@@ -1841,7 +1890,7 @@
                         </table>
 
                         <p class="font-bold underline">छात्रा के बैंक खाते/पोस्ट ऑफिस खाते का विवरण :-</p>
-                        <table class="w-full form-table text-[9px]">
+                        <table class="form-table text-[9px]">
                             <tr>
                                 <td colspan="2">1. बैंक/पोस्ट ऑफिस का नाम: <strong>${st.bankName || ''}</strong></td>
                                 <td colspan="2">2. शाखा का नाम: <strong>बेगमगंज</strong></td>
@@ -1868,9 +1917,9 @@
                 `;
             } else if (formType === 'mp-board') {
                 container.innerHTML = `
-                    <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] font-sans text-slate-950 shadow-md">
+                    <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
                         <div class="text-center border-b-2 border-slate-900 pb-2 relative">
-                            <div class="w-8 h-8 mx-auto border-2 border-slate-900 rounded-full flex items-center justify-center font-bold text-[8px] mb-1">MPB</div>
+                            <div class="w-8 h-8 mx-auto border-2 border-slate-900 rounded-full flex items-center justify-center font-black text-[8px] mb-1">MPB</div>
                             <h1 class="text-xs font-black">माध्यमिक शिक्षा मण्डल, मध्य प्रदेश, भोपाल</h1>
                             <h2 class="text-xs font-bold">आवेदन पत्र हाईस्कूल परीक्षा</h2>
                             <div class="bg-slate-900 text-white text-[8px] font-bold px-2 py-0.5 inline-block rounded mt-1">सम्बंधित कोड नम्बर ही खाने में भरिये</div>
@@ -1899,30 +1948,30 @@
                         <!-- Point 2: Candidate Name -->
                         <div>
                             <span class="font-bold block mb-0.5">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
-                            <div>${makeLetterBoxes(st.nameEng, 30)}</div>
+                            ${makeLetterBoxes(st.nameEng, 30)}
                         </div>
 
                         <!-- Point 3: Father Name -->
                         <div>
                             <span class="font-bold block mb-0.5">3. पिता का पूरा नाम FULL NAME OF FATHER:</span>
-                            <div>${makeLetterBoxes(st.fatherName, 30)}</div>
+                            ${makeLetterBoxes(st.fatherName, 30)}
                         </div>
 
                         <!-- Point 4: Mother Name -->
                         <div>
                             <span class="font-bold block mb-0.5">4. माता का पूरा नाम FULL NAME OF MOTHER:</span>
-                            <div>${makeLetterBoxes(st.motherName, 30)}</div>
+                            ${makeLetterBoxes(st.motherName, 30)}
                         </div>
 
                         <!-- Point 5: DOB -->
                         <div class="flex items-center space-x-4">
                             <div>
                                 <span class="font-bold block mb-0.5">5. जन्म तिथि (अंकों में):</span>
-                                <div>${makeLetterBoxes(st.dob ? st.dob.replace(/-/g, '') : '', 8)}</div>
+                                ${makeLetterBoxes(st.dob ? st.dob.replace(/-/g, '') : '', 8)}
                             </div>
                             <div class="flex-1">
                                 <span class="font-bold block mb-0.5">जन्म तिथि (शब्दों में):</span>
-                                <div class="border-b border-slate-800 text-[9px] font-bold">पंद्रह मई दो हजार नौ</div>
+                                <div class="border-b border-slate-800 text-[9px] font-bold pb-0.5">पंद्रह मई दो हजार नौ</div>
                             </div>
                         </div>
 
@@ -1948,11 +1997,11 @@
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <span class="font-bold block mb-0.5">8. समग्र आई.डी. (SSMID):</span>
-                                <div>${makeLetterBoxes(st.childId, 9)}</div>
+                                ${makeLetterBoxes(st.childId, 9)}
                             </div>
                             <div>
                                 <span class="font-bold block mb-0.5">संबल क्रमांक:</span>
-                                <div>${makeLetterBoxes(st.sambalNo, 9)}</div>
+                                ${makeLetterBoxes(st.sambalNo, 9)}
                             </div>
                         </div>
 
@@ -1966,7 +2015,7 @@
                                 <p>Phone No. : ${st.mobile || ''} &nbsp;&nbsp;&nbsp;&nbsp; Email-Id: ${st.email || ''}</p>
                             </div>
 
-                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 flex flex-col justify-between bg-slate-50 text-[8px]">
+                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 flex flex-col justify-between bg-slate-50 text-[8px] flex-shrink-0">
                                 ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-20 h-22 object-cover mx-auto border">` : '<div class="w-20 h-22 border bg-white mx-auto"></div>'}
                                 <span>नवीनतम डिजिटल फोटो</span>
                                 <div class="border-t border-slate-800 pt-0.5">छात्र के हस्ताक्षर</div>
