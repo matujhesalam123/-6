@@ -3345,6 +3345,172 @@
                 return;
             }
 
+            container.innerHTML = `
+                <table class="w-full text-xs border text-left border-collapse">
+                    <thead class="bg-cyan-950 text-white font-bold uppercase">
+                        <tr>
+                            <th class="p-2 border border-cyan-800 text-center w-12">क्र.</th>
+                            <th class="p-2 border border-cyan-800 text-center w-16">फोटो</th>
+                            <th class="p-2 border border-cyan-800">नाम एवं पदनाम</th>
+                            <th class="p-2 border border-cyan-800">एम्प्लॉई आईडी</th>
+                            <th class="p-2 border border-cyan-800">कक्षा अध्यापक?</th>
+                            <th class="p-2 border border-cyan-800">प्रभारी कक्षा/सेक्शन</th>
+                            <th class="p-2 border border-cyan-800">अध्यापन विषय व कक्षाएँ</th>
+                            <th class="p-2 border border-cyan-800">संपर्क एवं ई-मेल</th>
+                            <th class="p-2 border border-cyan-800 text-center w-28">एक्शन</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white font-semibold text-slate-800">
+                        ${list.map((tc, idx) => `
+                            <tr class="hover:bg-cyan-50/50 transition">
+                                <td class="p-2 border border-slate-300 text-center font-bold">${idx + 1}</td>
+                                <td class="p-2 border border-slate-300 text-center">
+                                    <img src="${tc.photoUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150'}" class="w-8 h-10 object-cover rounded border border-slate-400 mx-auto">
+                                </td>
+                                <td class="p-2 border border-slate-300 font-extrabold text-slate-900">
+                                    ${tc.name}<br>
+                                    <span class="text-[10px] text-cyan-800 font-bold bg-cyan-100 px-1.5 py-0.2 rounded">${tc.designation || 'शिक्षक'}</span>
+                                </td>
+                                <td class="p-2 border border-slate-300 font-mono font-bold text-indigo-950">${tc.code}</td>
+                                <td class="p-2 border border-slate-300">
+                                    <span class="${tc.isClassTeacher === 'YES' ? 'bg-emerald-100 text-emerald-950 font-black' : 'bg-slate-100 text-slate-600'} px-2 py-0.5 rounded text-[10px]">${tc.isClassTeacher === 'YES' ? 'YES (प्रभारी)' : 'NO'}</span>
+                                </td>
+                                <td class="p-2 border border-slate-300 font-bold text-emerald-900">${tc.isClassTeacher === 'YES' ? (tc.inchargeClass || '-') : '-'}</td>
+                                <td class="p-2 border border-slate-300 text-[11px]">${tc.subjectsTaught || tc.subject || '-'}</td>
+                                <td class="p-2 border border-slate-300 font-mono text-[11px]">
+                                    📞 ${tc.mobile}<br>
+                                    ✉ ${tc.email || '-'}
+                                </td>
+                                <td class="p-2 border border-slate-300 text-center">
+                                    <div class="flex items-center justify-center space-x-1">
+                                        <button onclick="editTeacherRecord('${tc.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">संपादित</button>
+                                        <button onclick="deleteTeacherRecord('${tc.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">हटाएं</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function openTeacherModal(id = null) {
+            const modal = document.getElementById("teacherModal");
+            if (!modal) return;
+            document.getElementById("teacherForm").reset();
+            document.getElementById("t_editId").value = "";
+            document.getElementById("teacherModalTitle").innerText = "नया शिक्षक / संस्था प्रमुख जोड़ें";
+            document.getElementById("t_photoPreview").src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150";
+
+            if (id && teachersData[id]) {
+                const tc = teachersData[id];
+                document.getElementById("t_editId").value = tc.id;
+                document.getElementById("t_name").value = tc.name || "";
+                document.getElementById("t_designation").value = tc.designation || "माध्यमिक शिक्षक";
+                document.getElementById("t_code").value = tc.code || "";
+                document.getElementById("t_dob").value = tc.dob || "";
+                document.getElementById("t_mobile").value = tc.mobile || "";
+                document.getElementById("t_email").value = tc.email || "";
+                document.getElementById("t_address").value = tc.address || "";
+                document.getElementById("t_isClassTeacher").value = tc.isClassTeacher || "YES";
+                document.getElementById("t_inchargeClass").value = tc.inchargeClass || "";
+                document.getElementById("t_subjectsTaught").value = tc.subjectsTaught || tc.subject || "";
+                if (tc.photoUrl) document.getElementById("t_photoPreview").src = tc.photoUrl;
+                document.getElementById("teacherModalTitle").innerText = "शिक्षक / संस्था प्रमुख विवरण संपादित करें";
+            }
+            modal.classList.remove("hidden");
+        }
+
+        function closeTeacherModal() {
+            const modal = document.getElementById("teacherModal");
+            if (modal) modal.classList.add("hidden");
+        }
+
+        function toggleTeacherInchargeField(val) {
+            const wrapper = document.getElementById("t_inchargeClassWrapper");
+            if (wrapper) {
+                if (val === 'NO') wrapper.classList.add("opacity-40", "pointer-events-none");
+                else wrapper.classList.remove("opacity-40", "pointer-events-none");
+            }
+        }
+
+        function previewTeacherPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("t_photoPreview").src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleTeacherSave(e) {
+            e.preventDefault();
+            const editId = document.getElementById("t_editId").value;
+            const code = document.getElementById("t_code").value.trim().toUpperCase();
+            const name = document.getElementById("t_name").value.trim();
+            const designation = document.getElementById("t_designation").value;
+            const dob = document.getElementById("t_dob").value;
+            const mobile = document.getElementById("t_mobile").value.trim();
+            const email = document.getElementById("t_email").value.trim();
+            const address = document.getElementById("t_address").value.trim();
+            const isClassTeacher = document.getElementById("t_isClassTeacher").value;
+            const inchargeClass = document.getElementById("t_inchargeClass").value.trim();
+            const subjectsTaught = document.getElementById("t_subjectsTaught").value.trim();
+            const photoUrl = document.getElementById("t_photoPreview").src;
+
+            const tId = editId || `T_${Date.now()}`;
+            teachersData[tId] = {
+                id: tId,
+                name,
+                designation,
+                code,
+                dob,
+                mobile,
+                email,
+                address,
+                isClassTeacher,
+                inchargeClass,
+                subjectsTaught,
+                subject: subjectsTaught,
+                photoUrl
+            };
+
+            closeTeacherModal();
+            populateSidebarSelectors();
+            renderManagementPanel();
+            if (activeSection === 'teacher-card') renderTeacherCard();
+            showToast(`शिक्षक रिकॉर्ड "${name}" सफलतापूर्वक सुरक्षित किया गया!`);
+        }
+
+        function editTeacherRecord(id) {
+            openTeacherModal(id);
+        }
+
+        function deleteTeacherRecord(id) {
+            if (confirm("क्या आप इस शिक्षक/प्राचार्य रिकॉर्ड को हटाना चाहते हैं?")) {
+                delete teachersData[id];
+                populateSidebarSelectors();
+                renderManagementPanel();
+                if (activeSection === 'teacher-card') renderTeacherCard();
+                showToast("शिक्षक रिकॉर्ड हटाया गया!", "error");
+            }
+        }
+
+        function resetMgmtFilters() {
+            document.getElementById("mgmtSearchInput").value = "";
+            document.getElementById("mgmtDesignationFilter").value = "ALL";
+            document.getElementById("mgmtClassTeacherFilter").value = "ALL";
+            document.getElementById("mgmtSortFilter").value = "nameAsc";
+            renderManagementPanel();
+            showToast("प्रबंधन फ़िल्टर रीसेट कर दिए गए!");
+        }
+
+        function exportMgmtPDF() { globalExportPDF(); }
+        function exportMgmtExcel() { globalExportExcel(); }
+        function exportMgmtDoc() { globalExportDoc(); }
+        function exportMgmtImage() { globalExportImage(); }
+
         function toggleSubjectViewMode(mode) {
             subjectMasterViewMode = mode;
             const btnList = document.getElementById("btnSubViewList");
