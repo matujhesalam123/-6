@@ -14,7 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- jsPDF & html2canvas for PDF & Image Export -->
+    <!-- jsPDF & html2canvas for PDF Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- SheetJS for Excel Export -->
@@ -35,12 +35,12 @@
             .page-break { page-break-after: always; break-after: page; }
             .letter-box { border-color: #000000 !important; }
             .a4-container {
-                width: 100% !important;
+                width: 210mm !important;
                 min-height: 297mm !important;
-                padding: 6mm 8mm !important;
+                padding: 8mm 10mm !important;
                 border: none !important;
                 box-shadow: none !important;
-                margin: 0 !important;
+                margin: 0 auto !important;
             }
         }
         
@@ -155,6 +155,7 @@
 
     <div class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 md:p-5 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
 
+        <!-- PERSISTENT LEFT SIDEBAR PANEL -->
         <aside class="md:col-span-1 bg-white rounded-xl shadow-sm p-3 border border-slate-200 no-print flex flex-col space-y-3 sticky top-16 h-fit">
             
             <!-- Quick Live Student Search & Selector -->
@@ -293,6 +294,7 @@
                 </div>
             </div>
 
+            <!-- SECTION 1: DASHBOARD -->
             <section id="section-dashboard" class="content-section space-y-4">
                 
                 <!-- OVERALL SCHOOL TOPPER SPOTLIGHT BANNER -->
@@ -393,13 +395,14 @@
                 </div>
             </section>
 
+            <!-- SECTION 2: STUDENT ENTRY ONLINE FORM -->
             <section id="section-student-entry" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
                     <div class="flex justify-between items-center border-b pb-3">
                         <div>
                             <h2 class="text-base font-bold text-indigo-950 flex items-center space-x-1.5">
                                 <i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i>
-                                <span>मास्टर्स ऑनलाइन छात्र प्रवेश व संपादन फ़ॉर्म (50+ Fields)</span>
+                                <span>मास्टर्स ऑनलाइन छात्र प्रवेश व संपादन फ़ॉर्म</span>
                             </h2>
                             <p class="text-xs text-slate-500">म.प्र. बोर्ड, समग्र छात्रवृत्ति व पीएमश्री तीनों फ़ॉर्म्स हेतु 50+ एकीकृत कॉलम</p>
                         </div>
@@ -761,9 +764,9 @@
                 </div>
             </section>
 
+            <!-- SECTION 3: MASTER SEARCH GRID (57 COLUMNS) -->
             <section id="section-master-grid" class="content-section space-y-3 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 space-y-3">
-                    <!-- Top Toolbar for Master Grid Filters -->
                     <div class="flex flex-wrap items-center justify-between border-b pb-2 gap-2">
                         <div class="flex items-center space-x-2">
                             <h2 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
@@ -774,9 +777,8 @@
                         </div>
 
                         <div class="flex flex-wrap items-center gap-2">
-                            <input type="text" id="gridGlobalSearchInput" oninput="applyMasterGridFilters()" placeholder="🔍 सर्वत्र खोजें (नाम, पिता, स्कॉलर, आधार, मोबाइल)..." class="text-xs border border-indigo-300 rounded px-2 py-1 outline-none font-semibold w-52 sm:w-64">
+                            <input type="text" id="gridGlobalSearchInput" oninput="applyMasterGridFilters()" placeholder="🔍 सर्वत्र खोजें (नाम, पिता, स्कॉलर, आधार)..." class="text-xs border border-indigo-300 rounded px-2 py-1 outline-none font-semibold w-52 sm:w-64">
                             
-                            <!-- Class Selector -->
                             <select id="gridClassFilter" onchange="applyMasterGridFilters()" class="text-xs border rounded px-2 py-1 font-bold bg-indigo-50 text-indigo-950 border-indigo-300">
                                 <option value="ALL">🏢 पूरे स्कूल की कक्षाएं</option>
                                 <option value="10th">कक्षा 10वीं</option>
@@ -785,24 +787,21 @@
                                 <option value="12th">कक्षा 12वीं</option>
                             </select>
 
-                            <!-- Section Selector -->
                             <select id="gridSectionFilter" onchange="applyMasterGridFilters()" class="text-xs border rounded px-2 py-1 font-bold bg-indigo-50 text-indigo-950 border-indigo-300">
-                                <option value="ALL">समस्त सेक्शन (All Sections)</option>
+                                <option value="ALL">समस्त सेक्शन</option>
                                 <option value="A">Section A</option>
                                 <option value="B">Section B</option>
                                 <option value="C">Section C</option>
                             </select>
 
-                            <!-- Category Selector -->
                             <select id="gridCategoryFilter" onchange="applyMasterGridFilters()" class="text-xs border rounded px-2 py-1 font-bold bg-indigo-50 text-indigo-950 border-indigo-300">
-                                <option value="ALL">समस्त वर्ग (All Category)</option>
+                                <option value="ALL">समस्त वर्ग</option>
                                 <option value="OBC">OBC</option>
                                 <option value="SC">SC</option>
                                 <option value="ST">ST</option>
                                 <option value="GEN">GEN</option>
                             </select>
 
-                            <!-- Condition Filter -->
                             <select id="gridConditionFilter" onchange="applyMasterGridFilters()" class="text-xs border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
                                 <option value="ALL">कंडीशन: सभी छात्र</option>
                                 <option value="FIRST">प्रथम श्रेणी (>60%)</option>
@@ -817,15 +816,12 @@
                         </div>
                     </div>
 
-                    <!-- Complete 57-Column Excel Spreadsheet Grid -->
                     <div class="overflow-x-auto max-h-[600px] border border-slate-300 rounded-lg">
                         <table class="w-full text-left text-xs border-collapse" id="masterGridTable">
                             <thead class="bg-indigo-950 text-white sticky top-0 font-bold uppercase whitespace-nowrap z-20">
                                 <tr id="masterGridHeaderTr">
-                                    <!-- Dynamic Columns Generated via JS -->
                                 </tr>
                                 <tr id="masterGridFilterTr" class="bg-indigo-900 text-slate-800 border-t border-indigo-800">
-                                    <!-- Dynamic Per-Column Filter Inputs Generated via JS -->
                                 </tr>
                             </thead>
                             <tbody id="masterGridTbody" class="divide-y divide-slate-200 bg-white">
@@ -835,10 +831,21 @@
                 </div>
             </section>
 
-            <section id="section-combined-forms" class="content-section space-y-6 hidden">
+            <!-- SECTION 4: COMBINED OFFICIAL FORMS (1, 2 & 3) -->
+            <section id="section-combined-forms" class="content-section space-y-4 hidden">
+                <div class="bg-amber-50 border border-amber-300 p-3 rounded-xl shadow-sm space-y-3 no-print">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 pb-2">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="files" class="w-5 h-5 text-rose-600"></i>
+                            <h3 class="text-xs font-black text-amber-950 uppercase tracking-wider">तीनों संयुक्त प्रिंट फ़ॉर्म्स (Multi-Student Batch Selection & Toolbar)</h3>
+                        </div>
+                        <span id="combBatchCountDisplay" class="text-[10px] bg-amber-200 text-amber-950 font-bold px-2.5 py-0.5 rounded-full">प्रदर्शित छात्र: 0</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs font-bold">
                         <div>
                             <label class="block text-amber-900 mb-0.5 text-[10px]">1. कक्षा चुनें:</label>
-                            <select id="combClassFilter" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white">
+                            <select id="combClassFilter" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white border-amber-300">
                                 <option value="ALL">🏢 पूरे स्कूल के सभी छात्र (All School)</option>
                                 <option value="10th" selected>कक्षा 10वीं</option>
                                 <option value="9th">कक्षा 9वीं</option>
@@ -848,7 +855,7 @@
                         </div>
                         <div>
                             <label class="block text-amber-900 mb-0.5 text-[10px]">2. सेक्शन चुनें:</label>
-                            <select id="combSectionFilter" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white">
+                            <select id="combSectionFilter" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white border-amber-300">
                                 <option value="ALL">समस्त सेक्शन (All Sections)</option>
                                 <option value="A">Section A</option>
                                 <option value="B">Section B</option>
@@ -857,11 +864,11 @@
                         </div>
                         <div>
                             <label class="block text-amber-900 mb-0.5 text-[10px]">3. खोजें (नाम/स्कॉलर):</label>
-                            <input type="text" id="combSearchInput" oninput="handleCombFilterChange()" placeholder="🔍 छात्र खोजें..." class="w-full border rounded px-2 py-1 bg-white">
+                            <input type="text" id="combSearchInput" oninput="handleCombFilterChange()" placeholder="🔍 छात्र खोजें..." class="w-full border rounded px-2 py-1 bg-white border-amber-300">
                         </div>
                         <div>
                             <label class="block text-amber-900 mb-0.5 text-[10px]">4. विशिष्ट छात्र:</label>
-                            <select id="combStudentSelect" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white">
+                            <select id="combStudentSelect" onchange="handleCombFilterChange()" class="w-full border rounded px-2 py-1 bg-white border-amber-300">
                                 <option value="ALL_CLASS">-- चयनित फ़िल्टर अनुसार सभी छात्र --</option>
                             </select>
                         </div>
@@ -877,6 +884,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 5: PROFILE CARDS -->
             <section id="section-profile-card" class="content-section space-y-4 hidden">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-3 no-print">
                     <div class="flex flex-wrap justify-between items-center gap-2">
@@ -900,6 +908,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 6: ADMIT CARDS -->
             <section id="section-admit-card" class="content-section space-y-4 hidden">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-3 no-print">
                     <div class="flex flex-wrap justify-between items-center gap-2">
@@ -923,6 +932,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 7: MARKSHEETS -->
             <section id="section-marksheet" class="content-section space-y-4 hidden">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-3 no-print">
                     <div class="flex flex-wrap justify-between items-center gap-2">
@@ -946,6 +956,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 8: TEACHER CARD -->
             <section id="section-teacher-card" class="content-section space-y-4 hidden">
                 <div id="exportableTeacherCard" class="bg-white p-6 rounded-2xl border-2 border-teal-900 shadow-xl max-w-lg mx-auto relative overflow-hidden">
                     <div class="bg-teal-950 text-white -m-6 mb-6 p-4 text-center border-b-2 border-teal-400">
@@ -991,12 +1002,13 @@
                 </div>
             </section>
 
+            <!-- SECTION 9: MANAGEMENT PANEL -->
             <section id="section-management-panel" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
                     <div class="flex justify-between items-center border-b pb-2">
                         <h2 class="text-sm font-extrabold text-indigo-950 flex items-center space-x-1.5">
                             <i data-lucide="building" class="w-4 h-4 text-cyan-600"></i>
-                            <span>संस्था प्रमुख (प्राचार्य) एवं शिक्षक प्रबंधन (11 Columns Table)</span>
+                            <span>संस्था प्रमुख (प्राचार्य) एवं शिक्षक प्रबंधन</span>
                         </h2>
                     </div>
 
@@ -1005,12 +1017,13 @@
                 </div>
             </section>
 
+            <!-- SECTION 10: SUBJECT MASTER -->
             <section id="section-subject-master" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <div class="flex justify-between items-center border-b pb-2">
                         <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
                             <i data-lucide="book-open" class="w-4 h-4 text-purple-600"></i>
-                            <span>1. विषय व विषय कोड मास्टर (Subject & Code Master - 10 Columns Table)</span>
+                            <span>1. विषय व विषय कोड मास्टर (Subject & Code Master)</span>
                         </h2>
                         <select id="subjectMasterClassSelect" onchange="renderSubjectMaster()" class="text-xs font-bold border rounded px-2 py-1 bg-purple-50 text-purple-950 border-purple-300">
                             <option value="10th">10th Standard</option>
@@ -1025,6 +1038,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 11: MARKS CONFIG -->
             <section id="section-marks-config" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <div class="flex justify-between items-center border-b pb-2">
@@ -1045,6 +1059,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 12: EXAM MARKS ENTRY -->
             <section id="section-exam-marks" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <div class="flex flex-wrap items-center justify-between border-b pb-2 gap-2">
@@ -1079,11 +1094,12 @@
                 </div>
             </section>
 
+            <!-- SECTION 13: CONSOLIDATED REPORT -->
             <section id="section-consolidated-report" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5 border-b pb-2">
                         <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-600"></i>
-                        <span>4. एकजाई शाला परिणाम रिपोर्ट (Consolidated Overall School Report)</span>
+                        <span>4. एकजाई शाला परिणाम रिपोर्ट (Consolidated Overall Report)</span>
                     </h2>
 
                     <div id="consolidatedReportContainer">
@@ -1091,6 +1107,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 14: CLASS EXAM REPORT -->
             <section id="section-class-exam-report" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <div class="flex flex-wrap items-center justify-between border-b pb-2 gap-2">
@@ -1125,6 +1142,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 15: BOOK MASTER -->
             <section id="section-book-master" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <div class="flex justify-between items-center border-b pb-2">
@@ -1145,6 +1163,7 @@
                 </div>
             </section>
 
+            <!-- SECTION 16: CLOUD SETTINGS -->
             <section id="section-cloud-settings" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5 border-b pb-2">
@@ -1258,7 +1277,7 @@
         let gridSortAscending = true;
         let gridColumnFilters = {};
 
-        // MASTER STUDENTS DATABASE WITH FULL 50+ COLUMNS DATA
+        // MASTER STUDENTS DATABASE
         let studentsData = {
             "101": {
                 id: "101",
@@ -1481,6 +1500,7 @@
 
         function showToast(message, type = "success") {
             const container = document.getElementById("toastContainer");
+            if (!container) return;
             const toast = document.createElement("div");
             toast.className = `p-3 rounded-lg text-xs font-bold text-white shadow-lg transition transform duration-300 ${type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'}`;
             toast.innerText = message;
@@ -1582,7 +1602,7 @@
         function renderTopperSpotlight() {
             const list = Object.values(studentsData);
             if (list.length === 0) return;
-            const topper = list[0]; // Sample Top student
+            const topper = list[0];
             document.getElementById("dashTopperPhoto").src = topper.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
             document.getElementById("dashTopperName").innerText = topper.nameHindi || topper.nameEng;
             document.getElementById("dashTopperDetails").innerText = `पिता: ${topper.fatherName} | कक्षा: ${topper.targetClass} - ${topper.section} | स्कॉलर क्र.: ${topper.scholarNo}`;
@@ -1655,45 +1675,38 @@
             const tbody = document.getElementById("masterGridTbody");
             if (!headerTr || !tbody) return;
 
-            // Render Header Row with Sorting
             headerTr.innerHTML = masterGridColumns.map(col => `
                 <th class="p-2 border border-indigo-800 cursor-pointer hover:bg-indigo-900 transition" onclick="sortMasterGrid('${col.key}')">
                     ${col.label} ${gridSortColumn === col.key ? (gridSortAscending ? '▲' : '▼') : ''}
                 </th>
             `).join('') + `<th class="p-2 border border-indigo-800 text-center sticky right-0 bg-indigo-950 z-10">डायरेक्ट एक्शन</th>`;
 
-            // Render Per-Column Advanced Search Filter Input Row
             filterTr.innerHTML = masterGridColumns.map(col => `
                 <td class="p-1 border border-indigo-800">
                     ${col.isImage ? '' : `<input type="text" value="${gridColumnFilters[col.key] || ''}" oninput="filterGridColumn('${col.key}', this.value)" placeholder="फ़िल्टर..." class="grid-col-filter-input w-full text-[10px] px-1 py-0.5 border rounded outline-none font-semibold text-slate-900 focus:ring-1 focus:ring-amber-400">`}
                 </td>
             `).join('') + `<td class="p-1 border border-indigo-800 text-center sticky right-0 bg-indigo-900 z-10"></td>`;
 
-            // Fetch Global & Dropdown Filters
             const globalQ = (document.getElementById("gridGlobalSearchInput") ? document.getElementById("gridGlobalSearchInput").value : "").toLowerCase().trim();
             const clsFilter = document.getElementById("gridClassFilter") ? document.getElementById("gridClassFilter").value : "ALL";
             const secFilter = document.getElementById("gridSectionFilter") ? document.getElementById("gridSectionFilter").value : "ALL";
             const catFilter = document.getElementById("gridCategoryFilter") ? document.getElementById("gridCategoryFilter").value : "ALL";
             const condFilter = document.getElementById("gridConditionFilter") ? document.getElementById("gridConditionFilter").value : "ALL";
 
-            // Apply All Filters
             let filtered = Object.values(studentsData).filter(st => {
                 if (clsFilter !== "ALL" && st.targetClass !== clsFilter) return false;
                 if (secFilter !== "ALL" && st.section !== secFilter) return false;
                 if (catFilter !== "ALL" && st.category !== catFilter) return false;
                 
-                // Condition Filter Logic
                 if (condFilter === "FIRST" && (!st.percentage || parseFloat(st.percentage) < 60)) return false;
                 if (condFilter === "DISTINCTION" && (!st.percentage || parseFloat(st.percentage) < 75)) return false;
                 if (condFilter === "FAIL" && st.provisionalResult !== "Fail" && st.provisionalResult !== "Supp") return false;
 
-                // Global Search Filter
                 if (globalQ) {
                     const haystack = JSON.stringify(st).toLowerCase();
                     if (!haystack.includes(globalQ)) return false;
                 }
 
-                // Per-Column Advanced Search Filters
                 for (let [cKey, filterVal] of Object.entries(gridColumnFilters)) {
                     if (filterVal) {
                         let rawVal = st[cKey];
@@ -1706,7 +1719,6 @@
                 return true;
             });
 
-            // Apply Header Sorting
             filtered.sort((a, b) => {
                 let valA = a[gridSortColumn] || '';
                 let valB = b[gridSortColumn] || '';
@@ -1717,11 +1729,9 @@
                 return gridSortAscending ? comp : -comp;
             });
 
-            // Update Badge Count
             const badge = document.getElementById("gridFilteredCountBadge");
             if (badge) badge.innerText = `${filtered.length} छात्र प्रदर्शित`;
 
-            // Render Table Body Rows with 57 Columns
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="${masterGridColumns.length + 1}" class="p-4 text-center font-bold text-slate-500">कोई छात्र रिकॉर्ड मेल नहीं खाता।</td></tr>`;
                 return;
@@ -1893,6 +1903,11 @@
             }
         }
 
+        function cleanEnglishOnly(str) {
+            if (!str) return '';
+            return str.replace(/[^A-Za-z\s]/g, '').toUpperCase().trim();
+        }
+
         function makeLetterBoxes(str, minLength = 20) {
             let val = (str || '').toString().toUpperCase();
             let boxesHtml = '';
@@ -1961,14 +1976,12 @@
         function renderIndividualFormHTML(formType, st) {
             if (formType === 'pm-shri') {
                 return `
-                    <div class="p-6 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-3 text-xs text-slate-950 shadow-md">
-                        <!-- Top Header Section (School Title Centered) -->
+                    <div class="a4-container border-2 border-slate-900 bg-white space-y-3 text-xs text-slate-950 shadow-md">
                         <div class="text-center border-b border-slate-900 pb-2">
                             <h1 class="text-base font-black tracking-wide leading-tight">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज</h1>
                             <h2 class="text-xs font-bold mt-0.5">जिला रायसेन (म.प्र.)</h2>
                         </div>
 
-                        <!-- Top Details & Photo Grid -->
                         <div class="flex justify-between items-start border-b-2 border-slate-900 pb-3 gap-4">
                             <div class="space-y-2 flex-1 text-xs font-bold leading-relaxed">
                                 <div class="flex flex-wrap items-center gap-6">
@@ -2036,7 +2049,7 @@
                 `;
             } else if (formType === 'sssm') {
                 return `
-                    <div class="p-4 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
+                    <div class="a4-container border-2 border-slate-900 bg-white space-y-2 text-[10px] text-slate-950 shadow-md">
                         <div class="flex justify-between items-center border-b-2 border-slate-900 pb-1">
                             <div class="flex items-center space-x-2">
                                 <div class="border-2 border-slate-900 rounded-full w-10 h-10 flex items-center justify-center font-black text-xs">
@@ -2090,7 +2103,7 @@
                                 <td>2. लिंग (F/M): <strong>${st.gender === 'FEMALE' ? 'F' : 'M'}</strong></td>
                             </tr>
                             <tr>
-                                <td colspan="4">(अंग्रेजी केपीटल लेटर में): <div class="mt-1">${makeLetterBoxes(st.nameEng, 30)}</div></td>
+                                <td colspan="4">(अंग्रेजी केपीटल लेटर में): <div class="mt-1">${makeLetterBoxes(cleanEnglishOnly(st.nameEng), 30)}</div></td>
                             </tr>
                             <tr>
                                 <td>3. जन्म तिथि: <strong>${st.dob || ''}</strong></td>
@@ -2179,7 +2192,7 @@
                 `;
             } else if (formType === 'mp-board') {
                 return `
-                    <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
+                    <div class="a4-container border-2 border-slate-900 bg-white space-y-2 text-[10px] text-slate-950 shadow-md">
                         <div class="text-center border-b-2 border-slate-900 pb-2 relative">
                             <div class="w-8 h-8 mx-auto border-2 border-slate-900 rounded-full flex items-center justify-center font-black text-[8px] mb-1">MPB</div>
                             <h1 class="text-xs font-black">माध्यमिक शिक्षा मण्डल, मध्य प्रदेश, भोपाल</h1>
@@ -2208,17 +2221,17 @@
 
                         <div>
                             <span class="font-bold block mb-0.5">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
-                            ${makeLetterBoxes(st.nameEng, 30)}
+                            ${makeLetterBoxes(cleanEnglishOnly(st.nameEng), 30)}
                         </div>
 
                         <div>
                             <span class="font-bold block mb-0.5">3. पिता का पूरा नाम FULL NAME OF FATHER:</span>
-                            ${makeLetterBoxes(st.fatherName, 30)}
+                            ${makeLetterBoxes(cleanEnglishOnly(st.fatherName), 30)}
                         </div>
 
                         <div>
                             <span class="font-bold block mb-0.5">4. माता का पूरा नाम FULL NAME OF MOTHER:</span>
-                            ${makeLetterBoxes(st.motherName, 30)}
+                            ${makeLetterBoxes(cleanEnglishOnly(st.motherName), 30)}
                         </div>
 
                         <div class="flex items-center space-x-4">
@@ -2349,7 +2362,7 @@
         }
 
         function renderTeacherCard() {
-            // Already rendered in static HTML template
+            // Static Teacher Card inside template
         }
 
         function renderManagementPanel() {
