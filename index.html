@@ -1129,16 +1129,195 @@
                 </div>
             </section>
 
+            <!-- SECTION: MANAGEMENT PANEL ( संस्था प्रमुख व शिक्षक प्रबंधन ) -->
             <section id="section-management-panel" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                    <div class="flex justify-between items-center border-b pb-2">
-                        <h2 class="text-sm font-extrabold text-indigo-950 flex items-center space-x-1.5">
-                            <i data-lucide="building" class="w-4 h-4 text-cyan-600"></i>
-                            <span>संस्था प्रमुख (प्राचार्य) एवं शिक्षक प्रबंधन</span>
-                        </h2>
+                    
+                    <!-- Management Panel Header & Main Controls -->
+                    <div class="flex flex-wrap justify-between items-center border-b pb-3 gap-2">
+                        <div>
+                            <h2 class="text-sm font-extrabold text-indigo-950 flex items-center space-x-1.5">
+                                <i data-lucide="building" class="w-5 h-5 text-cyan-600"></i>
+                                <span>संस्था प्रमुख (प्राचार्य) एवं शिक्षक प्रबंधन</span>
+                            </h2>
+                            <p class="text-xs text-slate-500 font-semibold">शिक्षकों व संस्था प्रमुख की प्रोफ़ाइल जोड़ें, संपादित करें, खोजें एवं रिपोर्ट डाउनलोड करें</p>
+                        </div>
+
+                        <button type="button" onclick="openTeacherModal()" class="bg-cyan-700 hover:bg-cyan-800 text-white font-bold text-xs px-4 py-2 rounded-lg shadow flex items-center space-x-1.5 transition">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i>
+                            <span>+ नया शिक्षक / प्राचार्य जोड़ें</span>
+                        </button>
                     </div>
 
-                    <div id="managementPanelContent">
+                    <!-- Management Export & Sharing Toolbar -->
+                    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-2 no-print">
+                        <div class="text-xs font-bold text-slate-700 flex items-center space-x-1">
+                            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-cyan-700"></i>
+                            <span>प्रबंधन डेटा रिपोर्ट एक्शन:</span>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-1.5 text-xs font-bold">
+                            <button onclick="globalPrintCurrentSection()" class="bg-slate-800 text-white px-3 py-1.5 rounded hover:bg-slate-900 shadow flex items-center space-x-1">
+                                <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                                <span>प्रिंट</span>
+                            </button>
+                            <button onclick="exportMgmtPDF()" class="bg-rose-600 text-white px-2.5 py-1.5 rounded hover:bg-rose-700 shadow flex items-center space-x-1">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                                <span>PDF</span>
+                            </button>
+                            <button onclick="exportMgmtExcel()" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded hover:bg-emerald-700 shadow flex items-center space-x-1">
+                                <i data-lucide="sheet" class="w-3.5 h-3.5"></i>
+                                <span>Excel</span>
+                            </button>
+                            <button onclick="exportMgmtDoc()" class="bg-blue-600 text-white px-2.5 py-1.5 rounded hover:bg-blue-700 shadow flex items-center space-x-1">
+                                <i data-lucide="file-code" class="w-3.5 h-3.5"></i>
+                                <span>Word Doc</span>
+                            </button>
+                            <button onclick="exportMgmtImage()" class="bg-amber-600 text-white px-2.5 py-1.5 rounded hover:bg-amber-700 shadow flex items-center space-x-1">
+                                <i data-lucide="image" class="w-3.5 h-3.5"></i>
+                                <span>Image</span>
+                            </button>
+                            <button onclick="shareOnlineLinkToken()" class="bg-indigo-700 text-white px-2.5 py-1.5 rounded hover:bg-indigo-800 shadow flex items-center space-x-1">
+                                <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+                                <span>शेयर लिंक</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter, Search & Sorting Controls -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs font-semibold bg-cyan-50/50 p-2.5 rounded-lg border border-cyan-200">
+                        <div>
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">1. खोजें (Search Bar):</label>
+                            <input type="text" id="mgmtSearchInput" oninput="renderManagementPanel()" placeholder="🔍 नाम, आईडी, विषय, फोन..." class="w-full border border-cyan-300 rounded px-2 py-1 outline-none bg-white font-semibold">
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">2. पदनाम फ़िल्टर (Designation):</label>
+                            <select id="mgmtDesignationFilter" onchange="renderManagementPanel()" class="w-full border border-cyan-300 rounded px-2 py-1 bg-white font-bold text-slate-900">
+                                <option value="ALL">समस्त पदनाम (All Roles)</option>
+                                <option value="संस्था प्रमुख / प्राचार्य">संस्था प्रमुख / प्राचार्य</option>
+                                <option value="उच्च माध्यमिक शिक्षक">उच्च माध्यमिक शिक्षक</option>
+                                <option value="माध्यमिक शिक्षक">माध्यमिक शिक्षक</option>
+                                <option value="प्राथमिक शिक्षक">प्राथमिक शिक्षक</option>
+                                <option value="प्रयोगशाला सहायक">प्रयोगशाला सहायक</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">3. कक्षा अध्यापक स्थिति:</label>
+                            <select id="mgmtClassTeacherFilter" onchange="renderManagementPanel()" class="w-full border border-cyan-300 rounded px-2 py-1 bg-white font-bold text-slate-900">
+                                <option value="ALL">समस्त शिक्षक (All Status)</option>
+                                <option value="YES">केवल कक्षा अध्यापक (In-charge Only)</option>
+                                <option value="NO">गैर-कक्षा अध्यापक</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 text-[10px] font-bold mb-0.5">4. सॉर्टिंग क्रम (Sort By):</label>
+                            <select id="mgmtSortFilter" onchange="renderManagementPanel()" class="w-full border border-cyan-300 rounded px-2 py-1 bg-white font-bold text-slate-900">
+                                <option value="nameAsc">नाम (A-Z)</option>
+                                <option value="nameDesc">नाम (Z-A)</option>
+                                <option value="codeAsc">यूनिक आईडी / कोड</option>
+                                <option value="designation">पदनाम अनुसार</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="resetMgmtFilters()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs py-1 rounded">
+                                फ़िल्टर रीसेट करें
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ADD / EDIT TEACHER FORM MODAL -->
+                    <div id="teacherModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-3">
+                        <div class="bg-white rounded-xl shadow-2xl border border-slate-300 w-full max-w-3xl max-h-[90vh] overflow-y-auto p-4 space-y-3 font-semibold text-xs">
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <h3 class="text-sm font-black text-indigo-950 flex items-center space-x-1.5" id="teacherModalTitle">
+                                    <i data-lucide="user-check" class="w-4 h-4 text-cyan-600"></i>
+                                    <span>शिक्षक / संस्था प्रमुख विवरण फॉर्म</span>
+                                </h3>
+                                <button type="button" onclick="closeTeacherModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">&times;</button>
+                            </div>
+
+                            <form id="teacherForm" onsubmit="handleTeacherSave(event)" class="space-y-3">
+                                <input type="hidden" id="t_editId" value="">
+
+                                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center bg-slate-50 p-2.5 rounded-lg border">
+                                    <div class="col-span-1 text-center">
+                                        <img id="t_photoPreview" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150" class="w-20 h-24 object-cover rounded-lg border-2 border-cyan-900 mx-auto shadow-sm">
+                                        <div class="mt-1 space-y-1">
+                                            <input type="file" id="t_photoFile" onchange="previewTeacherPhoto(this)" class="text-[9px] text-slate-500 w-full">
+                                            <input type="text" id="t_photoUrl" placeholder="या फोटो URL" oninput="document.getElementById('t_photoPreview').src=this.value" class="w-full border rounded px-1 py-0.5 text-[9px]">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="text-slate-700 block">1. शिक्षक / संस्था प्रमुख का नाम *</label>
+                                            <input type="text" id="t_name" required placeholder="उदा. डॉ. राजेश शर्मा" class="w-full border rounded px-2 py-1 font-bold text-slate-900">
+                                        </div>
+                                        <div>
+                                            <label class="text-slate-700 block">2. पदनाम (Designation) *</label>
+                                            <select id="t_designation" required class="w-full border rounded px-2 py-1 font-bold bg-white">
+                                                <option value="संस्था प्रमुख / प्राचार्य">संस्था प्रमुख / प्राचार्य</option>
+                                                <option value="उच्च माध्यमिक शिक्षक">उच्च माध्यमिक शिक्षक (PGT)</option>
+                                                <option value="माध्यमिक शिक्षक">माध्यमिक शिक्षक (TGT)</option>
+                                                <option value="प्राथमिक शिक्षक">प्राथमिक शिक्षक (PRT)</option>
+                                                <option value="प्रयोगशाला सहायक">प्रयोगशाला सहायक</option>
+                                                <option value="ग्रंथपाल / लाइब्रेरियन">ग्रंथपाल / लाइब्रेरियन</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="text-slate-700 block">3. यूनिक आईडी / एम्प्लॉई कोड *</label>
+                                            <input type="text" id="t_code" required placeholder="उदा. EMP-2026-901" class="w-full border rounded px-2 py-1 font-mono font-bold text-indigo-950">
+                                        </div>
+                                        <div>
+                                            <label class="text-slate-700 block">4. जन्मतिथि (DOB)</label>
+                                            <input type="date" id="t_dob" class="w-full border rounded px-2 py-1 font-bold">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-indigo-50/50 p-2.5 rounded-lg border border-indigo-200">
+                                    <div>
+                                        <label class="text-slate-700 block">5. मोबाईल / फोन नंबर *</label>
+                                        <input type="tel" id="t_mobile" required placeholder="9826001122" class="w-full border rounded px-2 py-1 font-mono font-bold">
+                                    </div>
+                                    <div>
+                                        <label class="text-slate-700 block">6. ई-मेल आईडी</label>
+                                        <input type="email" id="t_email" placeholder="teacher@school.in" class="w-full border rounded px-2 py-1 font-mono">
+                                    </div>
+                                    <div>
+                                        <label class="text-slate-700 block">7. निवास का पता</label>
+                                        <input type="text" id="t_address" placeholder="ग्राम / वार्ड / शहर" class="w-full border rounded px-2 py-1">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-cyan-50/50 p-2.5 rounded-lg border border-cyan-200">
+                                    <div>
+                                        <label class="text-slate-700 block">8. कक्षा अध्यापक है या नहीं?</label>
+                                        <select id="t_isClassTeacher" onchange="toggleTeacherInchargeField(this.value)" class="w-full border rounded px-2 py-1 font-bold bg-white">
+                                            <option value="YES">YES (कक्षा अध्यापक हैं)</option>
+                                            <option value="NO">NO (नहीं)</option>
+                                        </select>
+                                    </div>
+                                    <div id="t_inchargeClassWrapper">
+                                        <label class="text-slate-700 block">9. प्रभारी कक्षा व सेक्शन</label>
+                                        <input type="text" id="t_inchargeClass" placeholder="उदा. 10th - A" class="w-full border rounded px-2 py-1 font-bold text-emerald-900">
+                                    </div>
+                                    <div>
+                                        <label class="text-slate-700 block">10. पढ़ाए जाने वाले विषय (कक्षा-सेक्शन सहित)</label>
+                                        <input type="text" id="t_subjectsTaught" placeholder="उदा. गणित (10th-A, 10th-B), भौतिकी (11th-A)" class="w-full border rounded px-2 py-1 font-bold text-slate-900">
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end space-x-2 pt-2 border-t">
+                                    <button type="button" onclick="closeTeacherModal()" class="bg-slate-200 text-slate-700 px-4 py-1.5 rounded font-bold">रद्द करें</button>
+                                    <button type="submit" class="bg-cyan-700 hover:bg-cyan-800 text-white px-5 py-1.5 rounded font-bold shadow">सुरक्षित करें (Save Record)</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Management Table Content -->
+                    <div id="managementPanelContent" class="overflow-x-auto border rounded-xl shadow-sm">
                     </div>
                 </div>
             </section>
@@ -1331,71 +1510,7 @@
         let activeSection = "dashboard";
         let currentStudentId = "101";
 
-        const masterGridColumns = [
-            { key: 'photoUrl', label: 'फ़ोटो', isImage: true },
-            { key: 'scholarNo', label: 'स्कॉलर क्र. (Scholar No) ↕' },
-            { key: 'rollNo', label: 'अनुक्रमांक (Roll No) ↕' },
-            { key: 'enrollmentNo', label: 'नामांकन क्र. (Enrollment) ↕' },
-            { key: 'srNo', label: 'एस.आर. क्र. (Sr. No) ↕' },
-            { key: 'targetClass', label: 'कक्षा (Class) ↕' },
-            { key: 'section', label: 'सेक्शन (Section) ↕' },
-            { key: 'nameHindi', label: 'विद्यार्थी नाम (हिन्दी) ↕' },
-            { key: 'nameEng', label: 'Candidate Name (English) ↕' },
-            { key: 'fatherName', label: 'पिता का नाम ↕' },
-            { key: 'motherName', label: 'माता का नाम ↕' },
-            { key: 'dob', label: 'जन्म तिथि (DOB) ↕' },
-            { key: 'gender', label: 'लिंग (Gender) ↕' },
-            { key: 'category', label: 'संवर्ग (Category) ↕' },
-            { key: 'caste', label: 'उपजाति (Caste) ↕' },
-            { key: 'mobile', label: 'मोबाइल नंबर ↕' },
-            { key: 'email', label: 'ई-मेल ID ↕' },
-            { key: 'medium', label: 'अध्ययन माध्यम ↕' },
-            { key: 'admissionDate', label: 'प्रवेश दिनांक ↕' },
-            { key: 'applicantType', label: 'प्रवेश प्रकार 1 ↕' },
-            { key: 'applicantType2', label: 'प्रवेश प्रकार 2 ↕' },
-            { key: 'applicantType3', label: 'प्रवेश प्रकार 3 ↕' },
-            { key: 'provisionalResult', label: 'अस्थाई रिजल्ट ↕' },
-            { key: 'tcStatus', label: 'T.C. जमा? ↕' },
-            { key: 'gapCertificate', label: 'गैप प्रमाण पत्र? ↕' },
-            { key: 'lastYearPassType', label: 'गत वर्ष छात्र प्रकार ↕' },
-            { key: 'apaarId', label: 'अपार ID (APAAR) ↕' },
-            { key: 'childId', label: 'चाइल्ड समग्र ID ↕' },
-            { key: 'familyId', label: 'परिवार समग्र ID ↕' },
-            { key: 'aadhaar', label: 'आधार क्रमांक ↕' },
-            { key: 'bankName', label: 'बैंक का नाम ↕' },
-            { key: 'bankAccount', label: 'बैंक खाता क्रमांक ↕' },
-            { key: 'bankIfsc', label: 'बैंक IFSC कोड ↕' },
-            { key: 'annualIncome', label: 'वार्षिक आय (₹) ↕' },
-            { key: 'bplStatus', label: 'BPL कार्डधारी? ↕' },
-            { key: 'ladliLaxmi', label: 'लाड़ली लक्ष्मी पात्रता? ↕' },
-            { key: 'ladliLaxmiNo', label: 'L. लक्ष्मी क्रमांक ↕' },
-            { key: 'cwsnStatus', label: 'दिव्यांग (CWSN)? ↕' },
-            { key: 'hostelStatus', label: 'छात्राबासी? ↕' },
-            { key: 'covidStatus', label: 'COVID 19 अनाथ? ↕' },
-            { key: 'mpTassStatus', label: 'MP TASS पंजीकृत? ↕' },
-            { key: 'mpTassNo', label: 'MP TASS नंबर ↕' },
-            { key: 'scholarshipStatus', label: 'छात्रवृत्ति पात्र? ↕' },
-            { key: 'sambalStatus', label: 'संबल कार्ड है? ↕' },
-            { key: 'sambalNo', label: 'संबल क्रमांक ↕' },
-            { key: 'area', label: 'क्षेत्र (ग्रामीण/शहरी) ↕' },
-            { key: 'feesPaid', label: 'प्रवेश शुल्क (₹) ↕' },
-            { key: 'remarks', label: 'रिमार्क (Remarks) ↕' },
-            { key: 'bloodGroup', label: 'रक्त समूह (Blood Group) ↕' },
-            { key: 'address', label: 'पत्र व्यवहार का पता ↕' },
-            { key: 'sub1', label: '1st Subject ↕' },
-            { key: 'sub2', label: '2nd Subject ↕' },
-            { key: 'sub3', label: '3rd Subject ↕' },
-            { key: 'sub4', label: '4th Subject ↕' },
-            { key: 'sub5', label: '5th Subject ↕' },
-            { key: 'sub6', label: '6th Subject ↕' },
-            { key: 'receivedBooks', label: 'प्राप्त पुस्तकें ↕' }
-        ];
-
-        let gridSortColumn = 'scholarNo';
-        let gridSortAscending = true;
-        let gridColumnFilters = {};
-
-        // INITIAL MOCK DATASETS
+        // MASTER STUDENTS DATABASE WITH FULL 50+ COLUMNS DATA
         let studentsData = {
             "101": {
                 id: "101",
@@ -1520,8 +1635,36 @@
         };
 
         let teachersData = {
-            "T101": { id: "T101", name: "डॉ. राजेश शर्मा", code: "EMP-2026-901", subject: "उच्च माध्यमिक शिक्षक (गणित)", inchargeClass: "10th - A", mobile: "9826001122", email: "rajesh@school.in" },
-            "T102": { id: "T102", name: "श्रीमती सुलोचना राय", code: "EMP-2026-902", subject: "माध्यमिक शिक्षक (हिन्दी)", inchargeClass: "9th - B", mobile: "9826002233", email: "sulochana@school.in" }
+            "T101": { 
+                id: "T101", 
+                name: "डॉ. राजेश शर्मा", 
+                designation: "संस्था प्रमुख / प्राचार्य",
+                code: "EMP-2026-901", 
+                dob: "1978-08-15",
+                subject: "उच्च माध्यमिक शिक्षक (गणित)", 
+                mobile: "9826001122", 
+                email: "rajesh@school.in",
+                address: "बेगमगंज वार्ड 1 (रायसेन)",
+                isClassTeacher: "YES",
+                inchargeClass: "10th - A",
+                subjectsTaught: "गणित (10th-A, 10th-B), भौतिकी (11th-A)",
+                photoUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150"
+            },
+            "T102": { 
+                id: "T102", 
+                name: "श्रीमती सुलोचना राय", 
+                designation: "माध्यमिक शिक्षक",
+                code: "EMP-2026-902", 
+                dob: "1984-03-22",
+                subject: "माध्यमिक शिक्षक (हिन्दी)", 
+                mobile: "9826002233", 
+                email: "sulochana@school.in",
+                address: "सुल्तानपुर रोड बेगमगंज",
+                isClassTeacher: "YES",
+                inchargeClass: "9th - B",
+                subjectsTaught: "हिन्दी (9th-A, 9th-B, 10th-A)",
+                photoUrl: "https://images.unsplash.com/photo-1580894732413-a7235a91dd81?w=150"
+            }
         };
 
         let booksMasterData = {
@@ -2954,11 +3097,11 @@
             const sort = document.getElementById("tcardSortFilter") ? document.getElementById("tcardSortFilter").value : "nameAsc";
 
             let list = Object.values(teachersData).filter(tc => {
-                if (cls !== "ALL" && !tc.inchargeClass.includes(cls)) return false;
+                if (cls !== "ALL" && (!tc.inchargeClass || !tc.inchargeClass.includes(cls))) return false;
                 if (selTeacher !== "ALL" && tc.id !== selTeacher) return false;
 
                 if (q) {
-                    const haystack = `${tc.name} ${tc.code} ${tc.subject} ${tc.inchargeClass}`.toLowerCase();
+                    const haystack = `${tc.name} ${tc.code} ${tc.designation} ${tc.subject || ''} ${tc.inchargeClass || ''}`.toLowerCase();
                     if (!haystack.includes(q)) return false;
                 }
                 return true;
@@ -2970,9 +3113,10 @@
             });
 
             const selectDropdown = document.getElementById("tcardSelectTeacher");
-            if (selectDropdown && selectDropdown.options.length <= 1) {
+            if (selectDropdown) {
                 selectDropdown.innerHTML = `<option value="ALL">-- सभी शिक्षक प्रदर्शित करें (${Object.keys(teachersData).length}) --</option>` +
                     Object.values(teachersData).map(tc => `<option value="${tc.id}">${tc.name} (${tc.code})</option>`).join('');
+                if (selTeacher) selectDropdown.value = selTeacher;
             }
 
             const badge = document.getElementById("tcardCountBadge");
@@ -2992,8 +3136,8 @@
 
                     <div class="flex items-start space-x-3">
                         <div class="text-center flex-shrink-0">
-                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150" class="w-20 h-24 object-cover rounded-lg border-2 border-teal-950 shadow">
-                            <span class="text-[8px] bg-teal-100 text-teal-950 font-black px-1.5 py-0.5 rounded-full block mt-1">राजपत्रित शिक्षक</span>
+                            <img src="${tc.photoUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150'}" class="w-20 h-24 object-cover rounded-lg border-2 border-teal-950 shadow">
+                            <span class="text-[8px] bg-teal-100 text-teal-950 font-black px-1.5 py-0.5 rounded-full block mt-1">${tc.designation || 'शिक्षक'}</span>
                         </div>
 
                         <div class="space-y-1 text-xs font-bold flex-1">
@@ -3006,12 +3150,16 @@
                                 <span class="font-mono text-indigo-900 text-[11px]">${tc.code}</span>
                             </div>
                             <div>
-                                <span class="text-[9px] text-slate-500 block">पद एवं विषय:</span>
-                                <span class="text-[11px]">${tc.subject}</span>
+                                <span class="text-[9px] text-slate-500 block">पदनाम:</span>
+                                <span class="text-[11px]">${tc.designation}</span>
                             </div>
                             <div>
                                 <span class="text-[9px] text-slate-500 block">प्रभारी कक्षा:</span>
-                                <span class="text-[11px] text-emerald-800">${tc.inchargeClass}</span>
+                                <span class="text-[11px] text-emerald-800">${tc.isClassTeacher === 'YES' ? (tc.inchargeClass || '-') : 'N/A'}</span>
+                            </div>
+                            <div>
+                                <span class="text-[9px] text-slate-500 block">अध्यापन विषय:</span>
+                                <span class="text-[10px] text-indigo-900 truncate block">${tc.subjectsTaught || tc.subject || '-'}</span>
                             </div>
                         </div>
                     </div>
@@ -3019,6 +3167,7 @@
                     <div class="mt-4 pt-2 border-t border-slate-300 flex justify-between items-end text-[9px] font-bold text-slate-600">
                         <div>
                             <p>सम्पर्क: ${tc.mobile}</p>
+                            <p>ईमेल: ${tc.email || '-'}</p>
                         </div>
                         <div class="text-center">
                             <div class="h-4 border-b border-slate-400 w-20 mb-0.5"></div>
@@ -3029,22 +3178,82 @@
             `).join('');
         }
 
+        /* --- MANAGEMENT PANEL FUNCTIONS --- */
         function renderManagementPanel() {
             const container = document.getElementById("managementPanelContent");
             if (!container) return;
+
+            const q = (document.getElementById("mgmtSearchInput") ? document.getElementById("mgmtSearchInput").value : "").toLowerCase().trim();
+            const desig = document.getElementById("mgmtDesignationFilter") ? document.getElementById("mgmtDesignationFilter").value : "ALL";
+            const ctFilter = document.getElementById("mgmtClassTeacherFilter") ? document.getElementById("mgmtClassTeacherFilter").value : "ALL";
+            const sort = document.getElementById("mgmtSortFilter") ? document.getElementById("mgmtSortFilter").value : "nameAsc";
+
+            let list = Object.values(teachersData).filter(tc => {
+                if (desig !== "ALL" && tc.designation !== desig) return false;
+                if (ctFilter !== "ALL" && tc.isClassTeacher !== ctFilter) return false;
+
+                if (q) {
+                    const haystack = `${tc.name} ${tc.code} ${tc.designation} ${tc.mobile} ${tc.email || ''} ${tc.subjectsTaught || ''} ${tc.inchargeClass || ''}`.toLowerCase();
+                    if (!haystack.includes(q)) return false;
+                }
+                return true;
+            });
+
+            list.sort((a, b) => {
+                if (sort === "nameDesc") return (b.name || "").localeCompare(a.name || "");
+                if (sort === "codeAsc") return (a.code || "").localeCompare(b.code || "");
+                if (sort === "designation") return (a.designation || "").localeCompare(b.designation || "");
+                return (a.name || "").localeCompare(b.name || "");
+            });
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center font-bold text-slate-500 bg-white">कोई शिक्षक या प्राचार्य रिकॉर्ड मेल नहीं खाता।</div>`;
+                return;
+            }
+
             container.innerHTML = `
-                <table class="w-full text-xs border text-left">
-                    <thead class="bg-indigo-950 text-white font-bold">
-                        <tr><th class="p-2">कोड</th><th class="p-2">शिक्षक का नाम</th><th class="p-2">पद / विषय</th><th class="p-2">प्रभारी कक्षा</th><th class="p-2">सम्पर्क</th></tr>
+                <table class="w-full text-xs border text-left border-collapse">
+                    <thead class="bg-indigo-950 text-white font-bold uppercase">
+                        <tr>
+                            <th class="p-2 border border-indigo-800 text-center">फोटो</th>
+                            <th class="p-2 border border-indigo-800">शिक्षक का नाम</th>
+                            <th class="p-2 border border-indigo-800">पदनाम (Designation)</th>
+                            <th class="p-2 border border-indigo-800">यूनिक ID / कोड</th>
+                            <th class="p-2 border border-indigo-800">जन्मतिथि</th>
+                            <th class="p-2 border border-indigo-800">सम्पर्क (फोन/ईमेल)</th>
+                            <th class="p-2 border border-indigo-800">कक्षा अध्यापक?</th>
+                            <th class="p-2 border border-indigo-800">प्रभारी कक्षा-सेक्शन</th>
+                            <th class="p-2 border border-indigo-800">अध्यापन विषय व कक्षाएँ</th>
+                            <th class="p-2 border border-indigo-800 text-center">एक्शन</th>
+                        </tr>
                     </thead>
-                    <tbody>
-                        ${Object.values(teachersData).map(tc => `
-                            <tr class="border-b">
-                                <td class="p-2 font-mono">${tc.code}</td>
-                                <td class="p-2 font-bold">${tc.name}</td>
-                                <td class="p-2">${tc.subject}</td>
-                                <td class="p-2">${tc.inchargeClass}</td>
-                                <td class="p-2 font-mono">${tc.mobile}</td>
+                    <tbody class="divide-y divide-slate-200 bg-white font-semibold text-slate-800">
+                        ${list.map(tc => `
+                            <tr class="hover:bg-cyan-50/60 transition">
+                                <td class="p-1.5 border border-slate-300 text-center">
+                                    <img src="${tc.photoUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150'}" class="w-10 h-12 object-cover rounded border border-slate-400 mx-auto shadow-sm">
+                                </td>
+                                <td class="p-2 border border-slate-300 font-extrabold text-indigo-950">${tc.name}</td>
+                                <td class="p-2 border border-slate-300 font-bold text-cyan-900">${tc.designation}</td>
+                                <td class="p-2 border border-slate-300 font-mono font-bold text-slate-900">${tc.code}</td>
+                                <td class="p-2 border border-slate-300 font-mono">${tc.dob || '-'}</td>
+                                <td class="p-2 border border-slate-300 text-[11px]">
+                                    <div class="font-mono font-bold text-slate-900">📞 ${tc.mobile}</div>
+                                    ${tc.email ? `<div class="font-mono text-slate-500">✉️ ${tc.email}</div>` : ''}
+                                </td>
+                                <td class="p-2 border border-slate-300 text-center">
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-black ${tc.isClassTeacher === 'YES' ? 'bg-emerald-100 text-emerald-950' : 'bg-slate-100 text-slate-600'}">
+                                        ${tc.isClassTeacher || 'NO'}
+                                    </span>
+                                </td>
+                                <td class="p-2 border border-slate-300 font-extrabold text-emerald-900">${tc.isClassTeacher === 'YES' ? (tc.inchargeClass || '-') : '-'}</td>
+                                <td class="p-2 border border-slate-300 text-[11px] text-slate-700">${tc.subjectsTaught || tc.subject || '-'}</td>
+                                <td class="p-2 border border-slate-300 text-center">
+                                    <div class="flex items-center justify-center space-x-1">
+                                        <button onclick="editTeacherRecord('${tc.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">संपादित</button>
+                                        <button onclick="deleteTeacherRecord('${tc.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">हटाएं</button>
+                                    </div>
+                                </td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -3052,196 +3261,160 @@
             `;
         }
 
-        function renderSubjectMaster() {
-            const container = document.getElementById("subjectMasterContainer");
-            if (!container) return;
-            container.innerHTML = `
-                <table class="w-full text-xs border">
-                    <thead class="bg-purple-900 text-white font-bold">
-                        <tr><th class="p-2">क्र.</th><th class="p-2">विषय कोड</th><th class="p-2">विषय का नाम</th><th class="p-2">थ्योरी पूर्णांक</th><th class="p-2">प्रैक्टिकल पूर्णांक</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b"><td class="p-2">1</td><td class="p-2 font-mono">401</td><td class="p-2 font-bold">प्रथम भाषा - हिन्दी</td><td class="p-2">75</td><td class="p-2">25</td></tr>
-                        <tr class="border-b"><td class="p-2">2</td><td class="p-2 font-mono">411</td><td class="p-2 font-bold">द्वितीय भाषा - अंग्रेजी</td><td class="p-2">75</td><td class="p-2">25</td></tr>
-                    </tbody>
-                </table>
-            `;
+        function resetMgmtFilters() {
+            if (document.getElementById("mgmtSearchInput")) document.getElementById("mgmtSearchInput").value = "";
+            if (document.getElementById("mgmtDesignationFilter")) document.getElementById("mgmtDesignationFilter").value = "ALL";
+            if (document.getElementById("mgmtClassTeacherFilter")) document.getElementById("mgmtClassTeacherFilter").value = "ALL";
+            if (document.getElementById("mgmtSortFilter")) document.getElementById("mgmtSortFilter").value = "nameAsc";
+            renderManagementPanel();
+            showToast("प्रबंधन फ़िल्टर रीसेट किए गए!");
         }
 
-        function renderMarksConfig() {
-            const container = document.getElementById("marksConfigContainer");
-            if (!container) return;
-            container.innerHTML = `
-                <table class="w-full text-xs border">
-                    <thead class="bg-emerald-900 text-white font-bold">
-                        <tr><th class="p-2">विषय</th><th class="p-2">थ्योरी Max</th><th class="p-2">थ्योरी Pass</th><th class="p-2">प्रैक्टिकल Max</th><th class="p-2">प्रैक्टिकल Pass</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b"><td class="p-2 font-bold">गणित</td><td class="p-2">75</td><td class="p-2">25</td><td class="p-2">25</td><td class="p-2">08</td></tr>
-                        <tr class="border-b"><td class="p-2 font-bold">विज्ञान</td><td class="p-2">75</td><td class="p-2">25</td><td class="p-2">25</td><td class="p-2">08</td></tr>
-                    </tbody>
-                </table>
-            `;
+        function openTeacherModal(id = null) {
+            const modal = document.getElementById("teacherModal");
+            if (!modal) return;
+            document.getElementById("teacherForm").reset();
+            document.getElementById("t_editId").value = "";
+            document.getElementById("t_photoPreview").src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150";
+            document.getElementById("teacherModalTitle").innerText = "नया शिक्षक / प्राचार्य विवरण जोड़ें";
+
+            if (id && teachersData[id]) {
+                const tc = teachersData[id];
+                document.getElementById("t_editId").value = tc.id;
+                document.getElementById("t_name").value = tc.name || '';
+                document.getElementById("t_designation").value = tc.designation || 'उच्च माध्यमिक शिक्षक';
+                document.getElementById("t_code").value = tc.code || '';
+                document.getElementById("t_dob").value = tc.dob || '';
+                document.getElementById("t_mobile").value = tc.mobile || '';
+                document.getElementById("t_email").value = tc.email || '';
+                document.getElementById("t_address").value = tc.address || '';
+                document.getElementById("t_isClassTeacher").value = tc.isClassTeacher || 'YES';
+                document.getElementById("t_inchargeClass").value = tc.inchargeClass || '';
+                document.getElementById("t_subjectsTaught").value = tc.subjectsTaught || tc.subject || '';
+                if (tc.photoUrl) document.getElementById("t_photoPreview").src = tc.photoUrl;
+                document.getElementById("teacherModalTitle").innerText = "शिक्षक विवरण संपादित करें";
+            }
+            modal.classList.remove("hidden");
         }
 
-        function renderExamMarksEntryTable() {
-            const container = document.getElementById("examMarksEntryTableContainer");
-            if (!container) return;
-            container.innerHTML = `
-                <table class="w-full text-xs border">
-                    <thead class="bg-rose-950 text-white font-bold">
-                        <tr><th class="p-2">स्कॉलर</th><th class="p-2">छात्र का नाम</th><th class="p-2">हिन्दी</th><th class="p-2">अंग्रेजी</th><th class="p-2">गणित</th><th class="p-2">कुल प्राप्तांक</th></tr>
-                    </thead>
-                    <tbody>
-                        ${Object.values(studentsData).map(st => `
-                            <tr class="border-b font-semibold">
-                                <td class="p-2 font-mono">${st.scholarNo}</td>
-                                <td class="p-2 font-bold">${st.nameHindi || st.nameEng}</td>
-                                <td class="p-2"><input type="number" value="68" class="w-12 border px-1"></td>
-                                <td class="p-2"><input type="number" value="72" class="w-12 border px-1"></td>
-                                <td class="p-2"><input type="number" value="84" class="w-12 border px-1"></td>
-                                <td class="p-2 font-bold font-mono text-emerald-700">224 / 300</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+        function closeTeacherModal() {
+            const modal = document.getElementById("teacherModal");
+            if (modal) modal.classList.add("hidden");
         }
 
-        function renderConsolidatedReport() {
-            const container = document.getElementById("consolidatedReportContainer");
-            if (!container) return;
-            container.innerHTML = `
-                <table class="w-full text-xs border text-center font-semibold">
-                    <thead class="bg-cyan-950 text-white font-bold">
-                        <tr><th>कक्षा</th><th>नामांकित</th><th>उपस्थित</th><th>प्रथम श्रेणी</th><th>द्वितीय श्रेणी</th><th>तृतीय श्रेणी</th><th>पूरक</th><th>अनुत्तीर्ण</th><th>कुल उत्तीर्ण %</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b"><td>10th</td><td>50</td><td>50</td><td>30</td><td>12</td><td>3</td><td>3</td><td>2</td><td class="font-bold text-emerald-700">90%</td></tr>
-                        <tr class="border-b"><td>9th</td><td>45</td><td>45</td><td>25</td><td>10</td><td>5</td><td>3</td><td>2</td><td class="font-bold text-emerald-700">88.8%</td></tr>
-                    </tbody>
-                </table>
-            `;
+        function editTeacherRecord(id) {
+            openTeacherModal(id);
         }
 
-        function renderClassExamReport() {
-            const container = document.getElementById("classExamReportContainer");
-            if (!container) return;
-            container.innerHTML = `
-                <table class="w-full text-xs border font-semibold">
-                    <thead class="bg-amber-950 text-white font-bold">
-                        <tr><th class="p-2">स्कॉलर</th><th class="p-2">छात्र का नाम</th><th class="p-2">पिता का नाम</th><th class="p-2">कुल अंक</th><th class="p-2">%</th><th class="p-2">परिणाम</th></tr>
-                    </thead>
-                    <tbody>
-                        ${Object.values(studentsData).map(st => `
-                            <tr class="border-b">
-                                <td class="p-2 font-mono">${st.scholarNo}</td>
-                                <td class="p-2 font-bold">${st.nameHindi || st.nameEng}</td>
-                                <td class="p-2">${st.fatherName}</td>
-                                <td class="p-2 font-mono">424/500</td>
-                                <td class="p-2 font-bold text-emerald-700">84.8%</td>
-                                <td class="p-2 font-bold text-emerald-700">PASS (FIRST)</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+        function deleteTeacherRecord(id) {
+            if (confirm("क्या आप इस शिक्षक / प्राचार्य रिकॉर्ड को हटाना चाहते हैं?")) {
+                delete teachersData[id];
+                populateSidebarSelectors();
+                renderManagementPanel();
+                if (activeSection === "teacher-card") renderTeacherCard();
+                showToast("शिक्षक रिकॉर्ड हटाया गया!", "error");
+            }
         }
 
-        function renderBookMaster() {
-            const container = document.getElementById("bookMasterContainer");
-            if (!container) return;
-            const cls = document.getElementById("bookMasterClassSelect").value;
-            const books = booksMasterData[cls] || [];
-            container.innerHTML = `
-                <table class="w-full text-xs border">
-                    <thead class="bg-amber-950 text-white font-bold">
-                        <tr><th class="p-2">क्र.</th><th class="p-2">पुस्तक का शीर्षक</th><th class="p-2">विषय कोड</th><th class="p-2">माध्यम</th></tr>
-                    </thead>
-                    <tbody>
-                        ${books.map((b, idx) => `
-                            <tr class="border-b font-semibold">
-                                <td class="p-2">${idx + 1}</td>
-                                <td class="p-2 font-bold text-amber-950">${b.title}</td>
-                                <td class="p-2 font-mono">${b.sub}</td>
-                                <td class="p-2">${b.medium}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+        function handleTeacherSave(e) {
+            e.preventDefault();
+            const editId = document.getElementById("t_editId").value;
+            const code = document.getElementById("t_code").value.trim();
+            const id = editId || (code ? `T_${code}` : `T_${Date.now()}`);
+
+            teachersData[id] = {
+                id: id,
+                name: document.getElementById("t_name").value.trim(),
+                designation: document.getElementById("t_designation").value,
+                code: code,
+                dob: document.getElementById("t_dob").value,
+                mobile: document.getElementById("t_mobile").value.trim(),
+                email: document.getElementById("t_email").value.trim(),
+                address: document.getElementById("t_address").value.trim(),
+                isClassTeacher: document.getElementById("t_isClassTeacher").value,
+                inchargeClass: document.getElementById("t_inchargeClass").value.trim(),
+                subjectsTaught: document.getElementById("t_subjectsTaught").value.trim(),
+                subject: document.getElementById("t_subjectsTaught").value.trim(),
+                photoUrl: document.getElementById("t_photoPreview").src
+            };
+
+            closeTeacherModal();
+            populateSidebarSelectors();
+            renderManagementPanel();
+            if (activeSection === "teacher-card") renderTeacherCard();
+            showToast("शिक्षक / प्राचार्य रिकॉर्ड सफलतापूर्वक सुरक्षित किया गया!");
         }
 
-        function globalPrintCurrentSection() {
-            window.print();
+        function toggleTeacherInchargeField(val) {
+            const wrapper = document.getElementById("t_inchargeClassWrapper");
+            if (wrapper) {
+                if (val === 'NO') wrapper.classList.add("opacity-40", "pointer-events-none");
+                else wrapper.classList.remove("opacity-40", "pointer-events-none");
+            }
         }
 
-        function globalExportPDF() {
-            showToast("PDF जनरेट हो रही है...", "success");
+        function previewTeacherPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("t_photoPreview").src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function exportMgmtPDF() {
+            showToast("प्रबंधन PDF जनरेट हो रही है...", "success");
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'pt', 'a4');
-            const target = document.getElementById(`section-${activeSection}`) || document.body;
-            
+            const target = document.getElementById("managementPanelContent") || document.body;
             html2canvas(target, { scale: 1.5 }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
                 const imgWidth = 595.28;
                 const pageHeight = 841.89;
                 const imgHeight = canvas.height * imgWidth / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
-
-                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                doc.save(`SDMS_${activeSection}_Report.pdf`);
+                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                doc.save(`SDMS_Faculty_Management_List.pdf`);
             });
         }
 
-        function globalExportExcel() {
-            const data = Object.values(studentsData).map(st => ({
-                "Scholar No": st.scholarNo,
-                "Roll No": st.rollNo,
-                "Candidate Name": st.nameEng,
-                "Name Hindi": st.nameHindi,
-                "Father Name": st.fatherName,
-                "Mother Name": st.motherName,
-                "Class": st.targetClass,
-                "Section": st.section,
-                "DOB": st.dob,
-                "Mobile": st.mobile,
-                "Aadhaar": st.aadhaar,
-                "Child ID": st.childId
+        function exportMgmtExcel() {
+            const data = Object.values(teachersData).map(tc => ({
+                "Unique Code": tc.code,
+                "Name": tc.name,
+                "Designation": tc.designation,
+                "DOB": tc.dob,
+                "Mobile": tc.mobile,
+                "Email": tc.email,
+                "Address": tc.address,
+                "Class Teacher": tc.isClassTeacher,
+                "Incharge Class": tc.inchargeClass,
+                "Subjects Taught": tc.subjectsTaught
             }));
             const ws = XLSX.utils.json_to_sheet(data);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Students");
-            XLSX.writeFile(wb, `SDMS_Data_${activeSection}.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "Faculty");
+            XLSX.writeFile(wb, `SDMS_Faculty_List.xlsx`);
             showToast("Excel फ़ाइल डाउनलोड हो गई!");
         }
 
-        function globalExportDoc() {
-            const content = document.getElementById(`section-${activeSection}`).innerText;
+        function exportMgmtDoc() {
+            const content = document.getElementById("managementPanelContent").innerText;
             const blob = new Blob(['\ufeff' + content], { type: 'application/msword' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `SDMS_${activeSection}.doc`;
+            a.download = `SDMS_Faculty_List.doc`;
             a.click();
-            showToast("Doc फ़ाइल डाउनलोड हो गई!");
+            showToast("Word फ़ाइल डाउनलोड हो गई!");
         }
 
-        function globalExportImage() {
-            const target = document.getElementById(`section-${activeSection}`) || document.body;
+        function exportMgmtImage() {
+            const target = document.getElementById("managementPanelContent") || document.body;
             html2canvas(target).then(canvas => {
                 const a = document.createElement('a');
                 a.href = canvas.toDataURL('image/png');
-                a.download = `SDMS_${activeSection}.png`;
+                a.download = `SDMS_Faculty_List.png`;
                 a.click();
                 showToast("इमेज जनरेट हो गई!");
             });
