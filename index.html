@@ -1205,34 +1205,97 @@
             <!-- SECTION 12: EXAM MARKS SPREADSHEET ENTRY -->
             <section id="section-exam-marks" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
-                    <div class="flex flex-wrap items-center justify-between border-b pb-2 gap-2">
-                        <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
-                            <i data-lucide="pen-tool" class="w-4 h-4 text-rose-600"></i>
-                            <span>3. 5-स्तरीय परीक्षा अंक प्रविष्टि (5-Exam Level Marks Spreadsheet)</span>
-                        </h2>
+                    <div class="flex flex-wrap items-center justify-between border-b pb-3 gap-2">
+                        <div>
+                            <h2 class="text-sm font-extrabold text-indigo-950 flex items-center space-x-1.5">
+                                <i data-lucide="pen-tool" class="w-5 h-5 text-rose-600"></i>
+                                <span>3. 5-स्तरीय थ्योरी/प्रैक्टिकल परीक्षा अंक प्रविष्टि एवं लॉक सिस्टम</span>
+                            </h2>
+                            <p class="text-[11px] text-slate-500 font-bold">थ्योरी व प्रैक्टिकल ऑटो-सम, लॉक/अनलॉक सुरक्षा एवं एडवांस्ड स्कोप फ़िल्टर</p>
+                        </div>
 
-                        <div class="flex flex-wrap items-center gap-2 text-xs">
-                            <select id="examMarksClassSelect" onchange="renderExamMarksEntryTable()" class="border rounded px-2 py-1 font-bold bg-rose-50 text-rose-950 border-rose-300">
-                                <option value="10th">10th Standard</option>
-                                <option value="9th">9th Standard</option>
-                                <option value="11th">11th Standard</option>
-                                <option value="12th">12th Standard</option>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span id="examMarksLockStatusBadge" class="text-[10px] bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-1 rounded-full font-black flex items-center space-x-1">
+                                <i data-lucide="unlock" class="w-3 h-3"></i>
+                                <span>स्टेटस: संपादन हेतु खुला</span>
+                            </span>
+                            <button onclick="bulkToggleMarksLock(true)" class="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs px-2.5 py-1.5 rounded-lg shadow flex items-center space-x-1">
+                                <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                                <span>चयनित समूह लॉक करें</span>
+                            </button>
+                            <button onclick="bulkToggleMarksLock(false)" class="bg-slate-700 hover:bg-slate-800 text-white font-extrabold text-xs px-2.5 py-1.5 rounded-lg shadow flex items-center space-x-1">
+                                <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+                                <span>समूह अनलॉक करें</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ADVANCED SCOPE & FILTER BAR -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 text-xs font-bold bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <div>
+                            <label class="block text-slate-700 text-[10px] uppercase mb-0.5">1. प्रविष्टि का दायरा (Scope):</label>
+                            <select id="examScopeSelect" onchange="handleExamScopeChange()" class="w-full border rounded px-2 py-1 font-black bg-white text-indigo-950 border-indigo-300">
+                                <option value="SECTION">📌 एक कक्षा का एक सेक्शन</option>
+                                <option value="CLASS">🏫 एक कक्षा के सभी सेक्शन</option>
+                                <option value="ALL_SCHOOL">🏢 पूरे स्कूल के छात्र</option>
+                                <option value="SINGLE">👤 केवल एक छात्र</option>
                             </select>
-                            <select id="examMarksSectionSelect" onchange="renderExamMarksEntryTable()" class="border rounded px-2 py-1 font-bold bg-rose-50 text-rose-950 border-rose-300">
+                        </div>
+
+                        <div id="examClassScopeBox">
+                            <label class="block text-slate-700 text-[10px] uppercase mb-0.5">2. कक्षा चुनें:</label>
+                            <select id="examMarksClassSelect" onchange="handleExamScopeChange()" class="w-full border rounded px-2 py-1 font-bold bg-white text-slate-900 border-slate-300">
+                                <option value="10th">कक्षा 10वीं</option>
+                                <option value="9th">कक्षा 9वीं</option>
+                                <option value="11th">कक्षा 11वीं</option>
+                                <option value="12th">कक्षा 12वीं</option>
+                            </select>
+                        </div>
+
+                        <div id="examSectionScopeBox">
+                            <label class="block text-slate-700 text-[10px] uppercase mb-0.5">3. सेक्शन चुनें:</label>
+                            <select id="examMarksSectionSelect" onchange="renderExamMarksEntryTable()" class="w-full border rounded px-2 py-1 font-bold bg-white text-slate-900 border-slate-300">
                                 <option value="A">Section A</option>
                                 <option value="B">Section B</option>
+                                <option value="C">Section C</option>
                             </select>
-                            <select id="examMarksTypeSelect" onchange="renderExamMarksEntryTable()" class="border rounded px-2 py-1 font-bold bg-rose-50 text-rose-950 border-rose-300">
-                                <option value="annual">वार्षिक परीक्षा</option>
-                                <option value="preboard">प्री-बोर्ड परीक्षा</option>
-                                <option value="halfYearly">अर्द्धवार्षिक परीक्षा</option>
-                                <option value="quarterly">त्रैमासिक परीक्षा</option>
-                                <option value="monthly">मासिक टेस्ट</option>
+                        </div>
+
+                        <div id="examSingleStudentBox" class="hidden">
+                            <label class="block text-slate-700 text-[10px] uppercase mb-0.5">3. छात्र का चयन करें:</label>
+                            <select id="examMarksSingleStudentSelect" onchange="renderExamMarksEntryTable()" class="w-full border rounded px-2 py-1 font-bold bg-white text-indigo-950 border-indigo-300">
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-700 text-[10px] uppercase mb-0.5">4. परीक्षा स्तर (Exam):</label>
+                            <select id="examMarksTypeSelect" onchange="renderExamMarksEntryTable()" class="w-full border rounded px-2 py-1 font-black bg-rose-50 text-rose-950 border-rose-300">
+                                <option value="annual">वार्षिक परीक्षा (Annual)</option>
+                                <option value="preboard">प्री-बोर्ड परीक्षा (Pre-Board)</option>
+                                <option value="halfYearly">अर्द्धवार्षिक परीक्षा (Half-Yearly)</option>
+                                <option value="quarterly">त्रैमासिक परीक्षा (Quarterly)</option>
+                                <option value="monthly">मासिक टेस्ट (Monthly)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-700 text-[10px] uppercase mb-0.5">5. लाइव खोजें:</label>
+                            <input type="text" id="examMarksSearchInput" oninput="renderExamMarksEntryTable()" placeholder="🔍 नाम, स्कॉलर, रोल..." class="w-full border rounded px-2 py-1 border-slate-300 outline-none font-semibold">
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-700 text-[10px] uppercase mb-0.5">6. क्रम (Sorting):</label>
+                            <select id="examMarksSortSelect" onchange="renderExamMarksEntryTable()" class="w-full border rounded px-2 py-1 font-bold bg-white text-slate-900 border-slate-300">
+                                <option value="rollAsc">अनुक्रमांक (Roll No)</option>
+                                <option value="scholarAsc">स्कॉलर क्र. (Scholar No)</option>
+                                <option value="nameAsc">छात्र नाम (A-Z)</option>
+                                <option value="totalDesc">कुल प्राप्तांक (High to Low)</option>
                             </select>
                         </div>
                     </div>
 
-                    <div id="examMarksEntryTableContainer" class="overflow-x-auto">
+                    <!-- EXAM MARKS ENTRY SPREADSHEET TABLE -->
+                    <div id="examMarksEntryTableContainer" class="overflow-x-auto border rounded-xl max-h-[600px]">
                     </div>
                 </div>
             </section>
@@ -1356,273 +1419,243 @@
 
     <script>
         let activeSection = "dashboard";
-        let currentStudentId = "101";
+        let examMarksStore = {}; // Structure: { [studentId]: { [examType]: { isLocked: false, subjects: { [code]: { th: 50, pr: 20 } } } } }
 
-        const masterGridColumns = [
-            { key: 'photoUrl', label: 'फ़ोटो', isImage: true },
-            { key: 'scholarNo', label: 'स्कॉलर क्र. (Scholar No) ↕' },
-            { key: 'rollNo', label: 'अनुक्रमांक (Roll No) ↕' },
-            { key: 'enrollmentNo', label: 'नामांकन क्र. (Enrollment) ↕' },
-            { key: 'srNo', label: 'एस.आर. क्र. (Sr. No) ↕' },
-            { key: 'targetClass', label: 'कक्षा (Class) ↕' },
-            { key: 'section', label: 'सेक्शन (Section) ↕' },
-            { key: 'nameHindi', label: 'विद्यार्थी नाम (हिन्दी) ↕' },
-            { key: 'nameEng', label: 'Candidate Name (English) ↕' },
-            { key: 'fatherName', label: 'पिता का नाम ↕' },
-            { key: 'motherName', label: 'माता का नाम ↕' },
-            { key: 'dob', label: 'जन्म तिथि (DOB) ↕' },
-            { key: 'gender', label: 'लिंग (Gender) ↕' },
-            { key: 'category', label: 'संवर्ग (Category) ↕' },
-            { key: 'caste', label: 'उपजाति (Caste) ↕' },
-            { key: 'mobile', label: 'मोबाइल नंबर ↕' },
-            { key: 'email', label: 'ई-मेल ID ↕' },
-            { key: 'medium', label: 'अध्ययन माध्यम ↕' },
-            { key: 'admissionDate', label: 'प्रवेश दिनांक ↕' },
-            { key: 'applicantType', label: 'प्रवेश प्रकार 1 ↕' },
-            { key: 'applicantType2', label: 'प्रवेश प्रकार 2 ↕' },
-            { key: 'applicantType3', label: 'प्रवेश प्रकार 3 ↕' },
-            { key: 'provisionalResult', label: 'अस्थाई रिजल्ट ↕' },
-            { key: 'tcStatus', label: 'T.C. जमा? ↕' },
-            { key: 'gapCertificate', label: 'गैप प्रमाण पत्र? ↕' },
-            { key: 'lastYearPassType', label: 'गत वर्ष छात्र प्रकार ↕' },
-            { key: 'apaarId', label: 'अपार ID (APAAR) ↕' },
-            { key: 'childId', label: 'चाइल्ड समग्र ID ↕' },
-            { key: 'familyId', label: 'परिवार समग्र ID ↕' },
-            { key: 'aadhaar', label: 'आधार क्रमांक ↕' },
-            { key: 'bankName', label: 'बैंक का नाम ↕' },
-            { key: 'bankAccount', label: 'बैंक खाता क्रमांक ↕' },
-            { key: 'bankIfsc', label: 'बैंक IFSC कोड ↕' },
-            { key: 'annualIncome', label: 'वार्षिक आय (₹) ↕' },
-            { key: 'bplStatus', label: 'BPL कार्डधारी? ↕' },
-            { key: 'ladliLaxmi', label: 'लाड़ली लक्ष्मी पात्रता? ↕' },
-            { key: 'ladliLaxmiNo', label: 'L. लक्ष्मी क्रमांक ↕' },
-            { key: 'cwsnStatus', label: 'दिव्यांग (CWSN)? ↕' },
-            { key: 'hostelStatus', label: 'छात्राबासी? ↕' },
-            { key: 'covidStatus', label: 'COVID 19 अनाथ? ↕' },
-            { key: 'mpTassStatus', label: 'MP TASS पंजीकृत? ↕' },
-            { key: 'mpTassNo', label: 'MP TASS नंबर ↕' },
-            { key: 'scholarshipStatus', label: 'छात्रवृत्ति पात्र? ↕' },
-            { key: 'sambalStatus', label: 'संबल कार्ड है? ↕' },
-            { key: 'sambalNo', label: 'संबल क्रमांक ↕' },
-            { key: 'area', label: 'क्षेत्र (ग्रामीण/शहरी) ↕' },
-            { key: 'feesPaid', label: 'प्रवेश शुल्क (₹) ↕' },
-            { key: 'remarks', label: 'रिमार्क (Remarks) ↕' },
-            { key: 'bloodGroup', label: 'रक्त समूह (Blood Group) ↕' },
-            { key: 'address', label: 'पत्र व्यवहार का पता ↕' },
-            { key: 'sub1', label: '1st Subject ↕' },
-            { key: 'sub2', label: '2nd Subject ↕' },
-            { key: 'sub3', label: '3rd Subject ↕' },
-            { key: 'sub4', label: '4th Subject ↕' },
-            { key: 'sub5', label: '5th Subject ↕' },
-            { key: 'sub6', label: '6th Subject ↕' },
-            { key: 'receivedBooks', label: 'प्राप्त पुस्तकें ↕' }
-        ];
+        function handleExamScopeChange() {
+            const scope = document.getElementById("examScopeSelect").value;
+            const classBox = document.getElementById("examClassScopeBox");
+            const sectionBox = document.getElementById("examSectionScopeBox");
+            const singleStudentBox = document.getElementById("examSingleStudentBox");
 
-        let gridSortColumn = 'scholarNo';
-        let gridSortAscending = true;
-        let gridColumnFilters = {};
-
-        // INITIAL MASTER DATASETS
-        let studentsData = {
-            "101": {
-                id: "101",
-                scholarNo: "16626",
-                rollNo: "9266510060201",
-                enrollmentNo: "A25/651006/197",
-                srNo: "SR-501",
-                targetClass: "9th",
-                section: "A",
-                applicantType: "1",
-                applicantType2: "सामान्य",
-                applicantType3: "स्थाई",
-                provisionalResult: "Pass",
-                tcStatus: "YES",
-                gapCertificate: "NO",
-                lastYearPassType: "Regular",
-                medium: "Hindi",
-                admissionDate: "2025-07-01",
-                nameHindi: "तपस्या तिवारी",
-                nameEng: "TAPASYA TIWARI",
-                fatherName: "श्री राजेश तिवारी",
-                motherName: "श्रीमती रचना तिवारी",
-                dob: "2012-08-28",
-                gender: "FEMALE",
-                category: "GEN",
-                caste: "ब्राह्मण",
-                mobile: "9826012345",
-                email: "tapasya@gmail.com",
-                bloodGroup: "O+",
-                address: "बेगमगंज वार्ड 4 (रायसेन)",
-                apaarId: "APAAR-9012-3456",
-                childId: "155076454",
-                familyId: "987654321",
-                aadhaar: "1234-5678-9012",
-                bankName: "भारतीय स्टेट बैंक बेगमगंज",
-                bankAccount: "30123456789",
-                bankIfsc: "SBIN0001234",
-                annualIncome: "60000",
-                bplStatus: "NO",
-                ladliLaxmi: "NO",
-                ladliLaxmiNo: "",
-                cwsnStatus: "NO",
-                hostelStatus: "NO",
-                covidStatus: "NO",
-                mpTassStatus: "NO",
-                mpTassNo: "",
-                scholarshipStatus: "NO",
-                sambalStatus: "NO",
-                sambalNo: "",
-                area: "ग्रामीण",
-                feesPaid: "100",
-                remarks: "उत्कृष्ट प्रदर्शन",
-                photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
-                sub1: "401 - Hindi",
-                sub2: "411 - English",
-                sub3: "512 - Sanskrit",
-                sub4: "100 - Maths (Standard)",
-                sub5: "200 - Science",
-                sub6: "300 - Social Science",
-                receivedBooks: ["NCERT हिन्दी", "NCERT गणित", "NCERT विज्ञान", "NCERT सा.विज्ञान"]
-            },
-            "102": {
-                id: "102",
-                scholarNo: "15807",
-                rollNo: "11266510060201",
-                enrollmentNo: "A23/651006/368",
-                srNo: "SR-502",
-                targetClass: "11th",
-                section: "B",
-                applicantType: "1",
-                applicantType2: "सामान्य",
-                applicantType3: "स्थाई",
-                provisionalResult: "Pass",
-                tcStatus: "YES",
-                gapCertificate: "NO",
-                lastYearPassType: "Regular",
-                medium: "Hindi",
-                admissionDate: "2025-07-02",
-                nameHindi: "आशना",
-                nameEng: "AASHNA",
-                fatherName: "श्री मसरूर अली",
-                motherName: "श्रीमती असबुन निशा",
-                dob: "2009-01-21",
-                gender: "FEMALE",
-                category: "OBC",
-                caste: "मुस्लिम",
-                mobile: "9826023456",
-                email: "aashna@gmail.com",
-                bloodGroup: "B+",
-                address: "ग्राम सुल्तानपुर बेगमगंज",
-                apaarId: "APAAR-9012-3457",
-                childId: "142631395",
-                familyId: "876543210",
-                aadhaar: "2345-6789-0123",
-                bankName: "मध्यांचल ग्रामीण बैंक बेगमगंज",
-                bankAccount: "30234567890",
-                bankIfsc: "CBIN0280001",
-                annualIncome: "45000",
-                bplStatus: "YES",
-                ladliLaxmi: "YES",
-                ladliLaxmiNo: "LL-2020-891",
-                cwsnStatus: "NO",
-                hostelStatus: "NO",
-                covidStatus: "NO",
-                mpTassStatus: "YES",
-                mpTassNo: "MPT-88123",
-                scholarshipStatus: "YES",
-                sambalStatus: "YES",
-                sambalNo: "SAM-5512",
-                area: "ग्रामीण",
-                feesPaid: "100",
-                remarks: "छात्रवृत्ति हेतु पात्र",
-                photoUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150",
-                sub1: "051 - Hindi",
-                sub2: "055 - Urdu",
-                sub3: "130 - Political science",
-                sub4: "140 - Economics",
-                sub5: "166 - Sociology",
-                sub6: "52 - ENGLISH",
-                receivedBooks: ["NCERT हिन्दी", "NCERT राजनीति"]
+            if (scope === "ALL_SCHOOL") {
+                classBox.classList.add("hidden");
+                sectionBox.classList.add("hidden");
+                singleStudentBox.classList.add("hidden");
+            } else if (scope === "CLASS") {
+                classBox.classList.remove("hidden");
+                sectionBox.classList.add("hidden");
+                singleStudentBox.classList.add("hidden");
+            } else if (scope === "SECTION") {
+                classBox.classList.remove("hidden");
+                sectionBox.classList.remove("hidden");
+                singleStudentBox.classList.add("hidden");
+            } else if (scope === "SINGLE") {
+                classBox.classList.remove("hidden");
+                sectionBox.classList.remove("hidden");
+                singleStudentBox.classList.remove("hidden");
+                
+                const cls = document.getElementById("examMarksClassSelect").value;
+                const sec = document.getElementById("examMarksSectionSelect").value;
+                const singleSelect = document.getElementById("examMarksSingleStudentSelect");
+                
+                const studentList = Object.values(studentsData).filter(st => st.targetClass === cls && st.section === sec);
+                singleSelect.innerHTML = studentList.length > 0 ? studentList.map(st => 
+                    `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng}</option>`
+                ).join('') : `<option value="">कोई छात्र नहीं</option>`;
             }
-        };
+            renderExamMarksEntryTable();
+        }
 
-        let teachersData = {
-            "T101": { id: "T101", name: "डॉ. राजेश शर्मा", code: "EMP-2026-901", designation: "प्राचार्य / संस्था प्रमुख", subject: "उच्च माध्यमिक शिक्षक (गणित)", inchargeClass: "10th - A", mobile: "9826001122", email: "rajesh@school.in" },
-            "T102": { id: "T102", name: "श्रीमती सुलोचना राय", code: "EMP-2026-902", designation: "उच्च माध्यमिक शिक्षक", subject: "माध्यमिक शिक्षक (हिन्दी)", inchargeClass: "9th - B", mobile: "9826002233", email: "sulochana@school.in" }
-        };
+        function getStudentExamData(studentId, examType, subjectCode) {
+            if (!examMarksStore[studentId]) examMarksStore[studentId] = {};
+            if (!examMarksStore[studentId][examType]) {
+                examMarksStore[studentId][examType] = { isLocked: false, subjects: {} };
+            }
+            if (!examMarksStore[studentId][examType].subjects[subjectCode]) {
+                examMarksStore[studentId][examType].subjects[subjectCode] = { th: 0, pr: 0 };
+            }
+            return examMarksStore[studentId][examType];
+        }
 
-        let subjectMasterData = {
-            "10th": [
-                { code: "401", name: "हिन्दी", category: "प्रथम भाषा" },
-                { code: "411", name: "अंग्रेजी", category: "द्वितीय भाषा" },
-                { code: "501", name: "संस्कृत", category: "तृतीय भाषा" },
-                { code: "100", name: "गणित (Standard)", category: "मुख्य विषय" },
-                { code: "200", name: "विज्ञान", category: "मुख्य विषय" },
-                { code: "300", name: "सामाजिक विज्ञान", category: "मुख्य विषय" }
-            ],
-            "9th": [
-                { code: "401", name: "हिन्दी", category: "प्रथम भाषा" },
-                { code: "411", name: "अंग्रेजी", category: "द्वितीय भाषा" },
-                { code: "512", name: "संस्कृत", category: "तृतीय भाषा" },
-                { code: "100", name: "गणित", category: "मुख्य विषय" },
-                { code: "200", name: "विज्ञान", category: "मुख्य विषय" },
-                { code: "300", name: "सामाजिक विज्ञान", category: "मुख्य विषय" }
-            ],
-            "11th": [
-                { code: "051", name: "Hindi", category: "अनिवार्य भाषा" },
-                { code: "052", name: "English", category: "अनिवार्य भाषा" },
-                { code: "130", name: "Political science", category: "ऐच्छिक विषय" },
-                { code: "140", name: "Economics", category: "ऐच्छिक विषय" },
-                { code: "166", name: "Sociology", category: "ऐच्छिक विषय" }
-            ],
-            "12th": [
-                { code: "051", name: "Hindi", category: "अनिवार्य भाषा" },
-                { code: "052", name: "English", category: "अनिवार्य भाषा" },
-                { code: "130", name: "Political science", category: "ऐच्छिक विषय" },
-                { code: "140", name: "Economics", category: "ऐच्छिक विषय" }
-            ]
-        };
+        function updateMarkValue(studentId, examType, subjectCode, type, val) {
+            const numVal = Math.max(0, parseFloat(val) || 0);
+            const studentExam = getStudentExamData(studentId, examType, subjectCode);
+            if (studentExam.isLocked) return;
+            
+            studentExam.subjects[subjectCode][type] = numVal;
 
-        let booksMasterData = {
-            "10th": [
-                { title: "NCERT हिन्दी (क्षितिज)", sub: "401", medium: "HINDI" },
-                { title: "NCERT अंग्रेजी (First Flight)", sub: "411", medium: "ENGLISH" },
-                { title: "NCERT गणित", sub: "100", medium: "HINDI" },
-                { title: "NCERT विज्ञान", sub: "200", medium: "HINDI" },
-                { title: "NCERT सामाजिक विज्ञान", sub: "300", medium: "HINDI" },
-                { title: "NCERT संस्कृत (शेमुषी)", sub: "501", medium: "HINDI" }
-            ],
-            "9th": [
-                { title: "NCERT हिन्दी (कृतिका)", sub: "401", medium: "HINDI" },
-                { title: "NCERT अंग्रेजी (Beehive)", sub: "411", medium: "ENGLISH" },
-                { title: "NCERT गणित", sub: "100", medium: "HINDI" },
-                { title: "NCERT विज्ञान", sub: "200", medium: "HINDI" }
-            ],
-            "11th": [
-                { title: "NCERT भौतिकी भाग 1", sub: "PHYSICS", medium: "HINDI" },
-                { title: "NCERT रसायन विज्ञान", sub: "CHEMISTRY", medium: "HINDI" },
-                { title: "NCERT गणित / जीवविज्ञान", sub: "MATH/BIO", medium: "HINDI" }
-            ],
-            "12th": [
-                { title: "NCERT भौतिकी भाग 1 व 2", sub: "PHYSICS", medium: "HINDI" },
-                { title: "NCERT रसायन विज्ञान", sub: "CHEMISTRY", medium: "HINDI" }
-            ]
-        };
+            // Recalculate subject total on-the-fly
+            const th = studentExam.subjects[subjectCode].th || 0;
+            const pr = studentExam.subjects[subjectCode].pr || 0;
+            const subTotal = th + pr;
 
-        window.onload = function() {
-            lucide.createIcons();
-            populateSidebarSelectors();
-            showSection("dashboard");
-        };
+            const subTotElem = document.getElementById(`subTot_${studentId}_${subjectCode}`);
+            if (subTotElem) subTotElem.innerText = subTotal;
 
-        function showToast(message, type = "success") {
-            const container = document.getElementById("toastContainer");
+            // Recalculate Student Grand Total
+            recalculateGrandTotal(studentId, examType);
+        }
+
+        function recalculateGrandTotal(studentId, examType) {
+            const studentExam = examMarksStore[studentId] && examMarksStore[studentId][examType];
+            if (!studentExam) return;
+
+            let grandTotal = 0;
+            Object.values(studentExam.subjects).forEach(sub => {
+                grandTotal += (sub.th || 0) + (sub.pr || 0);
+            });
+
+            const grandTotElem = document.getElementById(`grandTot_${studentId}`);
+            if (grandTotElem) grandTotElem.innerText = grandTotal;
+        }
+
+        function toggleStudentMarksLock(studentId, examType) {
+            const studentExam = getStudentExamData(studentId, examType, 'default');
+            studentExam.isLocked = !studentExam.isLocked;
+            renderExamMarksEntryTable();
+            showToast(studentExam.isLocked ? `छात्र के अंक लॉक (Locked 🔒) कर दिए गए हैं!` : `छात्र के अंक अनलॉक (Unlocked 🔓) कर दिए गए हैं!`);
+        }
+
+        function bulkToggleMarksLock(lockState) {
+            const filteredList = getFilteredStudentsForExam();
+            const examType = document.getElementById("examMarksTypeSelect").value;
+
+            filteredList.forEach(st => {
+                const studentExam = getStudentExamData(st.id, examType, 'default');
+                studentExam.isLocked = lockState;
+            });
+
+            renderExamMarksEntryTable();
+            showToast(lockState ? `चयनित समूह के सभी अंक सफलतापूर्वक लॉक (🔒) किए गए!` : `चयनित समूह अनलॉक (🔓) हो गया!`);
+        }
+
+        function getFilteredStudentsForExam() {
+            const scope = document.getElementById("examScopeSelect") ? document.getElementById("examScopeSelect").value : "SECTION";
+            const cls = document.getElementById("examMarksClassSelect") ? document.getElementById("examMarksClassSelect").value : "10th";
+            const sec = document.getElementById("examMarksSectionSelect") ? document.getElementById("examMarksSectionSelect").value : "A";
+            const singleId = document.getElementById("examMarksSingleStudentSelect") ? document.getElementById("examMarksSingleStudentSelect").value : null;
+            const q = (document.getElementById("examMarksSearchInput") ? document.getElementById("examMarksSearchInput").value : "").toLowerCase().trim();
+            const sort = document.getElementById("examMarksSortSelect") ? document.getElementById("examMarksSortSelect").value : "rollAsc";
+            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
+
+            let list = Object.values(studentsData).filter(st => {
+                if (scope === "SECTION") {
+                    if (st.targetClass !== cls || st.section !== sec) return false;
+                } else if (scope === "CLASS") {
+                    if (st.targetClass !== cls) return false;
+                } else if (scope === "SINGLE") {
+                    if (st.id !== singleId) return false;
+                }
+
+                if (q) {
+                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName}`.toLowerCase();
+                    if (!haystack.includes(q)) return false;
+                }
+                return true;
+            });
+
+            list.sort((a, b) => {
+                if (sort === "scholarAsc") return (parseInt(a.scholarNo) || 0) - (parseInt(b.scholarNo) || 0);
+                if (sort === "nameAsc") return (a.nameHindi || a.nameEng || "").localeCompare(b.nameHindi || b.nameEng || "");
+                if (sort === "totalDesc") {
+                    let totA = 0, totB = 0;
+                    if (examMarksStore[a.id] && examMarksStore[a.id][examType]) {
+                        Object.values(examMarksStore[a.id][examType].subjects).forEach(sub => totA += (sub.th || 0) + (sub.pr || 0));
+                    }
+                    if (examMarksStore[b.id] && examMarksStore[b.id][examType]) {
+                        Object.values(examMarksStore[b.id][examType].subjects).forEach(sub => totB += (sub.th || 0) + (sub.pr || 0));
+                    }
+                    return totB - totA;
+                }
+                return (parseInt(a.rollNo) || 0) - (parseInt(b.rollNo) || 0);
+            });
+
+            return list;
+        }
+
+        function renderExamMarksEntryTable() {
+            const container = document.getElementById("examMarksEntryTableContainer");
             if (!container) return;
-            const toast = document.createElement("div");
-            toast.className = `p-3 rounded-lg text-xs font-bold text-white shadow-lg transition transform duration-300 ${type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'}`;
-            toast.innerText = message;
-            container.appendChild(toast);
-            setTimeout(() => { toast.remove(); }, 3000);
+
+            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
+            const scope = document.getElementById("examScopeSelect") ? document.getElementById("examScopeSelect").value : "SECTION";
+            const cls = document.getElementById("examMarksClassSelect") ? document.getElementById("examMarksClassSelect").value : "10th";
+
+            const subjects = subjectMasterData[cls] || subjectMasterData["10th"];
+            const list = getFilteredStudentsForExam();
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center bg-white font-bold text-slate-500">चयनित दायरा/फ़िल्टर में कोई छात्र उपलब्ध नहीं है।</div>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="w-full text-xs border text-left border-collapse font-semibold whitespace-nowrap">
+                    <thead class="bg-indigo-950 text-white sticky top-0 font-bold uppercase z-20">
+                        <tr>
+                            <th rowspan="2" class="p-2 border border-indigo-800 text-center">अनुक्रमांक / स्कॉलर</th>
+                            <th rowspan="2" class="p-2 border border-indigo-800">विद्यार्थी नाम एवं कक्षा</th>
+                            ${subjects.map(s => `
+                                <th colspan="3" class="p-1.5 border border-indigo-800 text-center bg-indigo-900">
+                                    ${s.name} (${s.code})
+                                </th>
+                            `).join('')}
+                            <th rowspan="2" class="p-2 border border-indigo-800 text-center bg-indigo-900">कुल प्राप्तांक / पूर्णांक</th>
+                            <th rowspan="2" class="p-2 border border-indigo-800 text-center sticky right-0 bg-indigo-950 shadow-left">प्रविष्टि लॉक स्थिति</th>
+                        </tr>
+                        <tr class="bg-indigo-900 text-[10px]">
+                            ${subjects.map(() => `
+                                <th class="p-1 border border-indigo-800 text-center text-amber-300">थ्योरी</th>
+                                <th class="p-1 border border-indigo-800 text-center text-sky-300">प्रैक्टिकल</th>
+                                <th class="p-1 border border-indigo-800 text-center text-emerald-300">योग</th>
+                            `).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        ${list.map(st => {
+                            const studentExam = getStudentExamData(st.id, examType, 'default');
+                            const isLocked = studentExam.isLocked;
+                            let grandTotal = 0;
+
+                            return `
+                                <tr class="hover:bg-indigo-50/50 transition ${isLocked ? 'bg-slate-100/80 opacity-90' : ''}">
+                                    <td class="p-2 border border-slate-300 text-center font-mono font-bold text-indigo-950">
+                                        ${st.rollNo || '-'}<br>
+                                        <span class="text-[10px] text-slate-500">Sc: ${st.scholarNo}</span>
+                                    </td>
+                                    <td class="p-2 border border-slate-300">
+                                        <div class="font-extrabold text-slate-900">${st.nameHindi || st.nameEng}</div>
+                                        <div class="text-[10px] text-slate-500 font-semibold">${st.fatherName} (${st.targetClass}-${st.section})</div>
+                                    </td>
+                                    ${subjects.map(s => {
+                                        const subData = (studentExam.subjects[s.code]) || { th: 0, pr: 0 };
+                                        const subTot = (subData.th || 0) + (subData.pr || 0);
+                                        grandTotal += subTot;
+
+                                        return `
+                                            <td class="p-1 border border-slate-300 text-center">
+                                                <input type="number" min="0" max="80" value="${subData.th || 0}" ${isLocked ? 'disabled' : ''} 
+                                                    oninput="updateMarkValue('${st.id}', '${examType}', '${s.code}', 'th', this.value)" 
+                                                    class="w-12 text-center border border-slate-300 rounded p-1 font-mono font-bold text-indigo-950 focus:ring-1 focus:ring-amber-500 outline-none ${isLocked ? 'bg-slate-200 text-slate-600 cursor-not-allowed' : ''}">
+                                            </td>
+                                            <td class="p-1 border border-slate-300 text-center">
+                                                <input type="number" min="0" max="20" value="${subData.pr || 0}" ${isLocked ? 'disabled' : ''} 
+                                                    oninput="updateMarkValue('${st.id}', '${examType}', '${s.code}', 'pr', this.value)" 
+                                                    class="w-12 text-center border border-slate-300 rounded p-1 font-mono font-bold text-sky-900 focus:ring-1 focus:ring-amber-500 outline-none ${isLocked ? 'bg-slate-200 text-slate-600 cursor-not-allowed' : ''}">
+                                            </td>
+                                            <td class="p-1 border border-slate-300 text-center font-mono font-extrabold text-emerald-800 bg-emerald-50/50" id="subTot_${st.id}_${s.code}">
+                                                ${subTot}
+                                            </td>
+                                        `;
+                                    }).join('')}
+                                    <td class="p-2 border border-slate-300 text-center font-mono font-black text-indigo-950 text-sm bg-amber-50/60">
+                                        <span id="grandTot_${st.id}">${grandTotal}</span> / ${subjects.length * 100}
+                                    </td>
+                                    <td class="p-2 border border-slate-300 text-center sticky right-0 bg-white shadow-left">
+                                        <button onclick="toggleStudentMarksLock('${st.id}', '${examType}')" 
+                                            class="px-2.5 py-1 rounded text-[11px] font-extrabold shadow flex items-center justify-center space-x-1 mx-auto ${isLocked ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'}">
+                                            <i data-lucide="${isLocked ? 'lock' : 'unlock'}" class="w-3.5 h-3.5"></i>
+                                            <span>${isLocked ? '🔒 locked' : '🔓 editable'}</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            if (window.lucide) lucide.createIcons();
         }
 
         function populateSidebarSelectors() {
