@@ -1419,13 +1419,16 @@
 
     <script>
         let activeSection = "dashboard";
+        let currentStudentId = "101";
         let examMarksStore = {}; // Structure: { [studentId]: { [examType]: { isLocked: false, subjects: { [code]: { th: 50, pr: 20 } } } } }
 
         function handleExamScopeChange() {
-            const scope = document.getElementById("examScopeSelect").value;
+            const scope = document.getElementById("examScopeSelect") ? document.getElementById("examScopeSelect").value : "SECTION";
             const classBox = document.getElementById("examClassScopeBox");
             const sectionBox = document.getElementById("examSectionScopeBox");
             const singleStudentBox = document.getElementById("examSingleStudentBox");
+
+            if (!classBox || !sectionBox || !singleStudentBox) return;
 
             if (scope === "ALL_SCHOOL") {
                 classBox.classList.add("hidden");
@@ -1508,7 +1511,7 @@
 
         function bulkToggleMarksLock(lockState) {
             const filteredList = getFilteredStudentsForExam();
-            const examType = document.getElementById("examMarksTypeSelect").value;
+            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
 
             filteredList.forEach(st => {
                 const studentExam = getStudentExamData(st.id, examType, 'default');
@@ -1568,7 +1571,6 @@
             if (!container) return;
 
             const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
-            const scope = document.getElementById("examScopeSelect") ? document.getElementById("examScopeSelect").value : "SECTION";
             const cls = document.getElementById("examMarksClassSelect") ? document.getElementById("examMarksClassSelect").value : "10th";
 
             const subjects = subjectMasterData[cls] || subjectMasterData["10th"];
