@@ -1181,23 +1181,32 @@
             <!-- SECTION 11: MARKS CONFIG -->
             <section id="section-marks-config" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
-                    <div class="flex justify-between items-center border-b pb-2">
-                        <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
-                            <i data-lucide="sliders" class="w-4 h-4 text-emerald-600"></i>
-                            <span>2. कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स (Theory & Practical Max/Min Marks Config)</span>
-                        </h2>
+                    <div class="flex flex-wrap justify-between items-center border-b pb-3 gap-2">
+                        <div>
+                            <h2 class="text-sm font-extrabold text-indigo-950 flex items-center space-x-1.5">
+                                <i data-lucide="sliders" class="w-5 h-5 text-emerald-600"></i>
+                                <span>2. कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स (Theory & Practical Max/Min Marks Config)</span>
+                            </h2>
+                            <p class="text-[11px] text-slate-500 font-bold">प्रत्येक कक्षा एवं विषय हेतु थ्योरी व प्रैक्टिकल/प्रोजेक्ट के अधिकतम एवं न्यूनतम उत्तीर्ण अंक निर्धारित करें</p>
+                        </div>
                         <div class="flex items-center space-x-2">
-                            <select id="marksConfigClassSelect" onchange="renderMarksConfig()" class="text-xs font-bold border rounded px-2 py-1 bg-emerald-50 text-emerald-950 border-emerald-300">
-                                <option value="10th">10th Standard</option>
-                                <option value="9th">9th Standard</option>
-                                <option value="11th">11th Standard</option>
-                                <option value="12th">12th Standard</option>
+                            <select id="marksConfigClassSelect" onchange="renderMarksConfig()" class="text-xs font-black border border-emerald-300 rounded-lg px-2.5 py-1.5 bg-emerald-50 text-emerald-950 outline-none">
+                                <option value="10th">कक्षा 10वीं (10th Standard)</option>
+                                <option value="9th">कक्षा 9वीं (9th Standard)</option>
+                                <option value="11th">कक्षा 11वीं (11th Standard)</option>
+                                <option value="12th">कक्षा 12वीं (12th Standard)</option>
                             </select>
-                            <button onclick="saveMarksConfigSettings()" class="bg-emerald-700 text-white font-bold text-xs px-3 py-1 rounded shadow">सेटिंग्स सेव करें</button>
+                            <button onclick="resetMarksConfigToDefault()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs px-3 py-1.5 rounded-lg transition">
+                                डिफ़ॉल्ट रीसेट
+                            </button>
+                            <button onclick="saveMarksConfigSettings()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-4 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
+                                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                                <span>सेटिंग्स सेव करें</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div id="marksConfigContainer" class="overflow-x-auto">
+                    <div id="marksConfigContainer" class="overflow-x-auto border rounded-xl">
                     </div>
                 </div>
             </section>
@@ -1211,7 +1220,7 @@
                                 <i data-lucide="pen-tool" class="w-5 h-5 text-rose-600"></i>
                                 <span>3. 5-स्तरीय थ्योरी/प्रैक्टिकल परीक्षा अंक प्रविष्टि एवं लॉक सिस्टम</span>
                             </h2>
-                            <p class="text-[11px] text-slate-500 font-bold">थ्योरी व प्रैक्टिकल ऑटो-सम, लॉक/अनलॉक सुरक्षा एवं एडवांस्ड स्कोप फ़िल्टर</p>
+                            <p class="text-[11px] text-slate-500 font-bold">थ्योरी व प्रैक्टिकल ऑटो-सम, लॉक/अनलॉक सुरक्षा एवं एडवांस्ड स्कोप फ़िल्टर (1 छात्र / 1 सेक्शन / कक्षा के सभी सेक्शन / पूरे स्कूल)</p>
                         </div>
 
                         <div class="flex flex-wrap items-center gap-2">
@@ -1219,13 +1228,17 @@
                                 <i data-lucide="unlock" class="w-3 h-3"></i>
                                 <span>स्टेटस: संपादन हेतु खुला</span>
                             </span>
-                            <button onclick="bulkToggleMarksLock(true)" class="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs px-2.5 py-1.5 rounded-lg shadow flex items-center space-x-1">
+                            <button onclick="bulkToggleMarksLock(true)" class="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs px-2.5 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
                                 <i data-lucide="lock" class="w-3.5 h-3.5"></i>
                                 <span>चयनित समूह लॉक करें</span>
                             </button>
-                            <button onclick="bulkToggleMarksLock(false)" class="bg-slate-700 hover:bg-slate-800 text-white font-extrabold text-xs px-2.5 py-1.5 rounded-lg shadow flex items-center space-x-1">
+                            <button onclick="bulkToggleMarksLock(false)" class="bg-slate-700 hover:bg-slate-800 text-white font-extrabold text-xs px-2.5 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
                                 <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
                                 <span>समूह अनलॉक करें</span>
+                            </button>
+                            <button onclick="saveAllExamMarks()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
+                                <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                                <span>समस्त अंक सुरक्षित करें</span>
                             </button>
                         </div>
                     </div>
@@ -1420,1468 +1433,43 @@
     <script>
         let activeSection = "dashboard";
         let currentStudentId = "101";
-        let examMarksStore = {}; // Structure: { [studentId]: { [examType]: { isLocked: false, subjects: { [code]: { th: 50, pr: 20 } } } } }
 
-        function handleExamScopeChange() {
-            const scope = document.getElementById("examScopeSelect") ? document.getElementById("examScopeSelect").value : "SECTION";
-            const classBox = document.getElementById("examClassScopeBox");
-            const sectionBox = document.getElementById("examSectionScopeBox");
-            const singleStudentBox = document.getElementById("examSingleStudentBox");
+        // EXAM MARKS LOCK & STORAGE STATE
+        let examMarksStore = {}; 
+        // Structure: { [studentId]: { [examType]: { isLocked: false, subjects: { [code]: { th: 50, pr: 20 } } } } }
 
-            if (!classBox || !sectionBox || !singleStudentBox) return;
-
-            if (scope === "ALL_SCHOOL") {
-                classBox.classList.add("hidden");
-                sectionBox.classList.add("hidden");
-                singleStudentBox.classList.add("hidden");
-            } else if (scope === "CLASS") {
-                classBox.classList.remove("hidden");
-                sectionBox.classList.add("hidden");
-                singleStudentBox.classList.add("hidden");
-            } else if (scope === "SECTION") {
-                classBox.classList.remove("hidden");
-                sectionBox.classList.remove("hidden");
-                singleStudentBox.classList.add("hidden");
-            } else if (scope === "SINGLE") {
-                classBox.classList.remove("hidden");
-                sectionBox.classList.remove("hidden");
-                singleStudentBox.classList.remove("hidden");
-                
-                const cls = document.getElementById("examMarksClassSelect").value;
-                const sec = document.getElementById("examMarksSectionSelect").value;
-                const singleSelect = document.getElementById("examMarksSingleStudentSelect");
-                
-                const studentList = Object.values(studentsData).filter(st => st.targetClass === cls && st.section === sec);
-                singleSelect.innerHTML = studentList.length > 0 ? studentList.map(st => 
-                    `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng}</option>`
-                ).join('') : `<option value="">कोई छात्र नहीं</option>`;
+        // MARKS CONFIGURATION STATE PER CLASS
+        let marksConfigData = {
+            "10th": {
+                "401": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "411": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "501": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "100": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "200": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "300": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 }
+            },
+            "9th": {
+                "401": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "411": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "512": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "100": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "200": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 },
+                "300": { thMax: 75, thPass: 25, prMax: 25, prPass: 8 }
+            },
+            "11th": {
+                "051": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 },
+                "052": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 },
+                "130": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 },
+                "140": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 },
+                "166": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 }
+            },
+            "12th": {
+                "051": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 },
+                "052": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 },
+                "130": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 },
+                "140": { thMax: 80, thPass: 26, prMax: 20, prPass: 7 }
             }
-            renderExamMarksEntryTable();
-        }
-
-        function getStudentExamData(studentId, examType, subjectCode) {
-            if (!examMarksStore[studentId]) examMarksStore[studentId] = {};
-            if (!examMarksStore[studentId][examType]) {
-                examMarksStore[studentId][examType] = { isLocked: false, subjects: {} };
-            }
-            if (!examMarksStore[studentId][examType].subjects[subjectCode]) {
-                examMarksStore[studentId][examType].subjects[subjectCode] = { th: 0, pr: 0 };
-            }
-            return examMarksStore[studentId][examType];
-        }
-
-        function updateMarkValue(studentId, examType, subjectCode, type, val) {
-            const numVal = Math.max(0, parseFloat(val) || 0);
-            const studentExam = getStudentExamData(studentId, examType, subjectCode);
-            if (studentExam.isLocked) return;
-            
-            studentExam.subjects[subjectCode][type] = numVal;
-
-            // Recalculate subject total on-the-fly
-            const th = studentExam.subjects[subjectCode].th || 0;
-            const pr = studentExam.subjects[subjectCode].pr || 0;
-            const subTotal = th + pr;
-
-            const subTotElem = document.getElementById(`subTot_${studentId}_${subjectCode}`);
-            if (subTotElem) subTotElem.innerText = subTotal;
-
-            // Recalculate Student Grand Total
-            recalculateGrandTotal(studentId, examType);
-        }
-
-        function recalculateGrandTotal(studentId, examType) {
-            const studentExam = examMarksStore[studentId] && examMarksStore[studentId][examType];
-            if (!studentExam) return;
-
-            let grandTotal = 0;
-            Object.values(studentExam.subjects).forEach(sub => {
-                grandTotal += (sub.th || 0) + (sub.pr || 0);
-            });
-
-            const grandTotElem = document.getElementById(`grandTot_${studentId}`);
-            if (grandTotElem) grandTotElem.innerText = grandTotal;
-        }
-
-        function toggleStudentMarksLock(studentId, examType) {
-            const studentExam = getStudentExamData(studentId, examType, 'default');
-            studentExam.isLocked = !studentExam.isLocked;
-            renderExamMarksEntryTable();
-            showToast(studentExam.isLocked ? `छात्र के अंक लॉक (Locked 🔒) कर दिए गए हैं!` : `छात्र के अंक अनलॉक (Unlocked 🔓) कर दिए गए हैं!`);
-        }
-
-        function bulkToggleMarksLock(lockState) {
-            const filteredList = getFilteredStudentsForExam();
-            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
-
-            filteredList.forEach(st => {
-                const studentExam = getStudentExamData(st.id, examType, 'default');
-                studentExam.isLocked = lockState;
-            });
-
-            renderExamMarksEntryTable();
-            showToast(lockState ? `चयनित समूह के सभी अंक सफलतापूर्वक लॉक (🔒) किए गए!` : `चयनित समूह अनलॉक (🔓) हो गया!`);
-        }
-
-        function getFilteredStudentsForExam() {
-            const scope = document.getElementById("examScopeSelect") ? document.getElementById("examScopeSelect").value : "SECTION";
-            const cls = document.getElementById("examMarksClassSelect") ? document.getElementById("examMarksClassSelect").value : "10th";
-            const sec = document.getElementById("examMarksSectionSelect") ? document.getElementById("examMarksSectionSelect").value : "A";
-            const singleId = document.getElementById("examMarksSingleStudentSelect") ? document.getElementById("examMarksSingleStudentSelect").value : null;
-            const q = (document.getElementById("examMarksSearchInput") ? document.getElementById("examMarksSearchInput").value : "").toLowerCase().trim();
-            const sort = document.getElementById("examMarksSortSelect") ? document.getElementById("examMarksSortSelect").value : "rollAsc";
-            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
-
-            let list = Object.values(studentsData).filter(st => {
-                if (scope === "SECTION") {
-                    if (st.targetClass !== cls || st.section !== sec) return false;
-                } else if (scope === "CLASS") {
-                    if (st.targetClass !== cls) return false;
-                } else if (scope === "SINGLE") {
-                    if (st.id !== singleId) return false;
-                }
-
-                if (q) {
-                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName}`.toLowerCase();
-                    if (!haystack.includes(q)) return false;
-                }
-                return true;
-            });
-
-            list.sort((a, b) => {
-                if (sort === "scholarAsc") return (parseInt(a.scholarNo) || 0) - (parseInt(b.scholarNo) || 0);
-                if (sort === "nameAsc") return (a.nameHindi || a.nameEng || "").localeCompare(b.nameHindi || b.nameEng || "");
-                if (sort === "totalDesc") {
-                    let totA = 0, totB = 0;
-                    if (examMarksStore[a.id] && examMarksStore[a.id][examType]) {
-                        Object.values(examMarksStore[a.id][examType].subjects).forEach(sub => totA += (sub.th || 0) + (sub.pr || 0));
-                    }
-                    if (examMarksStore[b.id] && examMarksStore[b.id][examType]) {
-                        Object.values(examMarksStore[b.id][examType].subjects).forEach(sub => totB += (sub.th || 0) + (sub.pr || 0));
-                    }
-                    return totB - totA;
-                }
-                return (parseInt(a.rollNo) || 0) - (parseInt(b.rollNo) || 0);
-            });
-
-            return list;
-        }
-
-        function renderExamMarksEntryTable() {
-            const container = document.getElementById("examMarksEntryTableContainer");
-            if (!container) return;
-
-            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
-            const cls = document.getElementById("examMarksClassSelect") ? document.getElementById("examMarksClassSelect").value : "10th";
-
-            const subjects = subjectMasterData[cls] || subjectMasterData["10th"];
-            const list = getFilteredStudentsForExam();
-
-            if (list.length === 0) {
-                container.innerHTML = `<div class="p-8 text-center bg-white font-bold text-slate-500">चयनित दायरा/फ़िल्टर में कोई छात्र उपलब्ध नहीं है।</div>`;
-                return;
-            }
-
-            container.innerHTML = `
-                <table class="w-full text-xs border text-left border-collapse font-semibold whitespace-nowrap">
-                    <thead class="bg-indigo-950 text-white sticky top-0 font-bold uppercase z-20">
-                        <tr>
-                            <th rowspan="2" class="p-2 border border-indigo-800 text-center">अनुक्रमांक / स्कॉलर</th>
-                            <th rowspan="2" class="p-2 border border-indigo-800">विद्यार्थी नाम एवं कक्षा</th>
-                            ${subjects.map(s => `
-                                <th colspan="3" class="p-1.5 border border-indigo-800 text-center bg-indigo-900">
-                                    ${s.name} (${s.code})
-                                </th>
-                            `).join('')}
-                            <th rowspan="2" class="p-2 border border-indigo-800 text-center bg-indigo-900">कुल प्राप्तांक / पूर्णांक</th>
-                            <th rowspan="2" class="p-2 border border-indigo-800 text-center sticky right-0 bg-indigo-950 shadow-left">प्रविष्टि लॉक स्थिति</th>
-                        </tr>
-                        <tr class="bg-indigo-900 text-[10px]">
-                            ${subjects.map(() => `
-                                <th class="p-1 border border-indigo-800 text-center text-amber-300">थ्योरी</th>
-                                <th class="p-1 border border-indigo-800 text-center text-sky-300">प्रैक्टिकल</th>
-                                <th class="p-1 border border-indigo-800 text-center text-emerald-300">योग</th>
-                            `).join('')}
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200 bg-white">
-                        ${list.map(st => {
-                            const studentExam = getStudentExamData(st.id, examType, 'default');
-                            const isLocked = studentExam.isLocked;
-                            let grandTotal = 0;
-
-                            return `
-                                <tr class="hover:bg-indigo-50/50 transition ${isLocked ? 'bg-slate-100/80 opacity-90' : ''}">
-                                    <td class="p-2 border border-slate-300 text-center font-mono font-bold text-indigo-950">
-                                        ${st.rollNo || '-'}<br>
-                                        <span class="text-[10px] text-slate-500">Sc: ${st.scholarNo}</span>
-                                    </td>
-                                    <td class="p-2 border border-slate-300">
-                                        <div class="font-extrabold text-slate-900">${st.nameHindi || st.nameEng}</div>
-                                        <div class="text-[10px] text-slate-500 font-semibold">${st.fatherName} (${st.targetClass}-${st.section})</div>
-                                    </td>
-                                    ${subjects.map(s => {
-                                        const subData = (studentExam.subjects[s.code]) || { th: 0, pr: 0 };
-                                        const subTot = (subData.th || 0) + (subData.pr || 0);
-                                        grandTotal += subTot;
-
-                                        return `
-                                            <td class="p-1 border border-slate-300 text-center">
-                                                <input type="number" min="0" max="80" value="${subData.th || 0}" ${isLocked ? 'disabled' : ''} 
-                                                    oninput="updateMarkValue('${st.id}', '${examType}', '${s.code}', 'th', this.value)" 
-                                                    class="w-12 text-center border border-slate-300 rounded p-1 font-mono font-bold text-indigo-950 focus:ring-1 focus:ring-amber-500 outline-none ${isLocked ? 'bg-slate-200 text-slate-600 cursor-not-allowed' : ''}">
-                                            </td>
-                                            <td class="p-1 border border-slate-300 text-center">
-                                                <input type="number" min="0" max="20" value="${subData.pr || 0}" ${isLocked ? 'disabled' : ''} 
-                                                    oninput="updateMarkValue('${st.id}', '${examType}', '${s.code}', 'pr', this.value)" 
-                                                    class="w-12 text-center border border-slate-300 rounded p-1 font-mono font-bold text-sky-900 focus:ring-1 focus:ring-amber-500 outline-none ${isLocked ? 'bg-slate-200 text-slate-600 cursor-not-allowed' : ''}">
-                                            </td>
-                                            <td class="p-1 border border-slate-300 text-center font-mono font-extrabold text-emerald-800 bg-emerald-50/50" id="subTot_${st.id}_${s.code}">
-                                                ${subTot}
-                                            </td>
-                                        `;
-                                    }).join('')}
-                                    <td class="p-2 border border-slate-300 text-center font-mono font-black text-indigo-950 text-sm bg-amber-50/60">
-                                        <span id="grandTot_${st.id}">${grandTotal}</span> / ${subjects.length * 100}
-                                    </td>
-                                    <td class="p-2 border border-slate-300 text-center sticky right-0 bg-white shadow-left">
-                                        <button onclick="toggleStudentMarksLock('${st.id}', '${examType}')" 
-                                            class="px-2.5 py-1 rounded text-[11px] font-extrabold shadow flex items-center justify-center space-x-1 mx-auto ${isLocked ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'}">
-                                            <i data-lucide="${isLocked ? 'lock' : 'unlock'}" class="w-3.5 h-3.5"></i>
-                                            <span>${isLocked ? '🔒 locked' : '🔓 editable'}</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `;
-                        }).join('')}
-                    </tbody>
-                </table>
-            `;
-
-            if (window.lucide) lucide.createIcons();
-        }
-
-        function populateSidebarSelectors() {
-            const studentSelect = document.getElementById("sidebarStudentSelect");
-            const teacherSelect = document.getElementById("sidebarTeacherSelect");
-            
-            if (studentSelect) {
-                studentSelect.innerHTML = Object.values(studentsData).map(st => 
-                    `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng} (${st.targetClass}-${st.section})</option>`
-                ).join('');
-                document.getElementById("quickStudentCountBadge").innerText = `${Object.keys(studentsData).length} छात्र`;
-            }
-
-            if (teacherSelect) {
-                teacherSelect.innerHTML = Object.values(teachersData).map(tc => 
-                    `<option value="${tc.id}">${tc.name} (${tc.code})</option>`
-                ).join('');
-                document.getElementById("quickTeacherCountBadge").innerText = `${Object.keys(teachersData).length} शिक्षक`;
-            }
-        }
-
-        function filterSidebarStudentDropdown(query) {
-            const select = document.getElementById("sidebarStudentSelect");
-            const q = query.toLowerCase().trim();
-            const filtered = Object.values(studentsData).filter(st => 
-                st.scholarNo.toLowerCase().includes(q) ||
-                (st.nameHindi && st.nameHindi.toLowerCase().includes(q)) ||
-                st.nameEng.toLowerCase().includes(q) ||
-                (st.rollNo && st.rollNo.toLowerCase().includes(q))
-            );
-            select.innerHTML = filtered.map(st => 
-                `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng} (${st.targetClass}-${st.section})</option>`
-            ).join('');
-            document.getElementById("quickStudentCountBadge").innerText = `${filtered.length} परिणाम`;
-            if (filtered.length > 0) loadStudentData(filtered[0].id);
-        }
-
-        function filterSidebarTeacherDropdown(query) {
-            const select = document.getElementById("sidebarTeacherSelect");
-            const q = query.toLowerCase().trim();
-            const filtered = Object.values(teachersData).filter(tc => 
-                tc.name.toLowerCase().includes(q) || tc.code.toLowerCase().includes(q)
-            );
-            select.innerHTML = filtered.map(tc => 
-                `<option value="${tc.id}">${tc.name} (${tc.code})</option>`
-            ).join('');
-            document.getElementById("quickTeacherCountBadge").innerText = `${filtered.length} परिणाम`;
-            if (filtered.length > 0) loadTeacherCardData(filtered[0].id);
-        }
-
-        function showSection(secId) {
-            activeSection = secId;
-            document.querySelectorAll(".content-section").forEach(sec => sec.classList.add("hidden"));
-            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-            
-            const targetSec = document.getElementById(`section-${secId}`);
-            if (targetSec) {
-                targetSec.classList.remove("hidden");
-            } else {
-                console.error("Section element not found:", secId);
-                return;
-            }
-
-            const activeBtn = document.getElementById(`btn-${secId}`);
-            if (activeBtn) activeBtn.classList.add("active");
-
-            const titleElem = document.getElementById("currentActiveSectionTitle");
-            if (titleElem && activeBtn) {
-                titleElem.innerText = `अनुभाग: ${activeBtn.innerText.trim()}`;
-            }
-
-            // TRIGGER DYNAMIC SECTION RENDERERS
-            if (secId === 'dashboard') renderDashboard();
-            else if (secId === 'master-grid') renderMasterGrid();
-            else if (secId === 'combined-forms') renderCombinedOfficialForms();
-            else if (secId === 'profile-card') renderProfileCards();
-            else if (secId === 'admit-card') renderAdmitCards();
-            else if (secId === 'marksheet') renderMarksheets();
-            else if (secId === 'teacher-card') renderTeacherCard();
-            else if (secId === 'management-panel') renderManagementPanel();
-            else if (secId === 'subject-master') renderSubjectMaster();
-            else if (secId === 'marks-config') renderMarksConfig();
-            else if (secId === 'exam-marks') renderExamMarksEntryTable();
-            else if (secId === 'consolidated-report') renderConsolidatedReport();
-            else if (secId === 'class-exam-report') renderClassExamReport();
-            else if (secId === 'book-master') renderBookMaster();
-            else if (secId.startsWith('form-')) renderIndividualForm(secId.replace('form-', ''));
-
-            if (window.lucide) lucide.createIcons();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function renderDashboard() {
-            renderTopperSpotlight();
-            renderDashboardTop10Cards();
-            renderDashboardClassSummaries();
-        }
-
-        function renderTopperSpotlight() {
-            const list = Object.values(studentsData);
-            if (list.length === 0) return;
-            const topper = list[0];
-            document.getElementById("dashTopperPhoto").src = topper.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
-            document.getElementById("dashTopperName").innerText = topper.nameHindi || topper.nameEng;
-            document.getElementById("dashTopperDetails").innerText = `पिता: ${topper.fatherName} | कक्षा: ${topper.targetClass} - ${topper.section} | स्कॉलर क्र.: ${topper.scholarNo}`;
-        }
-
-        function renderDashboardTop10Cards() {
-            const container = document.getElementById("dashTop10CardsContainer");
-            if (!container) return;
-            const cls = document.getElementById("dashClassFilter").value;
-            const sec = document.getElementById("dashSectionFilter").value;
-
-            let filtered = Object.values(studentsData).filter(st => {
-                if (cls !== "ALL" && st.targetClass !== cls) return false;
-                if (sec !== "ALL" && st.section !== sec) return false;
-                return true;
-            });
-
-            container.innerHTML = filtered.slice(0, 10).map((st, idx) => {
-                const glowClass = idx === 0 ? 'gold-glow bg-amber-50/80 border-yellow-400' : (idx === 1 ? 'silver-glow bg-slate-50 border-slate-300' : 'bronze-glow bg-orange-50/60 border-amber-300');
-                return `
-                    <div class="bg-white p-2.5 rounded-xl border ${glowClass} shadow-sm space-y-1 text-center relative overflow-hidden">
-                        <span class="absolute top-1 left-1 bg-slate-950 text-yellow-400 font-black text-[9px] px-1.5 py-0.2 rounded-full">#${idx + 1}</span>
-                        <img src="${st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-16 h-20 object-cover rounded-lg border border-slate-300 mx-auto shadow">
-                        <h4 class="font-extrabold text-xs text-indigo-950 truncate mt-1">${st.nameHindi || st.nameEng}</h4>
-                        <p class="text-[10px] text-slate-500 font-semibold">${st.targetClass} (${st.section}) | Sc: ${st.scholarNo}</p>
-                        <div class="bg-indigo-950 text-yellow-400 p-1 rounded font-mono text-xs font-black">
-                            455/500 (91.0%)
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderDashboardClassSummaries() {
-            const grid = document.getElementById("dashClassSummariesGrid");
-            const overallCard = document.getElementById("dashSchoolOverallCard");
-            
-            const classes = ["9th", "10th", "11th", "12th"];
-            if (grid) {
-                grid.innerHTML = classes.map(c => `
-                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg border border-slate-200">
-                        <span class="font-extrabold text-indigo-950">कक्षा ${c}वी:</span>
-                        <div class="w-1/2 bg-slate-200 rounded-full h-2 overflow-hidden">
-                            <div class="bg-indigo-600 h-2 rounded-full" style="width: 88%"></div>
-                        </div>
-                        <span class="font-bold text-emerald-700">88% उत्तीर्ण</span>
-                    </div>
-                `).join('');
-            }
-
-            if (overallCard) {
-                overallCard.innerHTML = `
-                    <div class="grid grid-cols-2 gap-2 text-center">
-                        <div class="bg-white p-2 rounded-lg border border-emerald-300">
-                            <span class="text-[10px] text-slate-500 font-bold uppercase block">कुल नामांकित छात्र:</span>
-                            <span class="text-base font-black text-indigo-950">${Object.keys(studentsData).length}</span>
-                        </div>
-                        <div class="bg-white p-2 rounded-lg border border-emerald-300">
-                            <span class="text-[10px] text-slate-500 font-bold uppercase block">कुल उत्तीर्ण %:</span>
-                            <span class="text-base font-black text-emerald-600">89.5%</span>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        function renderMasterGrid() {
-            const headerTr = document.getElementById("masterGridHeaderTr");
-            const filterTr = document.getElementById("masterGridFilterTr");
-            const tbody = document.getElementById("masterGridTbody");
-            if (!headerTr || !tbody) return;
-
-            headerTr.innerHTML = masterGridColumns.map(col => `
-                <th class="p-2 border border-indigo-800 cursor-pointer hover:bg-indigo-900 transition" onclick="sortMasterGrid('${col.key}')">
-                    ${col.label} ${gridSortColumn === col.key ? (gridSortAscending ? '▲' : '▼') : ''}
-                </th>
-            `).join('') + `<th class="p-2 border border-indigo-800 text-center sticky right-0 bg-indigo-950 z-10">डायरेक्ट एक्शन</th>`;
-
-            filterTr.innerHTML = masterGridColumns.map(col => `
-                <td class="p-1 border border-indigo-800">
-                    ${col.isImage ? '' : `<input type="text" value="${gridColumnFilters[col.key] || ''}" oninput="filterGridColumn('${col.key}', this.value)" placeholder="फ़िल्टर..." class="grid-col-filter-input w-full text-[10px] px-1 py-0.5 border rounded outline-none font-semibold text-slate-900 focus:ring-1 focus:ring-amber-400">`}
-                </td>
-            `).join('') + `<td class="p-1 border border-indigo-800 text-center sticky right-0 bg-indigo-900 z-10"></td>`;
-
-            const globalQ = (document.getElementById("gridGlobalSearchInput") ? document.getElementById("gridGlobalSearchInput").value : "").toLowerCase().trim();
-            const clsFilter = document.getElementById("gridClassFilter") ? document.getElementById("gridClassFilter").value : "ALL";
-            const secFilter = document.getElementById("gridSectionFilter") ? document.getElementById("gridSectionFilter").value : "ALL";
-            const catFilter = document.getElementById("gridCategoryFilter") ? document.getElementById("gridCategoryFilter").value : "ALL";
-            const condFilter = document.getElementById("gridConditionFilter") ? document.getElementById("gridConditionFilter").value : "ALL";
-
-            let filtered = Object.values(studentsData).filter(st => {
-                if (clsFilter !== "ALL" && st.targetClass !== clsFilter) return false;
-                if (secFilter !== "ALL" && st.section !== secFilter) return false;
-                if (catFilter !== "ALL" && st.category !== catFilter) return false;
-                
-                if (condFilter === "FIRST" && (!st.percentage || parseFloat(st.percentage) < 60)) return false;
-                if (condFilter === "DISTINCTION" && (!st.percentage || parseFloat(st.percentage) < 75)) return false;
-                if (condFilter === "FAIL" && st.provisionalResult !== "Fail" && st.provisionalResult !== "Supp") return false;
-
-                if (globalQ) {
-                    const haystack = JSON.stringify(st).toLowerCase();
-                    if (!haystack.includes(globalQ)) return false;
-                }
-
-                for (let [cKey, filterVal] of Object.entries(gridColumnFilters)) {
-                    if (filterVal) {
-                        let rawVal = st[cKey];
-                        if (Array.isArray(rawVal)) rawVal = rawVal.join(', ');
-                        if (!rawVal || !rawVal.toString().toLowerCase().includes(filterVal)) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            });
-
-            filtered.sort((a, b) => {
-                let valA = a[gridSortColumn] || '';
-                let valB = b[gridSortColumn] || '';
-                if (Array.isArray(valA)) valA = valA.join(', ');
-                if (Array.isArray(valB)) valB = valB.join(', ');
-
-                let comp = valA.toString().localeCompare(valB.toString(), undefined, { numeric: true, sensitivity: 'base' });
-                return gridSortAscending ? comp : -comp;
-            });
-
-            const badge = document.getElementById("gridFilteredCountBadge");
-            if (badge) badge.innerText = `${filtered.length} छात्र प्रदर्शित`;
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${masterGridColumns.length + 1}" class="p-4 text-center font-bold text-slate-500">कोई छात्र रिकॉर्ड मेल नहीं खाता।</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = filtered.map(st => `
-                <tr class="hover:bg-indigo-50/60 transition font-semibold text-slate-800 whitespace-nowrap">
-                    ${masterGridColumns.map(col => {
-                        let val = st[col.key];
-                        if (col.isImage) {
-                            return `<td class="p-1.5 border border-slate-300 text-center"><img src="${val || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-8 h-10 object-cover rounded border border-slate-400 mx-auto"></td>`;
-                        }
-                        if (Array.isArray(val)) val = val.join(', ');
-                        val = val !== undefined && val !== null && val !== '' ? val : '-';
-
-                        let classStyle = "p-2 border border-slate-300";
-                        if (['scholarNo', 'rollNo', 'enrollmentNo', 'apaarId', 'childId', 'familyId', 'aadhaar', 'bankAccount', 'bankIfsc', 'mobile'].includes(col.key)) {
-                            classStyle += " font-mono text-[11px]";
-                        }
-                        if (['scholarNo', 'nameHindi', 'nameEng', 'targetClass'].includes(col.key)) {
-                            classStyle += " font-extrabold text-indigo-950";
-                        }
-                        return `<td class="${classStyle}">${val}</td>`;
-                    }).join('')}
-                    <td class="p-2 border border-slate-300 text-center sticky right-0 bg-white z-10 shadow-left">
-                        <div class="flex items-center justify-center space-x-1">
-                            <button onclick="editStudentRecord('${st.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">संपादित करें</button>
-                            <button onclick="deleteStudentRecord('${st.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow">हटाएं</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function sortMasterGrid(colKey) {
-            if (gridSortColumn === colKey) {
-                gridSortAscending = !gridSortAscending;
-            } else {
-                gridSortColumn = colKey;
-                gridSortAscending = true;
-            }
-            renderMasterGrid();
-        }
-
-        function filterGridColumn(colKey, value) {
-            if (!value || value.trim() === '') {
-                delete gridColumnFilters[colKey];
-            } else {
-                gridColumnFilters[colKey] = value.toLowerCase().trim();
-            }
-            renderMasterGrid();
-        }
-
-        function resetMasterGridFilters() {
-            gridColumnFilters = {};
-            document.getElementById("gridGlobalSearchInput").value = "";
-            document.getElementById("gridClassFilter").value = "ALL";
-            document.getElementById("gridSectionFilter").value = "ALL";
-            document.getElementById("gridCategoryFilter").value = "ALL";
-            document.getElementById("gridConditionFilter").value = "ALL";
-            renderMasterGrid();
-            showToast("ग्रिड के सभी फ़िल्टर रीसेट कर दिए गए!");
-        }
-
-        function applyMasterGridFilters() {
-            renderMasterGrid();
-        }
-
-        function deleteStudentRecord(id) {
-            if (confirm("क्या आप इस छात्र रिकॉर्ड को हटाना चाहते हैं?")) {
-                delete studentsData[id];
-                populateSidebarSelectors();
-                renderMasterGrid();
-                showToast("छात्र रिकॉर्ड हटाया गया!", "error");
-            }
-        }
-
-        function loadStudentData(stId) {
-            currentStudentId = stId;
-            const st = studentsData[stId];
-            if (!st) return;
-            document.getElementById("f_scholarNo").value = st.scholarNo || '';
-            document.getElementById("f_rollNo").value = st.rollNo || '';
-            document.getElementById("f_enrollmentNo").value = st.enrollmentNo || '';
-            document.getElementById("f_targetClass").value = st.targetClass || '10th';
-            document.getElementById("f_section").value = st.section || 'A';
-            document.getElementById("f_srNo").value = st.srNo || '';
-            document.getElementById("f_applicantType").value = st.applicantType || '1';
-            document.getElementById("f_applicantType2").value = st.applicantType2 || 'सामान्य';
-            document.getElementById("f_applicantType3").value = st.applicantType3 || 'स्थाई';
-            document.getElementById("f_provisionalResult").value = st.provisionalResult || 'Pass';
-            document.getElementById("f_tcStatus").value = st.tcStatus || 'YES';
-            document.getElementById("f_gapCertificate").value = st.gapCertificate || 'NO';
-            document.getElementById("f_lastYearPassType").value = st.lastYearPassType || 'Regular';
-            document.getElementById("f_medium").value = st.medium || 'HINDI';
-            document.getElementById("f_admissionDate").value = st.admissionDate || '';
-            document.getElementById("f_nameHindi").value = st.nameHindi || '';
-            document.getElementById("f_nameEng").value = st.nameEng || '';
-            document.getElementById("f_fatherName").value = st.fatherName || '';
-            document.getElementById("f_motherName").value = st.motherName || '';
-            document.getElementById("f_dob").value = st.dob || '';
-            document.getElementById("f_gender").value = st.gender || 'FEMALE';
-            document.getElementById("f_category").value = st.category || 'OBC';
-            document.getElementById("f_caste").value = st.caste || '';
-            document.getElementById("f_mobile").value = st.mobile || '';
-            document.getElementById("f_email").value = st.email || '';
-            document.getElementById("f_bloodGroup").value = st.bloodGroup || 'O+';
-            document.getElementById("f_address").value = st.address || '';
-            document.getElementById("f_apaarId").value = st.apaarId || '';
-            document.getElementById("f_childId").value = st.childId || '';
-            document.getElementById("f_familyId").value = st.familyId || '';
-            document.getElementById("f_aadhaar").value = st.aadhaar || '';
-            document.getElementById("f_bankName").value = st.bankName || '';
-            document.getElementById("f_bankAccount").value = st.bankAccount || '';
-            document.getElementById("f_bankIfsc").value = st.bankIfsc || '';
-            document.getElementById("f_annualIncome").value = st.annualIncome || '';
-            document.getElementById("f_bplStatus").value = st.bplStatus || 'NO';
-            document.getElementById("f_ladliLaxmi").value = st.ladliLaxmi || 'NO';
-            document.getElementById("f_ladliLaxmiNo").value = st.ladliLaxmiNo || '';
-            document.getElementById("f_cwsnStatus").value = st.cwsnStatus || 'NO';
-            document.getElementById("f_hostelStatus").value = st.hostelStatus || 'NO';
-            document.getElementById("f_covidStatus").value = st.covidStatus || 'NO';
-            document.getElementById("f_mpTassStatus").value = st.mpTassStatus || 'NO';
-            document.getElementById("f_mpTassNo").value = st.mpTassNo || '';
-            document.getElementById("f_scholarshipStatus").value = st.scholarshipStatus || 'YES';
-            document.getElementById("f_sambalStatus").value = st.sambalStatus || 'NO';
-            document.getElementById("f_sambalNo").value = st.sambalNo || '';
-            document.getElementById("f_area").value = st.area || 'ग्रामीण';
-            document.getElementById("f_feesPaid").value = st.feesPaid || '100';
-            document.getElementById("f_remarks").value = st.remarks || '';
-            document.getElementById("f_sub1").value = st.sub1 || '';
-            document.getElementById("f_sub2").value = st.sub2 || '';
-            document.getElementById("f_sub3").value = st.sub3 || '';
-            document.getElementById("f_sub4").value = st.sub4 || '';
-            document.getElementById("f_sub5").value = st.sub5 || '';
-            document.getElementById("f_sub6").value = st.sub6 || '';
-            document.getElementById("formPhotoPreview").src = st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
-            
-            renderFormClassBookCheckboxes(st.targetClass);
-        }
-
-        function editStudentRecord(stId) {
-            loadStudentData(stId);
-            showSection('student-entry');
-        }
-
-        function resetMasterStudentForm() {
-            document.getElementById("masterStudentForm").reset();
-            showToast("नया फ़ॉर्म प्रविष्टि हेतु तैयार है!");
-        }
-
-        function handleMasterStudentSave(e) {
-            e.preventDefault();
-            const scholar = document.getElementById("f_scholarNo").value;
-            studentsData[scholar] = {
-                id: scholar,
-                scholarNo: scholar,
-                rollNo: document.getElementById("f_rollNo").value,
-                enrollmentNo: document.getElementById("f_enrollmentNo").value,
-                srNo: document.getElementById("f_srNo").value,
-                targetClass: document.getElementById("f_targetClass").value,
-                section: document.getElementById("f_section").value,
-                applicantType: document.getElementById("f_applicantType").value,
-                applicantType2: document.getElementById("f_applicantType2").value,
-                applicantType3: document.getElementById("f_applicantType3").value,
-                provisionalResult: document.getElementById("f_provisionalResult").value,
-                tcStatus: document.getElementById("f_tcStatus").value,
-                gapCertificate: document.getElementById("f_gapCertificate").value,
-                lastYearPassType: document.getElementById("f_lastYearPassType").value,
-                medium: document.getElementById("f_medium").value,
-                admissionDate: document.getElementById("f_admissionDate").value,
-                nameHindi: document.getElementById("f_nameHindi").value,
-                nameEng: document.getElementById("f_nameEng").value,
-                fatherName: document.getElementById("f_fatherName").value,
-                motherName: document.getElementById("f_motherName").value,
-                dob: document.getElementById("f_dob").value,
-                gender: document.getElementById("f_gender").value,
-                category: document.getElementById("f_category").value,
-                caste: document.getElementById("f_caste").value,
-                mobile: document.getElementById("f_mobile").value,
-                email: document.getElementById("f_email").value,
-                bloodGroup: document.getElementById("f_bloodGroup").value,
-                address: document.getElementById("f_address").value,
-                apaarId: document.getElementById("f_apaarId").value,
-                childId: document.getElementById("f_childId").value,
-                familyId: document.getElementById("f_familyId").value,
-                aadhaar: document.getElementById("f_aadhaar").value,
-                bankName: document.getElementById("f_bankName").value,
-                bankAccount: document.getElementById("f_bankAccount").value,
-                bankIfsc: document.getElementById("f_bankIfsc").value,
-                annualIncome: document.getElementById("f_annualIncome").value,
-                bplStatus: document.getElementById("f_bplStatus").value,
-                ladliLaxmi: document.getElementById("f_ladliLaxmi").value,
-                ladliLaxmiNo: document.getElementById("f_ladliLaxmiNo").value,
-                cwsnStatus: document.getElementById("f_cwsnStatus").value,
-                hostelStatus: document.getElementById("f_hostelStatus").value,
-                covidStatus: document.getElementById("f_covidStatus").value,
-                mpTassStatus: document.getElementById("f_mpTassStatus").value,
-                mpTassNo: document.getElementById("f_mpTassNo").value,
-                scholarshipStatus: document.getElementById("f_scholarshipStatus").value,
-                sambalStatus: document.getElementById("f_sambalStatus").value,
-                sambalNo: document.getElementById("f_sambalNo").value,
-                area: document.getElementById("f_area").value,
-                feesPaid: document.getElementById("f_feesPaid").value,
-                remarks: document.getElementById("f_remarks").value,
-                sub1: document.getElementById("f_sub1").value,
-                sub2: document.getElementById("f_sub2").value,
-                sub3: document.getElementById("f_sub3").value,
-                sub4: document.getElementById("f_sub4").value,
-                sub5: document.getElementById("f_sub5").value,
-                sub6: document.getElementById("f_sub6").value,
-                photoUrl: document.getElementById("formPhotoPreview").src
-            };
-            populateSidebarSelectors();
-            showToast("छात्र रिकॉर्ड सफलतापूर्वक सुरक्षित किया गया!");
-            showSection("master-grid");
-        }
-
-        function renderFormClassBookCheckboxes(cls) {
-            const container = document.getElementById("formTextbooksCheckboxesArea");
-            if (!container) return;
-            const books = booksMasterData[cls] || booksMasterData["10th"];
-            container.innerHTML = books.map(b => `
-                <label class="flex items-center space-x-1.5 p-1 bg-white rounded border border-emerald-300 cursor-pointer text-[11px] font-bold">
-                    <input type="checkbox" checked class="text-emerald-600 rounded">
-                    <span>${b.title}</span>
-                </label>
-            `).join('');
-        }
-
-        function previewStudentPhoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("formPhotoPreview").src = e.target.result;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function cleanEnglishOnly(str) {
-            if (!str) return '';
-            return str.replace(/[^A-Za-z\s]/g, '').toUpperCase().trim();
-        }
-
-        function makeLetterBoxes(str, minLength = 20) {
-            let val = (str || '').toString().toUpperCase();
-            let boxesHtml = '';
-            let len = Math.max(val.length, minLength);
-            for (let i = 0; i < len; i++) {
-                let char = val[i] !== undefined && val[i] !== '' ? val[i] : '&nbsp;';
-                boxesHtml += `<span class="letter-box">${char}</span>`;
-            }
-            return `<div class="letter-box-container">${boxesHtml}</div>`;
-        }
-
-        function renderCombinedOfficialForms() {
-            renderIndividualForm('mp-board', 'combinedForm1Container');
-            renderIndividualForm('sssm', 'combinedForm2Container');
-            renderIndividualForm('pm-shri', 'combinedForm3Container');
-        }
-
-        function renderIndividualForm(formType, targetContainerId = null) {
-            const containerId = targetContainerId || (formType === 'mp-board' ? 'formMpBoardContainer' : (formType === 'sssm' ? 'formSssmContainer' : 'formPmShriContainer'));
-            const container = document.getElementById(containerId);
-            if (!container) return;
-
-            const st = studentsData[currentStudentId] || Object.values(studentsData)[0];
-
-            if (formType === 'pm-shri') {
-                container.innerHTML = `
-                    <div class="p-6 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-3 text-xs text-slate-950 shadow-md">
-                        <div class="text-center border-b border-slate-900 pb-2">
-                            <h1 class="text-base font-black tracking-wide leading-tight">पीएमश्री शास.कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज</h1>
-                            <h2 class="text-xs font-bold mt-0.5">जिला रायसेन (म.प्र.)</h2>
-                        </div>
-
-                        <div class="flex justify-between items-start border-b-2 border-slate-900 pb-3 gap-4">
-                            <div class="space-y-2 flex-1 text-xs font-bold leading-relaxed">
-                                <div class="flex flex-wrap items-center gap-6">
-                                    <p>स्काॅलर नं.: <span class="fill-line min-w-[110px] font-mono text-sm">${st.scholarNo || '............'}</span></p>
-                                    <p>कक्षाध्यापक: <span class="fill-line min-w-[130px]">....................</span></p>
-                                </div>
-                                <div class="pt-1">
-                                    <p class="leading-loose">छात्रा को कक्षा <span class="fill-line min-w-[60px] font-bold text-center">${st.targetClass || '......'}</span> में प्रवेश दिया जाये। &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; प्रवेश दिनांक: <span class="fill-line min-w-[110px]">${st.admissionDate || '............'}</span></p>
-                                </div>
-                            </div>
-                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 flex flex-col justify-center items-center text-[9px] bg-slate-50 flex-shrink-0">
-                                ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-22 h-26 object-cover mb-1 border border-slate-400">` : ''}
-                                <span class="leading-tight">डिजिटल कैमरे से लिया गया रंगीन फोटो नाम एवं दिनांक सहित</span>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1 border-b border-slate-300 pb-2">
-                            <p>प्रति,</p>
-                            <p class="font-bold pl-4">प्राचार्य महोदय,</p>
-                            <p class="font-bold pl-4">पीएम श्री शास. क. उ. मा. वि. बेगमगंज, जिला रायसेन (म.प्र.)</p>
-                            <p class="pt-1">महोदय,</p>
-                            <p class="pl-4">मै सत्र 2026–27 में आपकी संस्था में कक्षा <span class="fill-line min-w-[50px] font-bold text-center">${st.targetClass || '......'}</span> में प्रवेश लेना चाहती हूँ मेरा विवरण निम्नानुसार है–</p>
-                        </div>
-
-                        <div class="space-y-1.5 text-xs leading-relaxed">
-                            <p><strong>1. छात्रा का नाम कु:</strong> <span class="fill-line min-w-[320px] font-bold text-sm">${st.nameHindi || ''} (${st.nameEng || ''})</span></p>
-                            <p><strong>2. पिता का नाम श्री:</strong> <span class="fill-line min-w-[320px] font-bold">${st.fatherName || ''}</span></p>
-                            <p><strong>3. माता का नाम श्रीमती:</strong> <span class="fill-line min-w-[320px] font-bold">${st.motherName || ''}</span></p>
-                            <p><strong>4. जाति:</strong> <span class="fill-line min-w-[120px] font-bold">${st.caste || '............'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>वर्ग:</strong> <span class="border-2 border-slate-900 px-2 py-0.5 font-black">${st.category || 'GEN'}</span></p>
-                            <p><strong>5. जन्मतिथि:</strong> <span class="fill-line min-w-[100px] font-mono font-bold">${st.dob || '../../....'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>(शब्दों में):</strong> <span class="fill-line min-w-[200px]">................................</span></p>
-                            <p><strong>6. अंतिम उत्तीर्ण कक्षा:</strong> <span class="fill-line min-w-[120px] font-bold">....................</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>वर्ष:</strong> <span class="fill-line min-w-[80px] font-bold">....................</span></p>
-                            <p><strong>7. पूर्व विद्यालय का नाम :-</strong> <span class="fill-line min-w-[220px] font-bold">........................................</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पूर्व विद्यालय का डाइस कोड:</strong> <span class="fill-line min-w-[100px] font-mono">....................</span></p>
-                            <p><strong>8. कक्षा जिसमें प्रवेश लेना चाहती है:</strong> <span class="fill-line min-w-[100px] font-bold text-sm text-center">${st.targetClass || '......'} (${st.section || 'A'})</span></p>
-                            <p><strong>9. विषय:--</strong> 1. <span class="fill-line min-w-[80px] font-bold">${st.sub1 || '......'}</span> &nbsp; 2. <span class="fill-line min-w-[80px] font-bold">${st.sub2 || '......'}</span> &nbsp; 3. <span class="fill-line min-w-[80px] font-bold">${st.sub3 || '......'}</span> &nbsp; 4. <span class="fill-line min-w-[80px] font-bold">${st.sub4 || '......'}</span> &nbsp; 5. <span class="fill-line min-w-[80px] font-bold">${st.sub5 || '......'}</span> &nbsp; 6. <span class="fill-line min-w-[80px] font-bold">${st.sub6 || '......'}</span></p>
-                            <p><strong>10. मातृभाषा:</strong> <span class="fill-line min-w-[80px] font-bold">हिन्दी</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>माध्यम:</strong> <span class="fill-line min-w-[80px] font-bold">${st.medium || 'HINDI'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>राष्ट्रीयता:</strong> <span class="fill-line min-w-[80px] font-bold">भारतीय</span></p>
-                            <p><strong>11. पिता का व्यवसाय:</strong> <span class="fill-line min-w-[120px] font-bold">....................</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>वार्षिक आय:</strong> <span class="fill-line min-w-[100px] font-bold">₹ ${st.annualIncome || '............'}</span></p>
-                            <p><strong>12. पिता/पालक का स्थाई पता :ग्राम / वार्ड:</strong> <span class="fill-line min-w-[180px] font-bold">${st.address || '............'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पोस्ट:</strong> <span class="fill-line min-w-[100px]">............</span></p>
-                            <p><strong>13. तहसील:</strong> <span class="fill-line min-w-[100px] font-bold">बेगमगंज</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>जिला:</strong> <span class="fill-line min-w-[100px] font-bold">रायसेन</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पिन:</strong> <span class="fill-line min-w-[80px] font-mono font-bold">464881</span></p>
-                            <p><strong>14. वर्तमान पता ग्राम/वार्ड:</strong> <span class="fill-line min-w-[180px] font-bold">${st.address || '............'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पोस्ट:</strong> <span class="fill-line min-w-[100px]">............</span></p>
-                            <p><strong>15. तहसील:</strong> <span class="fill-line min-w-[100px] font-bold">बेगमगंज</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>जिला:</strong> <span class="fill-line min-w-[100px] font-bold">रायसेन</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>पिन:</strong> <span class="fill-line min-w-[80px] font-mono font-bold">464881</span></p>
-                            <p><strong>16. छात्रा/पालक का व्हॉटस एप वाला मोबा.नं. (अनिवार्य है):</strong> <span class="fill-line min-w-[200px] font-mono font-bold text-sm">${st.mobile || '....................'}</span></p>
-                            <p><strong>17. छात्रा का बैंक खाता क्रमांक:</strong> <span class="fill-line min-w-[180px] font-mono font-bold">${st.bankAccount || '....................'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>बैंक का नाम:</strong> <span class="fill-line min-w-[180px] font-bold">${st.bankName || '....................'}</span></p>
-                            <p><strong>19. IFSC:</strong> <span class="fill-line min-w-[180px] font-mono font-bold">${st.bankIfsc || '....................'}</span></p>
-                            <p><strong>20. Child ID:</strong> <span class="fill-line min-w-[140px] font-mono font-bold">${st.childId || '....................'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>परिवार ID:</strong> <span class="fill-line min-w-[140px] font-mono font-bold">${st.familyId || '....................'}</span></p>
-                            <p><strong>21. छात्रा का आधार कार्ड क्रमांक:</strong> <span class="fill-line min-w-[180px] font-mono font-bold">${st.aadhaar || '....................'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>ब्लड ग्रुप:</strong> <span class="fill-line min-w-[60px] font-bold">${st.bloodGroup || '....'}</span></p>
-                            <p><strong>22. लाड़ली लक्ष्मी योजना में नाम हाँ या नहीं:</strong> <span class="fill-line min-w-[60px] font-bold">${st.ladliLaxmi || 'NO'}</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>यदि हाँ है तो प्रमाण पत्र क्रमांक:</strong> <span class="fill-line min-w-[120px] font-mono">${st.ladliLaxmiNo || '..........'}</span></p>
-                            <p><strong>23. संबल कार्ड है हाँ या नहीं:</strong> <span class="fill-line min-w-[60px] font-bold">${st.sambalStatus || 'NO'}</span> ........हाँ तो फोटो कॉपी संलग्न करें।</p>
-                        </div>
-
-                        <div class="pt-8 flex justify-between items-end text-xs font-bold">
-                            <div class="text-center">
-                                <div class="w-32 border-b border-slate-900 mb-1"></div>
-                                <p>हस्ताक्षर छात्रा</p>
-                            </div>
-                            <div class="text-center">
-                                <div class="w-32 border-b border-slate-900 mb-1"></div>
-                                <p>हस्ताक्षर पालक</p>
-                            </div>
-                            <div class="text-center">
-                                <div class="w-36 border-b border-slate-900 mb-1"></div>
-                                <p>प्राचार्य / संस्था प्रमुख</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else if (formType === 'sssm') {
-                container.innerHTML = `
-                    <div class="p-4 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
-                        <div class="flex justify-between items-center border-b-2 border-slate-900 pb-1">
-                            <div class="flex items-center space-x-2">
-                                <div class="border-2 border-slate-900 rounded-full w-10 h-10 flex items-center justify-center font-black text-xs">
-                                    SSSM
-                                </div>
-                                <div>
-                                    <h1 class="text-xs font-black tracking-wide uppercase">मध्यप्रदेश शासन–समग्र सामाजिक सुरक्षा मिशन</h1>
-                                    <h2 class="text-xs font-bold">समेकित छात्रवृत्ति योजना आवेदन पत्र ( कक्षा 9 से 10 )</h2>
-                                </div>
-                            </div>
-                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 text-[9px] bg-slate-50 flex-shrink-0 flex flex-col justify-between">
-                                ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-20 h-22 object-cover mx-auto border border-slate-300">` : ''}
-                                <span class="leading-tight">पासपोर्ट साइज फोटो संस्था प्रमुख द्वारा अभिप्रमाणित</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-2 font-bold py-1">
-                            <span>Child SSSM.ID :</span>
-                            ${makeLetterBoxes(st.childId, 9)}
-                        </div>
-
-                        <table class="form-table text-[9px] font-bold">
-                            <tr>
-                                <td>1. संभाग: <span class="font-extrabold">भोपाल</span></td>
-                                <td>2. जिला: <span class="font-extrabold">रायसेन</span></td>
-                                <td>3. विकासखण्ड: <span class="font-extrabold">बेगमगंज</span></td>
-                                <td>4. क्षेत्र: <span class="font-extrabold">${st.area || 'ग्रामीण'}</span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">5. नगर निगम/नगर पालिका/जनपद: <span class="font-extrabold">बेगमगंज</span></td>
-                                <td>6. ग्राम पंचायत/जोन: <span class="font-extrabold">X-X-X-X</span></td>
-                                <td>7. वार्ड/ग्राम: <span class="font-extrabold">X-X-X-X</span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">8. संकुल का नाम: <span class="font-extrabold">शा.क.उ.मा.वि. बेगमगंज</span></td>
-                                <td colspan="2">9. संकुल का U-डाइस कोड: <span class="font-mono">23340222855</span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">10. शाला का प्रकार: <span class="font-extrabold">शासकीय</span></td>
-                                <td colspan="2">11. सी.बी.एस.ई/स्टेट बोर्ड/अन्य: <span class="font-extrabold">स्टेट बोर्ड</span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">12. शाला का नाम: <span class="font-extrabold">शा.क.उ.मा.वि. बेगमगंज</span></td>
-                                <td colspan="2">13. शाला का डाइस कोड: <span class="font-mono">23340222855</span></td>
-                            </tr>
-                        </table>
-
-                        <table class="form-table text-[9px]">
-                            <tr>
-                                <td colspan="3">1. विद्यार्थी का नाम ( हिन्दी ): <strong>${st.nameHindi || ''}</strong></td>
-                                <td>2. लिंग (F/M): <strong>${st.gender === 'FEMALE' ? 'F' : 'M'}</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">(अंग्रेजी केपीटल लेटर में): <div class="mt-1">${makeLetterBoxes(st.nameEng, 30)}</div></td>
-                            </tr>
-                            <tr>
-                                <td>3. जन्म तिथि: <strong>${st.dob || ''}</strong></td>
-                                <td>4. संवर्ग: <strong>${st.category || ''}</strong></td>
-                                <td>घुमंतु जाति? <strong>नहीं</strong></td>
-                                <td>5. म.प्र. मूल निवासी? <strong>हाँ</strong></td>
-                            </tr>
-                            <tr>
-                                <td>6. कक्षा: <strong>${st.targetClass || ''}</strong></td>
-                                <td>प्रवेश दिनांक: <strong>${st.admissionDate || ''}</strong></td>
-                                <td>7. प्रवेश क्र.: <strong>${st.srNo || ''}</strong></td>
-                                <td>8. छात्रावासी: <strong>${st.hostelStatus || 'NO'}</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">9. आधार कार्ड क्रं.: <strong>${st.aadhaar || ''}</strong></td>
-                                <td>10. निःशक्तता प्रकार: <strong>${st.cwsnStatus === 'YES' ? 'दिव्यांग' : 'सामान्य'}</strong></td>
-                                <td>11. प्रतिशत: <strong>0%</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">1. पिता/पालक का नाम: <strong>${st.fatherName || ''}</strong></td>
-                                <td colspan="2">3. वार्षिक आय: <strong>₹ ${st.annualIncome || ''}</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">2. माता का नाम: <strong>${st.motherName || ''}</strong></td>
-                                <td colspan="2">4. व्यवसाय: <strong>कृषि / मजदूरी</strong></td>
-                            </tr>
-                            <tr>
-                                <td>5. बी.पी.एल कार्डधारी: <strong>${st.bplStatus || 'NO'}</strong></td>
-                                <td colspan="2">6. पता: <strong>${st.address || ''}</strong></td>
-                                <td>7. मोबाईल नं.: <strong>${st.mobile || ''}</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">8. संबल कार्ड क्रमांक: <strong>${st.sambalNo || 'N/A'}</strong></td>
-                                <td colspan="2">9. कर्मकार मंडल कार्ड: <strong>N/A</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">10. भाई बहन की संख्या : कुल भाई <strong>1</strong> बहन <strong>2</strong></td>
-                            </tr>
-                        </table>
-
-                        <p class="font-bold underline">गत कक्षा की वार्षिक परीक्षा का विवरण :-</p>
-                        <table class="form-table text-[9px] text-center">
-                            <tr class="bg-slate-100 font-bold">
-                                <td>1. परीक्षा का नाम</td>
-                                <td>2. संस्था का नाम</td>
-                                <td>3. वर्ष</td>
-                                <td>4. उत्तीर्ण/अनुत्तीर्ण</td>
-                                <td>5. उत्तीर्ण प्रतिशत</td>
-                                <td>6. मण्डल का नाम</td>
-                            </tr>
-                            <tr>
-                                <td>कक्षा 9वी / 8वी</td>
-                                <td>शा.क.उ.मा.वि. बेगमगंज</td>
-                                <td>2025</td>
-                                <td>उत्तीर्ण (PASS)</td>
-                                <td>84.8%</td>
-                                <td>M.P. Board Bhopal</td>
-                            </tr>
-                        </table>
-
-                        <p class="font-bold underline">छात्रा के बैंक खाते/पोस्ट ऑफिस खाते का विवरण :-</p>
-                        <table class="form-table text-[9px]">
-                            <tr>
-                                <td colspan="2">1. बैंक/पोस्ट ऑफिस का नाम: <strong>${st.bankName || ''}</strong></td>
-                                <td colspan="2">2. शाखा का नाम: <strong>बेगमगंज</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">3. बैंक का आई.एफ.एस.सी. कोड: <div class="mt-0.5">${makeLetterBoxes(st.bankIfsc, 11)}</div></td>
-                                <td colspan="2">4. बैंक का प्रकार: <strong>राष्ट्रीयकृत / ग्रामीण</strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">6. बैंक/पोस्ट ऑफिस खाता क्रमांक: <div class="mt-0.5">${makeLetterBoxes(st.bankAccount, 18)}</div></td>
-                            </tr>
-                        </table>
-
-                        <div class="pt-2 text-[9px] space-y-1">
-                            <p class="font-bold text-center underline">पालक का घोषणा पत्र</p>
-                            <p>मैं <strong>${st.fatherName || '....................'}</strong> एतद् द्वारा घोषणा करता हूँ कि इस आवेदन पत्र में दी गई सभी सूचना तथा आवेदन के समर्थन में मेरे द्वारा जमा किये गये सभी प्रमाण पत्र मेरी सर्वोत्तम जानकारी तथा विश्वास में सत्य है।</p>
-                        </div>
-
-                        <div class="pt-4 flex justify-between items-end text-[10px] font-bold">
-                            <div>हस्ताक्षर पालक</div>
-                            <div>हस्ताक्षर छात्रा</div>
-                        </div>
-                    </div>
-                `;
-            } else if (formType === 'mp-board') {
-                container.innerHTML = `
-                    <div class="p-5 border-2 border-slate-900 bg-white max-w-3xl mx-auto space-y-2 text-[10px] text-slate-950 shadow-md">
-                        <div class="text-center border-b-2 border-slate-900 pb-2 relative">
-                            <div class="w-8 h-8 mx-auto border-2 border-slate-900 rounded-full flex items-center justify-center font-black text-[8px] mb-1">MPB</div>
-                            <h1 class="text-xs font-black">माध्यमिक शिक्षा मण्डल, मध्य प्रदेश, भोपाल</h1>
-                            <h2 class="text-xs font-bold">आवेदन पत्र हाईस्कूल परीक्षा</h2>
-                            <div class="bg-slate-900 text-white text-[8px] font-bold px-2 py-0.5 inline-block rounded mt-1">सम्बंधित कोड नम्बर ही खाने में भरिये</div>
-                        </div>
-
-                        <div class="border border-slate-800 p-1.5 space-y-1">
-                            <div class="flex flex-wrap items-center justify-between text-[8px] font-bold">
-                                <span>1. आवेदक का प्रकार:</span>
-                                <span>नियमित-1 [✓]</span>
-                                <span>स्वाध्यायी-2 [ ]</span>
-                                <span>नियमित (10वीं फेल)-3 [ ]</span>
-                                <span>स्वाध्यायी (10वीं फेल)-4 [ ]</span>
-                                <span>श्रेणी सुधार-5 [ ]</span>
-                            </div>
-                            <div class="flex flex-wrap items-center justify-between text-[8px]">
-                                <span>म.प्र. मूलनिवासी? <strong>हाँ [✓]</strong></span>
-                                <span>CWSN Code: <span class="border px-1">00</span></span>
-                                <span>Section: <span class="border px-1">${st.section || 'A'}</span></span>
-                                <span>रोल नंबर: <span class="border px-1">${st.rollNo || '1001'}</span></span>
-                                <span>परिणाम: <span class="border px-1">Pass</span></span>
-                                <span>श्रेणी: <span class="border px-1">First</span></span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <span class="font-bold block mb-0.5">2. आवेदक का पूरा नाम FULL NAME OF CANDIDATE:</span>
-                            ${makeLetterBoxes(cleanEnglishOnly(st.nameEng), 30)}
-                        </div>
-
-                        <div>
-                            <span class="font-bold block mb-0.5">3. पिता का पूरा नाम FULL NAME OF FATHER:</span>
-                            ${makeLetterBoxes(cleanEnglishOnly(st.fatherName), 30)}
-                        </div>
-
-                        <div>
-                            <span class="font-bold block mb-0.5">4. माता का पूरा नाम FULL NAME OF MOTHER:</span>
-                            ${makeLetterBoxes(cleanEnglishOnly(st.motherName), 30)}
-                        </div>
-
-                        <div class="flex items-center space-x-4">
-                            <div>
-                                <span class="font-bold block mb-0.5">5. जन्म तिथि (अंकों में):</span>
-                                ${makeLetterBoxes(st.dob ? st.dob.replace(/-/g, '') : '', 8)}
-                            </div>
-                            <div class="flex-1">
-                                <span class="font-bold block mb-0.5">जन्म तिथि (शब्दों में):</span>
-                                <div class="border-b border-slate-800 text-[9px] font-bold pb-0.5">अट्ठाईस अगस्त दो हजार बारह</div>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-4 gap-1 text-[8px] font-bold">
-                            <div>जिला कोड: <div class="mt-0.5">${makeLetterBoxes('34', 3)}</div></div>
-                            <div>विकास खण्ड कोड: <div class="mt-0.5">${makeLetterBoxes('02', 3)}</div></div>
-                            <div>शाला कोड: <div class="mt-0.5">${makeLetterBoxes('233402', 6)}</div></div>
-                            <div>नामांकन कोड: <div class="mt-0.5">${makeLetterBoxes(st.enrollmentNo || '', 8)}</div></div>
-                        </div>
-
-                        <div class="border border-slate-800 p-1.5 space-y-1">
-                            <span class="font-bold block">7. भाषा विषय :-</span>
-                            <div class="grid grid-cols-3 gap-2 text-[8px]">
-                                <div>प्रथम भाषा: <strong>${st.sub1 || '401 - हिन्दी'}</strong></div>
-                                <div>द्वितीय भाषा: <strong>${st.sub2 || '411 - अंग्रेजी'}</strong></div>
-                                <div>तृतीय भाषा: <strong>${st.sub6 || '501 - संस्कृत'}</strong></div>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <span class="font-bold block mb-0.5">8. समग्र आई.डी. (SSMID):</span>
-                                ${makeLetterBoxes(st.childId, 9)}
-                            </div>
-                            <div>
-                                <span class="font-bold block mb-0.5">संबल क्रमांक:</span>
-                                ${makeLetterBoxes(st.sambalNo, 9)}
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between items-start space-x-2 pt-1">
-                            <div class="flex-1 text-[8px] font-bold space-y-1">
-                                <span class="block text-[9px] underline">9. पत्र व्यवहार का पता :-</span>
-                                <p>House No. : 12 &nbsp;&nbsp;&nbsp;&nbsp; Colony : बेगमगंज वार्ड 4</p>
-                                <p>Town : बेगमगंज &nbsp;&nbsp;&nbsp;&nbsp; Block : बेगमगंज</p>
-                                <p>District : रायसेन &nbsp;&nbsp;&nbsp;&nbsp; Pin: 464881</p>
-                                <p>Phone No. : ${st.mobile || ''} &nbsp;&nbsp;&nbsp;&nbsp; Email-Id: ${st.email || ''}</p>
-                            </div>
-
-                            <div class="border-2 border-slate-900 p-1 text-center w-28 h-32 flex flex-col justify-between bg-slate-50 text-[8px] flex-shrink-0">
-                                ${st.photoUrl ? `<img src="${st.photoUrl}" class="w-20 h-22 object-cover mx-auto border">` : '<div class="w-20 h-22 border bg-white mx-auto"></div>'}
-                                <span>नवीनतम डिजिटल फोटो</span>
-                                <div class="border-t border-slate-800 pt-0.5">छात्र के हस्ताक्षर</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        function renderMarksheets() {
-            const container = document.getElementById("exportableMarksheet");
-            if (!container) return;
-            const cls = document.getElementById("markClassFilter") ? document.getElementById("markClassFilter").value : "ALL";
-            const sec = document.getElementById("markSectionFilter") ? document.getElementById("markSectionFilter").value : "ALL";
-            const q = (document.getElementById("markSearchInput") ? document.getElementById("markSearchInput").value : "").toLowerCase().trim();
-            const cond = document.getElementById("markConditionFilter") ? document.getElementById("markConditionFilter").value : "ALL";
-            const session = document.getElementById("markSessionFilter") ? document.getElementById("markSessionFilter").value : "SESSION - 2025-26";
-
-            let list = Object.values(studentsData).filter(st => {
-                if (cls !== "ALL" && st.targetClass !== cls) return false;
-                if (sec !== "ALL" && st.section !== sec) return false;
-                if (cond === "DISTINCTION" && (!st.percentage || parseFloat(st.percentage) < 75)) return false;
-                if (cond === "FIRST" && (!st.percentage || parseFloat(st.percentage) < 60)) return false;
-                if (cond === "PASS" && st.provisionalResult !== "Pass") return false;
-                if (cond === "FAIL" && st.provisionalResult !== "Fail" && st.provisionalResult !== "Supp") return false;
-
-                if (q) {
-                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName}`.toLowerCase();
-                    if (!haystack.includes(q)) return false;
-                }
-                return true;
-            });
-
-            const badge = document.getElementById("markCountBadge");
-            if (badge) badge.innerText = `प्रदर्शित अंकसूची: ${list.length}`;
-
-            if (list.length === 0) {
-                container.innerHTML = `<div class="text-center p-6 bg-white rounded-xl border font-bold text-slate-500">कोई समेकित अंकसूची उपलब्ध नहीं है।</div>`;
-                return;
-            }
-
-            container.innerHTML = list.map(st => {
-                const isClass11or12 = (st.targetClass === "11th" || st.targetClass === "12th");
-
-                if (isClass11or12) {
-                    return `
-                        <div class="bg-white p-6 rounded-xl border-2 border-slate-900 shadow-xl max-w-4xl mx-auto space-y-3 text-slate-950 font-sans page-break">
-                            <div class="flex justify-between items-center border-b-2 border-slate-900 pb-2">
-                                <div class="w-16 h-16 flex items-center justify-center border-2 border-slate-900 rounded-full font-black text-xs">
-                                    MPB
-                                </div>
-                                <div class="text-center space-y-0.5">
-                                    <h2 class="text-base font-black tracking-wide">PMShri-GHSS GIRLS BEGAMGANJ(6 to 12)</h2>
-                                    <h3 class="text-xs font-bold">DISTRICT - Raisen (M.P.)</h3>
-                                    <h1 class="text-sm font-black underline tracking-wider">अंकसूची / MARKSHEET</h1>
-                                    <div class="flex items-center justify-center space-x-4 text-[10px] font-extrabold pt-0.5">
-                                        <span>February- (2026)</span>
-                                        <span>Class - ${st.targetClass.replace('th','')}</span>
-                                        <span>${session}</span>
-                                        <span>DISE CODE - 23340222855</span>
-                                    </div>
-                                </div>
-                                <div class="w-16 h-16 border border-slate-900 p-1 flex items-center justify-center text-[8px] text-center font-bold">
-                                    QR CODE
-                                </div>
-                            </div>
-
-                            <table class="w-full border-2 border-slate-900 text-center text-[10px] font-bold border-collapse">
-                                <tr class="bg-slate-100 border-b border-slate-900">
-                                    <td class="p-1 border-r border-slate-900">अनुक्रमांक / ROLL NO.</td>
-                                    <td class="p-1 border-r border-slate-900">नामांकन क्रमांक / ENROLMENT NO.</td>
-                                    <td class="p-1 border-r border-slate-900">समग्र आईडी / SSSMID</td>
-                                    <td class="p-1 border-r border-slate-900">प्रवेश क्रमांक / SCHOLAR NO.</td>
-                                    <td class="p-1 border-r border-slate-900">संस्था क्रमांक / SCHOOL CODE</td>
-                                    <td class="p-1">माध्यम / MEDIUM</td>
-                                </tr>
-                                <tr class="font-mono text-xs font-extrabold border-b-2 border-slate-900">
-                                    <td class="p-1 border-r border-slate-900">${st.rollNo || '11266510060201'}</td>
-                                    <td class="p-1 border-r border-slate-900">${st.enrollmentNo || 'A23/651006/368'}</td>
-                                    <td class="p-1 border-r border-slate-900">${st.childId || '142631395'}</td>
-                                    <td class="p-1 border-r border-slate-900">${st.scholarNo || '15807'}</td>
-                                    <td class="p-1 border-r border-slate-900">651006</td>
-                                    <td class="p-1">${st.medium || 'Hindi'}</td>
-                                </tr>
-                            </table>
-
-                            <div class="flex justify-between items-start gap-4 text-xs font-bold py-1">
-                                <div class="space-y-1.5 flex-1">
-                                    <p>श्री/श्रीमती/कुमारी SHRI/SMT/KUMARI - <span class="font-black uppercase">${st.nameEng || st.nameHindi}</span></p>
-                                    <p>पिता का नाम श्री FATHER'S NAME SHRI - <span class="font-black uppercase">${st.fatherName}</span></p>
-                                    <p>माता का नाम श्रीमती MOTHER'S NAME SMT. - <span class="font-black uppercase">${st.motherName}</span></p>
-                                    <p>जन्म तिथि DATE OF BIRTH - <span class="font-mono font-black">${st.dob}</span></p>
-                                </div>
-                                <div class="w-20 h-24 border-2 border-slate-900 p-0.5 flex-shrink-0 bg-slate-50">
-                                    <img src="${st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-
-                            <div class="bg-slate-900 text-white text-center py-0.5 text-[10px] font-black tracking-wider uppercase">EDUCATIONAL PERFORMANCE</div>
-
-                            <table class="w-full border-2 border-slate-900 text-[10px] text-center border-collapse">
-                                <thead class="bg-slate-100 font-extrabold border-b-2 border-slate-900">
-                                    <tr>
-                                        <th rowspan="2" class="p-1.5 border-r border-slate-900 w-36 text-left">विषय<br>SUBJECT</th>
-                                        <th colspan="2" class="p-1 border-r border-slate-900">न्यूनतम अंक<br>MINIMUM MARKS</th>
-                                        <th colspan="2" class="p-1 border-r border-slate-900">अधिकतम अंक<br>MAXIMUM MARKS</th>
-                                        <th colspan="3" class="p-1 border-r border-slate-900">वार्षिक परीक्षा प्राप्तांक<br>Annual Exam Obtained Marks</th>
-                                        <th colspan="3" class="p-1 border-r border-slate-900">अधिभार आधारित परीक्षाफल<br>Weightage Based Result</th>
-                                        <th rowspan="2" class="p-1 border-r border-slate-900">अंतिम परिणाम<br>Final Result Total</th>
-                                        <th rowspan="2" class="p-1">विशेष<br>REMARKS</th>
-                                    </tr>
-                                    <tr class="border-t border-slate-900 font-bold">
-                                        <th class="p-1 border-r border-slate-900">TH</th>
-                                        <th class="p-1 border-r border-slate-900">PR</th>
-                                        <th class="p-1 border-r border-slate-900">TH</th>
-                                        <th class="p-1 border-r border-slate-900">PR</th>
-                                        <th class="p-1 border-r border-slate-900">TH</th>
-                                        <th class="p-1 border-r border-slate-900">PR</th>
-                                        <th class="p-1 border-r border-slate-900">Total</th>
-                                        <th class="p-1 border-r border-slate-900">त्रैमासिक (5%)</th>
-                                        <th class="p-1 border-r border-slate-900">अर्द्धवार्षिक (5%)</th>
-                                        <th class="p-1 border-r border-slate-900">वार्षिक (90%)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(051) Hindi</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">59</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">78</td><td class="p-1 border-r border-slate-900">3.80</td><td class="p-1 border-r border-slate-900">4.00</td><td class="p-1 border-r border-slate-900">70.2</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">78</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(055) Urdu</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">64</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">83</td><td class="p-1 border-r border-slate-900">3.85</td><td class="p-1 border-r border-slate-900">3.00</td><td class="p-1 border-r border-slate-900">74.7</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">82</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(130) Political science</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">58</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">77</td><td class="p-1 border-r border-slate-900">3.60</td><td class="p-1 border-r border-slate-900">4.05</td><td class="p-1 border-r border-slate-900">69.3</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">77</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(140) Economics</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">35</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">54</td><td class="p-1 border-r border-slate-900">4.65</td><td class="p-1 border-r border-slate-900">3.85</td><td class="p-1 border-r border-slate-900">48.6</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">57</td><td class="p-1">-</td></tr>
-                                    <tr class="border-b-2 border-slate-900 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(166) Sociology</td><td class="p-1 border-r border-slate-900 text-sky-700">26</td><td class="p-1 border-r border-slate-900 text-sky-700">7</td><td class="p-1 border-r border-slate-900 text-rose-700">80</td><td class="p-1 border-r border-slate-900 text-rose-700">20</td><td class="p-1 border-r border-slate-900">68</td><td class="p-1 border-r border-slate-900">19</td><td class="p-1 border-r border-slate-900 font-bold">87</td><td class="p-1 border-r border-slate-900">4.70</td><td class="p-1 border-r border-slate-900">4.75</td><td class="p-1 border-r border-slate-900">78.3</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">88</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="bg-slate-100 font-black"><td class="p-1 border-r border-slate-900 text-left">TOTAL</td><td class="p-1 border-r border-slate-900">130</td><td class="p-1 border-r border-slate-900">35</td><td class="p-1 border-r border-slate-900" colspan="8"></td><td class="p-1 border-r border-slate-900 text-blue-900 font-mono text-xs">382</td><td class="p-1"></td></tr>
-                                </tbody>
-                            </table>
-
-                            <div class="grid grid-cols-4 gap-2 pt-1">
-                                <div class="col-span-3">
-                                    <table class="w-full border-2 border-slate-900 text-[10px] text-center border-collapse">
-                                        <thead class="bg-slate-100 font-bold border-b border-slate-900">
-                                            <tr>
-                                                <th class="p-1 border-r border-slate-900">प्रकाशित तिथि<br>PUBLISH DATE</th>
-                                                <th class="p-1 border-r border-slate-900">परीक्षा परिणाम<br>EXAM RESULT</th>
-                                                <th class="p-1 border-r border-slate-900">पूर्णांक<br>MAX. MARKS</th>
-                                                <th class="p-1 border-r border-slate-900">कुल प्राप्तांक<br>TOTAL MARKS</th>
-                                                <th class="p-1 border-r border-slate-900">प्रतिशत<br>PERCENTAGE</th>
-                                                <th class="p-1 border-r border-slate-900">ग्रेड<br>GRADE</th>
-                                                <th class="p-1">श्रेणी<br>DIVISION</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="font-extrabold text-xs">
-                                            <tr>
-                                                <td class="p-1 border-r border-slate-900 font-mono">23-03-2026</td>
-                                                <td class="p-1 border-r border-slate-900 text-emerald-700">Pass</td>
-                                                <td class="p-1 border-r border-slate-900 text-rose-700">500</td>
-                                                <td class="p-1 border-r border-slate-900 font-mono text-indigo-950">382</td>
-                                                <td class="p-1 border-r border-slate-900 font-mono text-emerald-700">76.4</td>
-                                                <td class="p-1 border-r border-slate-900">A</td>
-                                                <td class="p-1">First Division</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="col-span-1 border-2 border-slate-900 p-1 text-center space-y-1 flex flex-col justify-center bg-slate-50">
-                                    <p class="text-[8px] font-black leading-tight">पर्यावरण शिक्षा एवं आपदा प्रबंधन<br>GRADE</p>
-                                    <span class="text-2xl font-black text-indigo-950">A+</span>
-                                </div>
-                            </div>
-
-                            <div class="pt-8 flex justify-between items-end text-[10px] font-bold text-slate-900">
-                                <div class="text-center"><div class="w-32 border-b-2 border-slate-900 mb-1"></div>SIGNATURE OF CLASS TEACHER</div>
-                                <div class="text-center"><div class="w-36 border-b-2 border-slate-900 mb-1"></div>SIGNATURE OF EXAM INCHARGE</div>
-                                <div class="text-center"><div class="w-36 border-b-2 border-slate-900 mb-1"></div>SEAL AND SIGNATURE OF PRINCIPAL</div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    return `
-                        <div class="bg-white p-6 rounded-xl border-2 border-slate-900 shadow-xl max-w-4xl mx-auto space-y-3 text-slate-950 font-sans page-break">
-                            <div class="flex justify-between items-center border-b-2 border-slate-900 pb-2">
-                                <div class="w-16 h-16 flex items-center justify-center border-2 border-slate-900 rounded-full font-black text-xs">
-                                    MPB
-                                </div>
-                                <div class="text-center space-y-0.5">
-                                    <h2 class="text-base font-black tracking-wide">PMShri-GHSS GIRLS BEGAMGANJ(6 to 12)</h2>
-                                    <h3 class="text-xs font-bold">DISTRICT - Raisen (M.P.)</h3>
-                                    <h1 class="text-sm font-black underline tracking-wider">अंकसूची / MARKSHEET</h1>
-                                    <div class="flex items-center justify-center space-x-4 text-[10px] font-extrabold pt-0.5">
-                                        <span>February- (2026)</span>
-                                        <span>Class - 9</span>
-                                        <span>${session}</span>
-                                        <span>DISE CODE - 23340222855</span>
-                                    </div>
-                                </div>
-                                <div class="w-16 h-16 border border-slate-900 p-1 flex items-center justify-center text-[8px] text-center font-bold">
-                                    QR CODE
-                                </div>
-                            </div>
-
-                            <table class="w-full border-2 border-slate-900 text-center text-[10px] font-bold border-collapse">
-                                <tr class="bg-slate-100 border-b border-slate-900">
-                                    <td class="p-1 border-r border-slate-900">अनुक्रमांक / ROLL NO.</td>
-                                    <td class="p-1 border-r border-slate-900">नामांकन क्रमांक / ENROLMENT NO.</td>
-                                    <td class="p-1 border-r border-slate-900">समग्र आईडी / SSSMID</td>
-                                    <td class="p-1 border-r border-slate-900">प्रवेश क्रमांक / SCHOLAR NO.</td>
-                                    <td class="p-1 border-r border-slate-900">संस्था क्रमांक / SCHOOL CODE</td>
-                                    <td class="p-1">माध्यम / MEDIUM</td>
-                                </tr>
-                                <tr class="font-mono text-xs font-extrabold border-b-2 border-slate-900">
-                                    <td class="p-1 border-r border-slate-900">${st.rollNo || '9266510060201'}</td>
-                                    <td class="p-1 border-r border-slate-900">${st.enrollmentNo || 'A25/651006/197'}</td>
-                                    <td class="p-1 border-r border-slate-900">${st.childId || '155076454'}</td>
-                                    <td class="p-1 border-r border-slate-900">${st.scholarNo || '16626'}</td>
-                                    <td class="p-1 border-r border-slate-900">651006</td>
-                                    <td class="p-1">${st.medium || 'Hindi'}</td>
-                                </tr>
-                            </table>
-
-                            <div class="flex justify-between items-start gap-4 text-xs font-bold py-1">
-                                <div class="space-y-1.5 flex-1">
-                                    <p>श्री/श्रीमती/कुमारी SHRI/SMT/KUMARI - <span class="font-black uppercase">${st.nameEng || st.nameHindi}</span></p>
-                                    <p>पिता का नाम श्री FATHER'S NAME SHRI - <span class="font-black uppercase">${st.fatherName}</span></p>
-                                    <p>माता का नाम श्रीमती MOTHER'S NAME SMT. - <span class="font-black uppercase">${st.motherName}</span></p>
-                                    <p>जन्म तिथि DATE OF BIRTH - <span class="font-mono font-black">${st.dob}</span></p>
-                                </div>
-                                <div class="w-20 h-24 border-2 border-slate-900 p-0.5 flex-shrink-0 bg-slate-50">
-                                    <img src="${st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-
-                            <table class="w-full border-2 border-slate-900 text-[10px] text-center border-collapse">
-                                <thead class="bg-slate-100 font-extrabold border-b-2 border-slate-900">
-                                    <tr>
-                                        <th rowspan="2" class="p-1.5 border-r border-slate-900 w-36 text-left">विषय<br>SUBJECT</th>
-                                        <th colspan="2" class="p-1 border-r border-slate-900">न्यूनतम अंक<br>MINIMUM MARKS</th>
-                                        <th colspan="2" class="p-1 border-r border-slate-900">अधिकतम अंक<br>MAXIMUM MARKS</th>
-                                        <th colspan="4" class="p-1 border-r border-slate-900">प्राप्तांक<br>OBTAINED MARKS</th>
-                                        <th colspan="2" class="p-1 border-r border-slate-900">अंतिम परिणाम<br>FINAL RESULT</th>
-                                        <th rowspan="2" class="p-1">विशेष<br>REMARKS</th>
-                                    </tr>
-                                    <tr class="border-t border-slate-900 font-bold">
-                                        <th class="p-1 border-r border-slate-900">TH</th>
-                                        <th class="p-1 border-r border-slate-900">PR</th>
-                                        <th class="p-1 border-r border-slate-900">TH</th>
-                                        <th class="p-1 border-r border-slate-900">PR</th>
-                                        <th class="p-1 border-r border-slate-900">वार्षिक परीक्षा<br>ANNUAL EXAM (TH/PR)</th>
-                                        <th class="p-1 border-r border-slate-900">त्रैमासिक परीक्षा 5%</th>
-                                        <th class="p-1 border-r border-slate-900">अर्द्धवार्षिक परीक्षा 5%</th>
-                                        <th class="p-1 border-r border-slate-900">TH</th>
-                                        <th class="p-1 border-r border-slate-900">PR</th>
-                                        <th class="p-1 border-r border-slate-900">कुल अंक GRAND TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(401) Hindi</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">55.00 / 22.00</td><td class="p-1 border-r border-slate-900">4.10</td><td class="p-1 border-r border-slate-900">4.20</td><td class="p-1 border-r border-slate-900 font-bold">55</td><td class="p-1 border-r border-slate-900 font-bold">22</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">85</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(411) English</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">50.00 / 21.00</td><td class="p-1 border-r border-slate-900">3.80</td><td class="p-1 border-r border-slate-900">4.00</td><td class="p-1 border-r border-slate-900 font-bold">50</td><td class="p-1 border-r border-slate-900 font-bold">21</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">79</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(512) Sanskrit</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">58.00 / 23.00</td><td class="p-1 border-r border-slate-900">4.20</td><td class="p-1 border-r border-slate-900">4.30</td><td class="p-1 border-r border-slate-900 font-bold">58</td><td class="p-1 border-r border-slate-900 font-bold">23</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">90</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(100) Maths (Standard)</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">52.00 / 21.00</td><td class="p-1 border-r border-slate-900">3.90</td><td class="p-1 border-r border-slate-900">4.10</td><td class="p-1 border-r border-slate-900 font-bold">52</td><td class="p-1 border-r border-slate-900 font-bold">21</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">81</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="border-b border-slate-300 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(200) Science</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">51.00 / 22.00</td><td class="p-1 border-r border-slate-900">4.00</td><td class="p-1 border-r border-slate-900">4.10</td><td class="p-1 border-r border-slate-900 font-bold">51</td><td class="p-1 border-r border-slate-900 font-bold">22</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">82</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="border-b-2 border-slate-900 font-semibold"><td class="p-1 border-r border-slate-900 text-left font-bold">(300) Social Science</td><td class="p-1 border-r border-slate-900 text-sky-700">25</td><td class="p-1 border-r border-slate-900 text-sky-700">8</td><td class="p-1 border-r border-slate-900 text-rose-700">75</td><td class="p-1 border-r border-slate-900 text-rose-700">25</td><td class="p-1 border-r border-slate-900">48.00 / 20.00</td><td class="p-1 border-r border-slate-900">3.70</td><td class="p-1 border-r border-slate-900">3.90</td><td class="p-1 border-r border-slate-900 font-bold">48</td><td class="p-1 border-r border-slate-900 font-bold">20</td><td class="p-1 border-r border-slate-900 font-black text-indigo-950">78</td><td class="p-1 font-bold text-emerald-700">DISTN</td></tr>
-                                    <tr class="bg-slate-100 font-black"><td class="p-1 border-r border-slate-900 text-left">TOTAL</td><td class="p-1 border-r border-slate-900">150</td><td class="p-1 border-r border-slate-900">48</td><td class="p-1 border-r border-slate-900" colspan="7"></td><td class="p-1 border-r border-slate-900 text-blue-900 font-mono text-xs">455</td><td class="p-1"></td></tr>
-                                </tbody>
-                            </table>
-
-                            <div class="grid grid-cols-4 gap-2 pt-1">
-                                <div class="col-span-3">
-                                    <table class="w-full border-2 border-slate-900 text-[10px] text-center border-collapse">
-                                        <thead class="bg-slate-100 font-bold border-b border-slate-900">
-                                            <tr>
-                                                <th class="p-1 border-r border-slate-900">PUBLISH DATE</th>
-                                                <th class="p-1 border-r border-slate-900">EXAM RESULT</th>
-                                                <th class="p-1 border-r border-slate-900">MAX. MARKS</th>
-                                                <th class="p-1 border-r border-slate-900">TOTAL MARKS</th>
-                                                <th class="p-1 border-r border-slate-900">PERCENTAGE</th>
-                                                <th class="p-1 border-r border-slate-900">GRADE</th>
-                                                <th class="p-1">DIVISION</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="font-extrabold text-xs">
-                                            <tr>
-                                                <td class="p-1 border-r border-slate-900 font-mono">23-03-2026</td>
-                                                <td class="p-1 border-r border-slate-900 text-emerald-700">Pass</td>
-                                                <td class="p-1 border-r border-slate-900 text-rose-700">500</td>
-                                                <td class="p-1 border-r border-slate-900 font-mono text-indigo-950">455</td>
-                                                <td class="p-1 border-r border-slate-900 font-mono text-emerald-700">91.00</td>
-                                                <td class="p-1 border-r border-slate-900">A+</td>
-                                                <td class="p-1">First Division</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="col-span-1 border-2 border-slate-900 p-1 text-center space-y-1 flex flex-col justify-center bg-slate-50">
-                                    <p class="text-[8px] font-black leading-tight">ENVIRONMENTAL EDUCATION GRADE</p>
-                                    <span class="text-2xl font-black text-indigo-950">A+</span>
-                                </div>
-                            </div>
-
-                            <div class="pt-8 flex justify-between items-end text-[10px] font-bold text-slate-900">
-                                <div class="text-center"><div class="w-32 border-b-2 border-slate-900 mb-1"></div>SIGNATURE OF CLASS TEACHER</div>
-                                <div class="text-center"><div class="w-36 border-b-2 border-slate-900 mb-1"></div>SIGNATURE OF EXAM INCHARGE</div>
-                                <div class="text-center"><div class="w-36 border-b-2 border-slate-900 mb-1"></div>SEAL AND SIGNATURE OF PRINCIPAL</div>
-                            </div>
-                        </div>
-                    `;
-                }
-            }).join('');
-        }
-
-        function renderProfileCards() {
-            const container = document.getElementById("exportableProfileCard");
-            if (!container) return;
-            const cls = document.getElementById("pcardClassFilter") ? document.getElementById("pcardClassFilter").value : "ALL";
-            const sec = document.getElementById("pcardSectionFilter") ? document.getElementById("pcardSectionFilter").value : "ALL";
-            const q = (document.getElementById("pcardSearchInput") ? document.getElementById("pcardSearchInput").value : "").toLowerCase().trim();
-            const cond = document.getElementById("pcardConditionFilter") ? document.getElementById("pcardConditionFilter").value : "ALL";
-            const sort = document.getElementById("pcardSortFilter") ? document.getElementById("pcardSortFilter").value : "scholarAsc";
-
-            let list = Object.values(studentsData).filter(st => {
-                if (cls !== "ALL" && st.targetClass !== cls) return false;
-                if (sec !== "ALL" && st.section !== sec) return false;
-                if (cond === "OBC" || cond === "SC" || cond === "ST" || cond === "GEN") {
-                    if (st.category !== cond) return false;
-                } else if (cond === "BPL" && st.bplStatus !== "YES") return false;
-                else if (cond === "HOSTEL" && st.hostelStatus !== "YES") return false;
-
-                if (q) {
-                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName} ${st.motherName} ${st.mobile}`.toLowerCase();
-                    if (!haystack.includes(q)) return false;
-                }
-                return true;
-            });
-
-            list.sort((a, b) => {
-                if (sort === "scholarDesc") return (parseInt(b.scholarNo) || 0) - (parseInt(a.scholarNo) || 0);
-                if (sort === "nameAsc") return (a.nameHindi || a.nameEng || "").localeCompare(b.nameHindi || b.nameEng || "");
-                if (sort === "rollAsc") return (parseInt(a.rollNo) || 0) - (parseInt(b.rollNo) || 0);
-                return (parseInt(a.scholarNo) || 0) - (parseInt(a.scholarNo) || 0);
-            });
-
-            const badge = document.getElementById("pcardCountBadge");
-            if (badge) badge.innerText = `प्रदर्शित कार्ड्स: ${list.length}`;
-
-            if (list.length === 0) {
-                container.innerHTML = `<div class="col-span-2 text-center p-6 bg-white rounded-xl border font-bold text-slate-500">कोई छात्र प्रोफाइल कार्ड उपलब्ध नहीं है।</div>`;
-                return;
-            }
-
-            container.innerHTML = list.map(st => `
-                <div class="bg-white p-4 rounded-xl border-2 border-indigo-900 shadow-md flex items-center space-x-3">
-                    <img src="${st.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" class="w-20 h-24 object-cover rounded border border-indigo-300 shadow-sm flex-shrink-0">
-                    <div class="space-y-1 text-xs flex-1">
-                        <div class="flex justify-between items-start">
-                            <h4 class="font-black text-indigo-950 text-sm">${st.nameHindi || st.nameEng}</h4>
-                            <span class="bg-indigo-100 text-indigo-900 font-mono text-[10px] font-black px-1.5 py-0.5 rounded">Sc: ${st.scholarNo}</span>
-                        </div>
-                        <p class="font-bold text-slate-700">कक्षा: ${st.targetClass} - ${st.section} | अनुक्रमांक: ${st.rollNo || '-'}</p>
-                        <p class="text-slate-600"><strong>पिता:</strong> ${st.fatherName}</p>
-                        <p class="text-slate-600"><strong>माता:</strong> ${st.motherName}</p>
-                        <p class="text-slate-600 font-mono"><strong>मोबाईल:</strong> ${st.mobile || '-'}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderAdmitCards() {
-            const container = document.getElementById("exportableAdmitCard");
-            if (!container) return;
-
-            const examType = document.getElementById("admitExamTypeSelect") ? document.getElementById("admitExamTypeSelect").value : "annual";
-            const cls = document.getElementById("admitClassFilter") ? document.getElementById("admitClassFilter").value : "ALL";
-            const sec = document.getElementById("admitSectionFilter") ? document.getElementById("admitSectionFilter").value : "ALL";
-            const selectedStudent = document.getElementById("admitStudentSelect") ? document.getElementById("admitStudentSelect").value : "ALL";
-            const q = (document.getElementById("admitSearchInput") ? document.getElementById("admitSearchInput").value : "").toLowerCase().trim();
-            const sort = document.getElementById("admitSortFilter") ? document.getElementById("admitSortFilter").value : "rollAsc";
-
-            const studentSelectElem = document.getElementById("admitStudentSelect");
-            if (studentSelectElem) {
-                const currentSel = studentSelectElem.value;
-                studentSelectElem.innerHTML = `<option value="ALL">-- सभी छात्र (Batch View) --</option>` +
-                    Object.values(studentsData).map(st => `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng} (${st.targetClass}-${st.section})</option>`).join('');
-                studentSelectElem.value = currentSel;
-            }
-
-            let list = Object.values(studentsData).filter(st => {
-                if (cls !== "ALL" && st.targetClass !== cls) return false;
-                if (sec !== "ALL" && st.section !== sec) return false;
-                if (selectedStudent !== "ALL" && st.id !== selectedStudent) return false;
-
-                if (q) {
-                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.enrollmentNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName} ${st.motherName}`.toLowerCase();
-                    if (!haystack.includes(q)) return false;
-                }
-                return true;
-            });
-
-            list.sort((a, b) => {
-                if (sort === "scholarAsc") return (parseInt(a.scholarNo) || 0) - (parseInt(b.scholarNo) || 0);
-                if (sort === "nameAsc") return (a.nameHindi || a.nameEng || "").localeCompare(b.nameHindi || b.nameEng || "");
-                return (parseInt(a.rollNo) || 0) - (parseInt(b.rollNo) || 0);
-            });
-
-            const badge = document.getElementById("admitCountBadge");
-            if (badge) badge.innerText = `प्रदर्शित एडमिट कार्ड: ${list.length}`;
-
-            if (list.length === 0) {
-                container.innerHTML = `<div class="text-center p-8 bg-white rounded-xl border border-slate-200 font-bold text-slate-500">कोई परीक्षा प्रवेश पत्र (Admit Card) मेल नहीं खाता।</div>`;
-                return;
-            }
-
-            const examLabels = {
-                "annual": "ANNUAL EXAM",
-                "preboard": "PRE-BOARD EXAM",
-                "halfYearly": "HALF YEARLY EXAM",
-                "quarterly": "QUARTERLY EXAM"
-            };
+        };
 
             const examSchedules = {
                 "annual": [
@@ -3196,30 +1784,353 @@
             const cls = document.getElementById("marksConfigClassSelect").value;
             const subjects = subjectMasterData[cls] || [];
 
+            if (!marksConfigData[cls]) marksConfigData[cls] = {};
+
             container.innerHTML = `
-                <table class="w-full text-xs border text-center font-semibold">
-                    <thead class="bg-emerald-950 text-white font-bold">
+                <table class="w-full text-xs border text-center font-semibold border-collapse">
+                    <thead class="bg-emerald-950 text-white font-bold uppercase">
                         <tr>
-                            <th class="p-2 border border-emerald-800 text-left">विषय</th>
-                            <th class="p-2 border border-emerald-800">थ्योरी Max</th>
-                            <th class="p-2 border border-emerald-800">थ्योरी Pass</th>
-                            <th class="p-2 border border-emerald-800">प्रैक्टिकल Max</th>
-                            <th class="p-2 border border-emerald-800">प्रैक्टिकल Pass</th>
+                            <th class="p-2 border border-emerald-800 text-left">विषय कोड व नाम</th>
+                            <th class="p-2 border border-emerald-800 text-amber-300">थ्योरी Max Marks</th>
+                            <th class="p-2 border border-emerald-800 text-amber-200">थ्योरी Passing Marks</th>
+                            <th class="p-2 border border-emerald-800 text-sky-300">प्रैक्टिकल Max Marks</th>
+                            <th class="p-2 border border-emerald-800 text-sky-200">प्रैक्टिकल Passing Marks</th>
+                            <th class="p-2 border border-emerald-800 text-emerald-300">कुल पूर्णांक (Max Total)</th>
+                            <th class="p-2 border border-emerald-800 text-emerald-200">कुल न्यूनतम उत्तीर्ण (Pass Total)</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 bg-white">
-                        ${subjects.map(s => `
-                            <tr>
-                                <td class="p-2 border text-left font-bold text-slate-900">(${s.code}) ${s.name}</td>
-                                <td class="p-2 border"><input type="number" value="75" class="w-16 border rounded text-center font-bold"></td>
-                                <td class="p-2 border"><input type="number" value="25" class="w-16 border rounded text-center font-bold"></td>
-                                <td class="p-2 border"><input type="number" value="25" class="w-16 border rounded text-center font-bold"></td>
-                                <td class="p-2 border"><input type="number" value="8" class="w-16 border rounded text-center font-bold"></td>
-                            </tr>
-                        `).join('')}
+                        ${subjects.map(s => {
+                            const cfg = marksConfigData[cls][s.code] || { thMax: 75, thPass: 25, prMax: 25, prPass: 8 };
+                            const maxTot = (parseInt(cfg.thMax) || 0) + (parseInt(cfg.prMax) || 0);
+                            const passTot = (parseInt(cfg.thPass) || 0) + (parseInt(cfg.prPass) || 0);
+
+                            return `
+                                <tr class="hover:bg-emerald-50/50 transition">
+                                    <td class="p-2 border border-slate-300 text-left font-extrabold text-slate-900">
+                                        <span class="text-emerald-800 font-mono">(${s.code})</span> ${s.name}
+                                        <span class="block text-[10px] text-slate-500 font-semibold">${s.category || 'मुख्य विषय'}</span>
+                                    </td>
+                                    <td class="p-2 border border-slate-300">
+                                        <input type="number" id="thMax_${cls}_${s.code}" value="${cfg.thMax}" oninput="updateConfigTotals('${cls}', '${s.code}')" class="w-16 border border-slate-300 rounded p-1 text-center font-bold text-amber-900 focus:ring-1 focus:ring-emerald-500 outline-none">
+                                    </td>
+                                    <td class="p-2 border border-slate-300">
+                                        <input type="number" id="thPass_${cls}_${s.code}" value="${cfg.thPass}" oninput="updateConfigTotals('${cls}', '${s.code}')" class="w-16 border border-slate-300 rounded p-1 text-center font-bold text-amber-800 focus:ring-1 focus:ring-emerald-500 outline-none">
+                                    </td>
+                                    <td class="p-2 border border-slate-300">
+                                        <input type="number" id="prMax_${cls}_${s.code}" value="${cfg.prMax}" oninput="updateConfigTotals('${cls}', '${s.code}')" class="w-16 border border-slate-300 rounded p-1 text-center font-bold text-sky-900 focus:ring-1 focus:ring-emerald-500 outline-none">
+                                    </td>
+                                    <td class="p-2 border border-slate-300">
+                                        <input type="number" id="prPass_${cls}_${s.code}" value="${cfg.prPass}" oninput="updateConfigTotals('${cls}', '${s.code}')" class="w-16 border border-slate-300 rounded p-1 text-center font-bold text-sky-800 focus:ring-1 focus:ring-emerald-500 outline-none">
+                                    </td>
+                                    <td class="p-2 border border-slate-300 font-mono font-black text-indigo-950 text-sm bg-slate-50" id="totMax_${cls}_${s.code}">
+                                        ${maxTot}
+                                    </td>
+                                    <td class="p-2 border border-slate-300 font-mono font-black text-emerald-800 text-sm bg-emerald-50/50" id="totPass_${cls}_${s.code}">
+                                        ${passTot}
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
                     </tbody>
                 </table>
             `;
+        }
+
+        function updateConfigTotals(cls, code) {
+            const thMax = parseInt(document.getElementById(`thMax_${cls}_${code}`).value) || 0;
+            const thPass = parseInt(document.getElementById(`thPass_${cls}_${code}`).value) || 0;
+            const prMax = parseInt(document.getElementById(`prMax_${cls}_${code}`).value) || 0;
+            const prPass = parseInt(document.getElementById(`prPass_${cls}_${code}`).value) || 0;
+
+            document.getElementById(`totMax_${cls}_${code}`).innerText = thMax + prMax;
+            document.getElementById(`totPass_${cls}_${code}`).innerText = thPass + prPass;
+        }
+
+        function saveMarksConfigSettings() {
+            const cls = document.getElementById("marksConfigClassSelect").value;
+            const subjects = subjectMasterData[cls] || [];
+
+            if (!marksConfigData[cls]) marksConfigData[cls] = {};
+
+            subjects.forEach(s => {
+                const thMax = parseInt(document.getElementById(`thMax_${cls}_${s.code}`).value) || 0;
+                const thPass = parseInt(document.getElementById(`thPass_${cls}_${s.code}`).value) || 0;
+                const prMax = parseInt(document.getElementById(`prMax_${cls}_${s.code}`).value) || 0;
+                const prPass = parseInt(document.getElementById(`prPass_${cls}_${s.code}`).value) || 0;
+
+                marksConfigData[cls][s.code] = { thMax, thPass, prMax, prPass };
+            });
+
+            showToast(`कक्षा ${cls} की थ्योरी/प्रैक्टिकल सेटिंग्स सफलतापूर्वक सुरक्षित हो गईं!`);
+        }
+
+        function resetMarksConfigToDefault() {
+            const cls = document.getElementById("marksConfigClassSelect").value;
+            const subjects = subjectMasterData[cls] || [];
+
+            subjects.forEach(s => {
+                const isSenior = (cls === '11th' || cls === '12th');
+                document.getElementById(`thMax_${cls}_${s.code}`).value = isSenior ? 80 : 75;
+                document.getElementById(`thPass_${cls}_${s.code}`).value = isSenior ? 26 : 25;
+                document.getElementById(`prMax_${cls}_${s.code}`).value = isSenior ? 20 : 25;
+                document.getElementById(`prPass_${cls}_${s.code}`).value = isSenior ? 7 : 8;
+                updateConfigTotals(cls, s.code);
+            });
+
+            showToast("डिफ़ॉल्ट मान रीसेट कर दिए गए!");
+        }
+
+        function handleExamScopeChange() {
+            const scope = document.getElementById("examScopeSelect") ? document.getElementById("examScopeSelect").value : "SECTION";
+            const classBox = document.getElementById("examClassScopeBox");
+            const sectionBox = document.getElementById("examSectionScopeBox");
+            const singleStudentBox = document.getElementById("examSingleStudentBox");
+
+            if (!classBox || !sectionBox || !singleStudentBox) return;
+
+            if (scope === "ALL_SCHOOL") {
+                classBox.classList.add("hidden");
+                sectionBox.classList.add("hidden");
+                singleStudentBox.classList.add("hidden");
+            } else if (scope === "CLASS") {
+                classBox.classList.remove("hidden");
+                sectionBox.classList.add("hidden");
+                singleStudentBox.classList.add("hidden");
+            } else if (scope === "SECTION") {
+                classBox.classList.remove("hidden");
+                sectionBox.classList.remove("hidden");
+                singleStudentBox.classList.add("hidden");
+            } else if (scope === "SINGLE") {
+                classBox.classList.remove("hidden");
+                sectionBox.classList.remove("hidden");
+                singleStudentBox.classList.remove("hidden");
+                
+                const cls = document.getElementById("examMarksClassSelect").value;
+                const sec = document.getElementById("examMarksSectionSelect").value;
+                const singleSelect = document.getElementById("examMarksSingleStudentSelect");
+                
+                const studentList = Object.values(studentsData).filter(st => st.targetClass === cls && st.section === sec);
+                singleSelect.innerHTML = studentList.length > 0 ? studentList.map(st => 
+                    `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng}</option>`
+                ).join('') : `<option value="">कोई छात्र नहीं</option>`;
+            }
+            renderExamMarksEntryTable();
+        }
+
+        function getStudentExamData(studentId, examType) {
+            if (!examMarksStore[studentId]) examMarksStore[studentId] = {};
+            if (!examMarksStore[studentId][examType]) {
+                examMarksStore[studentId][examType] = { isLocked: false, subjects: {} };
+            }
+            return examMarksStore[studentId][examType];
+        }
+
+        function updateMarkValue(studentId, examType, subjectCode, type, val) {
+            const numVal = Math.max(0, parseFloat(val) || 0);
+            const studentExam = getStudentExamData(studentId, examType);
+            if (studentExam.isLocked) return;
+            
+            if (!studentExam.subjects[subjectCode]) {
+                studentExam.subjects[subjectCode] = { th: 0, pr: 0 };
+            }
+            studentExam.subjects[subjectCode][type] = numVal;
+
+            // Recalculate subject total on-the-fly
+            const th = studentExam.subjects[subjectCode].th || 0;
+            const pr = studentExam.subjects[subjectCode].pr || 0;
+            const subTotal = th + pr;
+
+            const subTotElem = document.getElementById(`subTot_${studentId}_${subjectCode}`);
+            if (subTotElem) subTotElem.innerText = subTotal;
+
+            // Recalculate Student Grand Total
+            recalculateGrandTotal(studentId, examType);
+        }
+
+        function recalculateGrandTotal(studentId, examType) {
+            const studentExam = examMarksStore[studentId] && examMarksStore[studentId][examType];
+            if (!studentExam) return;
+
+            let grandTotal = 0;
+            Object.values(studentExam.subjects).forEach(sub => {
+                grandTotal += (sub.th || 0) + (sub.pr || 0);
+            });
+
+            const grandTotElem = document.getElementById(`grandTot_${studentId}`);
+            if (grandTotElem) grandTotElem.innerText = grandTotal;
+        }
+
+        function toggleStudentMarksLock(studentId, examType) {
+            const studentExam = getStudentExamData(studentId, examType);
+            studentExam.isLocked = !studentExam.isLocked;
+            renderExamMarksEntryTable();
+            showToast(studentExam.isLocked ? `छात्र के अंक लॉक (Locked 🔒) कर दिए गए हैं!` : `छात्र के अंक अनलॉक (Unlocked 🔓) कर दिए गए हैं!`);
+        }
+
+        function bulkToggleMarksLock(lockState) {
+            const filteredList = getFilteredStudentsForExam();
+            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
+
+            filteredList.forEach(st => {
+                const studentExam = getStudentExamData(st.id, examType);
+                studentExam.isLocked = lockState;
+            });
+
+            renderExamMarksEntryTable();
+            showToast(lockState ? `चयनित समूह के सभी अंक सफलतापूर्वक लॉक (🔒) किए गए!` : `चयनित समूह अनलॉक (🔓) हो गया!`);
+        }
+
+        function saveAllExamMarks() {
+            showToast("समस्त परीक्षा अंक सफलतापूर्वक डेटाबेस में सुरक्षित किए गए!");
+        }
+
+        function getFilteredStudentsForExam() {
+            const scope = document.getElementById("examScopeSelect") ? document.getElementById("examScopeSelect").value : "SECTION";
+            const cls = document.getElementById("examMarksClassSelect") ? document.getElementById("examMarksClassSelect").value : "10th";
+            const sec = document.getElementById("examMarksSectionSelect") ? document.getElementById("examMarksSectionSelect").value : "A";
+            const singleId = document.getElementById("examMarksSingleStudentSelect") ? document.getElementById("examMarksSingleStudentSelect").value : null;
+            const q = (document.getElementById("examMarksSearchInput") ? document.getElementById("examMarksSearchInput").value : "").toLowerCase().trim();
+            const sort = document.getElementById("examMarksSortSelect") ? document.getElementById("examMarksSortSelect").value : "rollAsc";
+            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
+
+            let list = Object.values(studentsData).filter(st => {
+                if (scope === "SECTION") {
+                    if (st.targetClass !== cls || st.section !== sec) return false;
+                } else if (scope === "CLASS") {
+                    if (st.targetClass !== cls) return false;
+                } else if (scope === "SINGLE") {
+                    if (st.id !== singleId) return false;
+                }
+
+                if (q) {
+                    const haystack = `${st.scholarNo} ${st.rollNo} ${st.nameHindi} ${st.nameEng} ${st.fatherName}`.toLowerCase();
+                    if (!haystack.includes(q)) return false;
+                }
+                return true;
+            });
+
+            list.sort((a, b) => {
+                if (sort === "scholarAsc") return (parseInt(a.scholarNo) || 0) - (parseInt(b.scholarNo) || 0);
+                if (sort === "nameAsc") return (a.nameHindi || a.nameEng || "").localeCompare(b.nameHindi || b.nameEng || "");
+                if (sort === "totalDesc") {
+                    let totA = 0, totB = 0;
+                    if (examMarksStore[a.id] && examMarksStore[a.id][examType]) {
+                        Object.values(examMarksStore[a.id][examType].subjects).forEach(sub => totA += (sub.th || 0) + (sub.pr || 0));
+                    }
+                    if (examMarksStore[b.id] && examMarksStore[b.id][examType]) {
+                        Object.values(examMarksStore[b.id][examType].subjects).forEach(sub => totB += (sub.th || 0) + (sub.pr || 0));
+                    }
+                    return totB - totA;
+                }
+                return (parseInt(a.rollNo) || 0) - (parseInt(b.rollNo) || 0);
+            });
+
+            return list;
+        }
+
+        function renderExamMarksEntryTable() {
+            const container = document.getElementById("examMarksEntryTableContainer");
+            if (!container) return;
+
+            const examType = document.getElementById("examMarksTypeSelect") ? document.getElementById("examMarksTypeSelect").value : "annual";
+            const cls = document.getElementById("examMarksClassSelect") ? document.getElementById("examMarksClassSelect").value : "10th";
+
+            const subjects = subjectMasterData[cls] || subjectMasterData["10th"];
+            const list = getFilteredStudentsForExam();
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center bg-white font-bold text-slate-500">चयनित दायरा/फ़िल्टर में कोई छात्र उपलब्ध नहीं है।</div>`;
+                return;
+            }
+
+            // Calculate Total Max Marks
+            let totalMaxMarks = 0;
+            subjects.forEach(s => {
+                const cfg = (marksConfigData[cls] && marksConfigData[cls][s.code]) || { thMax: 75, prMax: 25 };
+                totalMaxMarks += (parseInt(cfg.thMax) || 0) + (parseInt(cfg.prMax) || 0);
+            });
+
+            container.innerHTML = `
+                <table class="w-full text-xs border text-left border-collapse font-semibold whitespace-nowrap">
+                    <thead class="bg-indigo-950 text-white sticky top-0 font-bold uppercase z-20">
+                        <tr>
+                            <th rowspan="2" class="p-2 border border-indigo-800 text-center">अनुक्रमांक / स्कॉलर</th>
+                            <th rowspan="2" class="p-2 border border-indigo-800">विद्यार्थी नाम एवं विवरण</th>
+                            ${subjects.map(s => `
+                                <th colspan="3" class="p-1.5 border border-indigo-800 text-center bg-indigo-900">
+                                    ${s.name} (${s.code})
+                                </th>
+                            `).join('')}
+                            <th rowspan="2" class="p-2 border border-indigo-800 text-center bg-indigo-900">कुल प्राप्तांक / पूर्णांक</th>
+                            <th rowspan="2" class="p-2 border border-indigo-800 text-center sticky right-0 bg-indigo-950 shadow-left">प्रविष्टि लॉक स्थिति</th>
+                        </tr>
+                        <tr class="bg-indigo-900 text-[10px]">
+                            ${subjects.map(() => `
+                                <th class="p-1 border border-indigo-800 text-center text-amber-300">थ्योरी</th>
+                                <th class="p-1 border border-indigo-800 text-center text-sky-300">प्रैक्टिकल</th>
+                                <th class="p-1 border border-indigo-800 text-center text-emerald-300">योग</th>
+                            `).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        ${list.map(st => {
+                            const studentExam = getStudentExamData(st.id, examType);
+                            const isLocked = studentExam.isLocked;
+                            let grandTotal = 0;
+
+                            return `
+                                <tr class="hover:bg-indigo-50/50 transition ${isLocked ? 'bg-slate-100/80 opacity-90' : ''}">
+                                    <td class="p-2 border border-slate-300 text-center font-mono font-bold text-indigo-950">
+                                        ${st.rollNo || '-'}<br>
+                                        <span class="text-[10px] text-slate-500">Sc: ${st.scholarNo}</span>
+                                    </td>
+                                    <td class="p-2 border border-slate-300">
+                                        <div class="font-extrabold text-slate-900">${st.nameHindi || st.nameEng}</div>
+                                        <div class="text-[10px] text-slate-500 font-semibold">${st.fatherName} (${st.targetClass}-${st.section})</div>
+                                    </td>
+                                    ${subjects.map(s => {
+                                        const subData = (studentExam.subjects && studentExam.subjects[s.code]) || { th: 50, pr: 18 };
+                                        if (!studentExam.subjects[s.code]) {
+                                            studentExam.subjects[s.code] = { th: subData.th, pr: subData.pr };
+                                        }
+                                        const subTot = (subData.th || 0) + (subData.pr || 0);
+                                        grandTotal += subTot;
+
+                                        return `
+                                            <td class="p-1 border border-slate-300 text-center">
+                                                <input type="number" min="0" max="80" value="${subData.th || 0}" ${isLocked ? 'disabled' : ''} 
+                                                    oninput="updateMarkValue('${st.id}', '${examType}', '${s.code}', 'th', this.value)" 
+                                                    class="w-12 text-center border border-slate-300 rounded p-1 font-mono font-bold text-indigo-950 focus:ring-1 focus:ring-amber-500 outline-none ${isLocked ? 'bg-slate-200 text-slate-600 cursor-not-allowed' : ''}">
+                                            </td>
+                                            <td class="p-1 border border-slate-300 text-center">
+                                                <input type="number" min="0" max="25" value="${subData.pr || 0}" ${isLocked ? 'disabled' : ''} 
+                                                    oninput="updateMarkValue('${st.id}', '${examType}', '${s.code}', 'pr', this.value)" 
+                                                    class="w-12 text-center border border-slate-300 rounded p-1 font-mono font-bold text-sky-900 focus:ring-1 focus:ring-amber-500 outline-none ${isLocked ? 'bg-slate-200 text-slate-600 cursor-not-allowed' : ''}">
+                                            </td>
+                                            <td class="p-1 border border-slate-300 text-center font-mono font-extrabold text-emerald-800 bg-emerald-50/50" id="subTot_${st.id}_${s.code}">
+                                                ${subTot}
+                                            </td>
+                                        `;
+                                    }).join('')}
+                                    <td class="p-2 border border-slate-300 text-center font-mono font-black text-indigo-950 text-sm bg-amber-50/60">
+                                        <span id="grandTot_${st.id}">${grandTotal}</span> / ${totalMaxMarks || 500}
+                                    </td>
+                                    <td class="p-2 border border-slate-300 text-center sticky right-0 bg-white shadow-left">
+                                        <button onclick="toggleStudentMarksLock('${st.id}', '${examType}')" 
+                                            class="px-2.5 py-1 rounded text-[11px] font-extrabold shadow flex items-center justify-center space-x-1 mx-auto transition ${isLocked ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'}">
+                                            <i data-lucide="${isLocked ? 'lock' : 'unlock'}" class="w-3.5 h-3.5"></i>
+                                            <span>${isLocked ? '🔒 locked' : '🔓 editable'}</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            if (window.lucide) lucide.createIcons();
         }
 
         function saveMarksConfigSettings() {
