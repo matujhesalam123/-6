@@ -267,13 +267,29 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-1.5">
-                    <button onclick="window.print()" class="bg-slate-800 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-slate-900 shadow flex items-center space-x-1">
+                    <button onclick="globalPrintCurrentSection()" class="bg-slate-800 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-slate-900 shadow flex items-center space-x-1">
                         <i data-lucide="printer" class="w-3.5 h-3.5"></i>
                         <span>प्रिंट (Print)</span>
                     </button>
-                    <button onclick="downloadJsonBackup()" class="bg-yellow-500 hover:bg-yellow-600 text-indigo-950 font-bold text-xs px-3 py-1.5 rounded-lg shadow flex items-center space-x-1">
-                        <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>
-                        <span>JSON बैकअप</span>
+                    <button onclick="globalExportPDF()" class="bg-rose-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-rose-700 shadow flex items-center space-x-1">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                        <span>PDF</span>
+                    </button>
+                    <button onclick="globalExportExcel()" class="bg-emerald-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-emerald-700 shadow flex items-center space-x-1">
+                        <i data-lucide="sheet" class="w-3.5 h-3.5"></i>
+                        <span>Excel</span>
+                    </button>
+                    <button onclick="globalExportDoc()" class="bg-blue-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-blue-700 shadow flex items-center space-x-1">
+                        <i data-lucide="file-code" class="w-3.5 h-3.5"></i>
+                        <span>Doc</span>
+                    </button>
+                    <button onclick="globalExportImage()" class="bg-amber-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-amber-700 shadow flex items-center space-x-1">
+                        <i data-lucide="image" class="w-3.5 h-3.5"></i>
+                        <span>Image</span>
+                    </button>
+                    <button onclick="shareOnlineLinkToken()" class="bg-indigo-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg hover:bg-indigo-800 shadow flex items-center space-x-1">
+                        <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+                        <span>शेयर लिंक</span>
                     </button>
                 </div>
             </div>
@@ -374,7 +390,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 2: STUDENT ENTRY FORM -->
             <section id="section-student-entry" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
                     <div class="flex justify-between items-center border-b pb-3">
@@ -528,6 +543,32 @@
                             </div>
                         </div>
 
+                        <!-- Part 4: Customizable Subjects -->
+                        <div class="bg-purple-50/50 p-3 rounded-lg border border-purple-200 space-y-2">
+                            <h3 class="font-extrabold text-purple-950 text-xs uppercase tracking-wider">4. विषय व विषय कोड चयन:</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                                <div>
+                                    <label class="text-slate-700 block">1sub (प्रथम विषय + कोड)</label>
+                                    <input type="text" id="f_sub1" value="401 - हिन्दी" class="w-full border rounded px-2 py-1 font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">2sub (द्वितीय विषय + कोड)</label>
+                                    <input type="text" id="f_sub2" value="411 - अंग्रेजी" class="w-full border rounded px-2 py-1 font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-slate-700 block">3sub (तृतीय विषय + कोड)</label>
+                                    <input type="text" id="f_sub3" value="100 - गणित / संस्कृत" class="w-full border rounded px-2 py-1 font-bold">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Part 5: Library Textbooks Checkboxes -->
+                        <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-200 space-y-2">
+                            <h3 class="font-extrabold text-emerald-950 text-xs uppercase tracking-wider">5. पुस्तकालय/पाठ्यपुस्तक वितरण स्थिति:</h3>
+                            <div id="formTextbooksCheckboxesArea" class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-slate-800">
+                            </div>
+                        </div>
+
                         <div class="flex justify-end space-x-2 pt-2 border-t">
                             <button type="button" onclick="showSection('dashboard')" class="bg-slate-200 text-slate-700 px-4 py-1.5 rounded-lg font-bold">रद्द करें</button>
                             <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-1.5 rounded-lg font-bold shadow">सुरक्षित करें (Save Record)</button>
@@ -536,14 +577,13 @@
                 </div>
             </section>
 
-            <!-- SECTION 3: MASTER SEARCH GRID -->
             <section id="section-master-grid" class="content-section space-y-3 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 space-y-3">
                     <div class="flex flex-wrap items-center justify-between border-b pb-2 gap-2">
                         <div>
                             <h2 class="text-xs font-black text-indigo-950 flex items-center space-x-1.5">
                                 <i data-lucide="search-code" class="w-4 h-4 text-blue-600"></i>
-                                <span>मास्टर्स छात्र विस्तृत सर्च ग्रिड (50+ Column Excel Grid)</span>
+                                <span>मास्टर्स छात्र विस्तृत सर्च ग्रिड (Complete Excel Grid)</span>
                             </h2>
                             <p class="text-[10px] text-slate-500 font-bold" id="gridFilteredCountBadge">0 छात्र प्रदर्शित</p>
                         </div>
@@ -573,7 +613,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 4: COMBINED FORMS -->
             <section id="section-combined-forms" class="content-section space-y-6 hidden">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-3 no-print shadow-sm">
                     <h3 class="text-xs font-black text-indigo-950">तीनों आधिकारिक प्रिंट फ़ॉर्म्स (Forms 1, 2 & 3 Combined)</h3>
@@ -587,7 +626,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 5: PROFILE CARD -->
             <section id="section-profile-card" class="content-section space-y-4 hidden">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-3 no-print">
                     <h3 class="text-xs font-bold text-indigo-950">छात्र प्रोफाइल आईकार्ड (Profile ID Cards)</h3>
@@ -595,7 +633,6 @@
                 <div id="exportableProfileCard" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </section>
 
-            <!-- SECTION 6: ADMIT CARD -->
             <section id="section-admit-card" class="content-section space-y-4 hidden">
                 <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-3 no-print shadow-sm">
                     <h3 class="text-xs font-black text-slate-900">परीक्षा प्रवेश पत्र प्रबंधन (Exam Admit Cards)</h3>
@@ -603,7 +640,6 @@
                 <div id="exportableAdmitCard" class="space-y-8"></div>
             </section>
 
-            <!-- SECTION 7: MARKSHEETS -->
             <section id="section-marksheet" class="content-section space-y-4 hidden">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-3 no-print">
                     <h3 class="text-xs font-bold text-slate-800">समेकित अंकसूची विवरण (Board Marksheets)</h3>
@@ -611,7 +647,6 @@
                 <div id="exportableMarksheet" class="space-y-8"></div>
             </section>
 
-            <!-- SECTION 8: TEACHER CARD -->
             <section id="section-teacher-card" class="content-section space-y-4 hidden">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-3 no-print">
                     <h3 class="text-xs font-bold text-slate-800">शिक्षक पहचान पत्र (Teacher ID Cards)</h3>
@@ -619,7 +654,6 @@
                 <div id="exportableTeacherCard" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </section>
 
-            <!-- SECTION 9: MANAGEMENT PANEL -->
             <section id="section-management-panel" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
                     <div class="flex flex-wrap justify-between items-center border-b pb-3 gap-2">
@@ -630,7 +664,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 10: SUBJECT MASTER -->
             <section id="section-subject-master" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h2 class="text-xs font-bold text-indigo-950">1. विषय व विषय कोड मास्टर (Subject & Code Master)</h2>
@@ -638,7 +671,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 11: MARKS CONFIG -->
             <section id="section-marks-config" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h2 class="text-xs font-bold text-indigo-950">2. कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स (Theory & Practical Max/Min Marks Config)</h2>
@@ -646,7 +678,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 12: EXAM MARKS SPREADSHEET ENTRY -->
             <section id="section-exam-marks" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <div class="flex flex-wrap items-center justify-between border-b pb-3 gap-2">
@@ -732,7 +763,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 13: CONSOLIDATED REPORT -->
             <section id="section-consolidated-report" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h2 class="text-xs font-bold text-indigo-950">4. एकजाई शाला परिणाम रिपोर्ट (Consolidated Report)</h2>
@@ -740,7 +770,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 14: CLASS REPORT -->
             <section id="section-class-exam-report" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h2 class="text-xs font-bold text-indigo-950">5. कक्षा-सेक्शन विस्तृत रिपोर्ट (Class Exam Report)</h2>
@@ -748,7 +777,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 15: BOOK MASTER -->
             <section id="section-book-master" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h2 class="text-xs font-bold text-indigo-950">6. पुस्तकालय व पाठ्यपुस्तक मास्टर (Library Master)</h2>
@@ -756,7 +784,6 @@
                 </div>
             </section>
 
-            <!-- SECTION 16: CLOUD & EXTERNAL BACKUP SETTINGS -->
             <section id="section-cloud-settings" class="content-section space-y-4 hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
                     <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5 border-b pb-2">
@@ -969,6 +996,29 @@
                 ).join('');
                 document.getElementById("quickTeacherCountBadge").innerText = `${Object.keys(teachersData).length} शिक्षक`;
             }
+        }
+
+        function filterSidebarStudentDropdown(q) {
+            const select = document.getElementById("sidebarStudentSelect");
+            const query = (q || '').toLowerCase().trim();
+            const filtered = Object.values(studentsData).filter(st => 
+                st.scholarNo.toLowerCase().includes(query) || 
+                (st.nameHindi && st.nameHindi.toLowerCase().includes(query)) ||
+                (st.nameEng && st.nameEng.toLowerCase().includes(query))
+            );
+            select.innerHTML = filtered.map(st => `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng}</option>`).join('');
+            document.getElementById("quickStudentCountBadge").innerText = `${filtered.length} परिणाम`;
+            if (filtered.length > 0) loadStudentData(filtered[0].id);
+        }
+
+        function filterSidebarTeacherDropdown(q) {
+            const select = document.getElementById("sidebarTeacherSelect");
+            const query = (q || '').toLowerCase().trim();
+            const filtered = Object.values(teachersData).filter(tc => 
+                tc.name.toLowerCase().includes(query) || tc.code.toLowerCase().includes(query)
+            );
+            select.innerHTML = filtered.map(tc => `<option value="${tc.id}">${tc.name} (${tc.code})</option>`).join('');
+            document.getElementById("quickTeacherCountBadge").innerText = `${filtered.length} परिणाम`;
         }
 
         function showSection(secId) {
@@ -1419,15 +1469,16 @@
             currentStudentId = id;
             const st = studentsData[id];
             if (!st) return;
-            document.getElementById("f_scholarNo").value = st.scholarNo || '';
-            document.getElementById("f_nameHindi").value = st.nameHindi || '';
-            document.getElementById("f_nameEng").value = st.nameEng || '';
-            document.getElementById("f_fatherName").value = st.fatherName || '';
+            if (document.getElementById("f_scholarNo")) document.getElementById("f_scholarNo").value = st.scholarNo || '';
+            if (document.getElementById("f_nameHindi")) document.getElementById("f_nameHindi").value = st.nameHindi || '';
+            if (document.getElementById("f_nameEng")) document.getElementById("f_nameEng").value = st.nameEng || '';
+            if (document.getElementById("f_fatherName")) document.getElementById("f_fatherName").value = st.fatherName || '';
         }
 
         function loadTeacherCardData(id) { showSection('teacher-card'); }
         function editStudentRecord(id) { loadStudentData(id); showSection('student-entry'); }
-        function resetMasterStudentForm() { document.getElementById("masterStudentForm").reset(); }
+        function resetMasterStudentForm() { if (document.getElementById("masterStudentForm")) document.getElementById("masterStudentForm").reset(); }
+        
         function handleMasterStudentSave(e) {
             e.preventDefault();
             const scholar = document.getElementById("f_scholarNo").value;
@@ -1443,8 +1494,6 @@
 
         function renderFormClassBookCheckboxes() {}
         function previewStudentPhoto() {}
-        function filterSidebarStudentDropdown(q) {}
-        function filterSidebarTeacherDropdown(q) {}
         function renderCombinedOfficialForms() {}
         function renderIndividualForm() {}
         function renderMarksheets() {}
