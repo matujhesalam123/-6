@@ -132,8 +132,8 @@
                     <i data-lucide="graduation-cap" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h1 class="text-base font-extrabold tracking-wide text-yellow-400">SDMS - मास्टर्स स्टूडेंट डाटा मैनेजमेंट पोर्ट[...]
-                    <p class="text-[10px] text-indigo-200" id="headerSchoolLabel">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्��[...]
+                    <h1 class="text-base font-extrabold tracking-wide text-yellow-400">SDMS - मास्टर्स स्टूडेंट डाटा मैनेजमेंट पोर्टल</h1>
+                    <p class="text-[10px] text-indigo-200" id="headerSchoolLabel">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज (रायसेन)</p>
                 </div>
             </div>
             
@@ -145,7 +145,7 @@
                     </span>
                 </div>
 
-                <button onclick="downloadJsonBackup()" class="bg-yellow-500 hover:bg-yellow-600 text-indigo-950 font-black text-xs px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1" aria-label="बैकअप डाउनलोड">
+                <button onclick="downloadJsonBackup()" class="bg-yellow-500 hover:bg-yellow-600 text-indigo-950 font-black text-xs px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
                     <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>
                     <span>बैकअप डाउनलोड</span>
                 </button>
@@ -163,7 +163,7 @@
                     <span>🔍 त्वरित छात्र खोजें:</span>
                     <span id="quickStudentCountBadge" class="text-[9px] bg-indigo-200 text-indigo-950 px-1.5 py-0.2 rounded-full font-bold">0 छात्र</span>
                 </label>
-                <input type="text" id="sidebarSearchInput" oninput="filterSidebarStudentDropdown(this.value)" placeholder="नाम, स्कॉलर या रोल नंबर..." class="w-full rounded px-2 py-1 text-xs">
+                <input type="text" id="sidebarSearchInput" oninput="filterSidebarStudentDropdown(this.value)" placeholder="नाम, स्कॉलर या रोल नंबर..." class="w-full text-xs px-2 py-1 border border-indigo-300 rounded outline-none focus:ring-1 focus:ring-indigo-600 font-semibold">
                 
                 <select id="sidebarStudentSelect" onchange="loadStudentData(this.value)" class="w-full bg-white border border-indigo-300 rounded px-2 py-1 text-xs font-bold text-indigo-950 outline-none">
                 </select>
@@ -175,74 +175,74 @@
                     <span>👨‍🏫 त्वरित शिक्षक खोजें:</span>
                     <span id="quickTeacherCountBadge" class="text-[9px] bg-teal-200 text-teal-950 px-1.5 py-0.2 rounded-full font-bold">0 शिक्षक</span>
                 </label>
-                <input type="text" id="sidebarTeacherSearchInput" oninput="filterSidebarTeacherDropdown(this.value)" placeholder="शिक्षक नाम या कोड..." class="w-full text-xs rounded px-2 py-1">
+                <input type="text" id="sidebarTeacherSearchInput" oninput="filterSidebarTeacherDropdown(this.value)" placeholder="शिक्षक नाम या कोड..." class="w-full text-xs px-2 py-1 border border-teal-300 rounded outline-none focus:ring-1 focus:ring-teal-600 font-semibold">
                 
                 <select id="sidebarTeacherSelect" onchange="loadTeacherCardData(this.value)" class="w-full bg-white border border-teal-300 rounded px-2 py-1 text-xs font-bold text-teal-950 outline-none">
                 </select>
             </div>
 
             <nav class="space-y-1 text-xs font-bold" id="sidebarMenu">
-                <button onclick="showSection('dashboard')" id="btn-dashboard" class="tab-btn active w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('dashboard')" id="btn-dashboard" class="tab-btn active w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="layout-dashboard" class="w-4 h-4 text-amber-500"></i>
                     <span>मुख्य डैशबोर्ड</span>
                 </button>
-                <button onclick="showSection('student-entry')" id="btn-student-entry" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('student-entry')" id="btn-student-entry" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="user-plus" class="w-4 h-4 text-indigo-600"></i>
                     <span>मास्टर्स छात्र ऑनलाइन फ़ॉर्म</span>
                 </button>
-                <button onclick="showSection('master-grid')" id="btn-master-grid" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('master-grid')" id="btn-master-grid" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="search-code" class="w-4 h-4 text-blue-600"></i>
                     <span>मास्टर्स छात्र सर्च ग्रिड</span>
                 </button>
-                <button onclick="showSection('combined-forms')" id="btn-combined-forms" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('combined-forms')" id="btn-combined-forms" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="files" class="w-4 h-4 text-rose-600"></i>
                     <span>तीनों फ़ॉर्म्स (1, 2 व 3 संयुक्त)</span>
                 </button>
-                <button onclick="showSection('profile-card')" id="btn-profile-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('profile-card')" id="btn-profile-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="id-card" class="w-4 h-4 text-purple-600"></i>
                     <span>छात्र प्रोफाइल आईकार्ड</span>
                 </button>
-                <button onclick="showSection('admit-card')" id="btn-admit-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('admit-card')" id="btn-admit-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="ticket" class="w-4 h-4 text-rose-500"></i>
                     <span>वार्षिक परीक्षा एडमिट कार्ड</span>
                 </button>
-                <button onclick="showSection('marksheet')" id="btn-marksheet" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('marksheet')" id="btn-marksheet" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
                     <span>समेकित अंकसूची (Marksheet)</span>
                 </button>
-                <button onclick="showSection('teacher-card')" id="btn-teacher-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('teacher-card')" id="btn-teacher-card" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="user-check" class="w-4 h-4 text-teal-600"></i>
                     <span>शिक्षक पहचान पत्र (ID Card)</span>
                 </button>
-                <button onclick="showSection('management-panel')" id="btn-management-panel" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('management-panel')" id="btn-management-panel" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="building" class="w-4 h-4 text-cyan-600"></i>
                     <span>संस्था प्रमुख व शिक्षक प्रबंधन</span>
                 </button>
-                <button onclick="showSection('subject-master')" id="btn-subject-master" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('subject-master')" id="btn-subject-master" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="book-open" class="w-4 h-4 text-purple-600"></i>
                     <span>1. विषय व विषय कोड मास्टर</span>
                 </button>
-                <button onclick="showSection('marks-config')" id="btn-marks-config" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('marks-config')" id="btn-marks-config" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="sliders" class="w-4 h-4 text-emerald-600"></i>
                     <span>2. कक्षा थ्योरी/प्रैक्टिकल सेटिंग्स</span>
                 </button>
-                <button onclick="showSection('exam-marks')" id="btn-exam-marks" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('exam-marks')" id="btn-exam-marks" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="pen-tool" class="w-4 h-4 text-rose-600"></i>
                     <span>3. 5-स्तरीय परीक्षा अंक प्रविष्टि</span>
                 </button>
-                <button onclick="showSection('consolidated-report')" id="btn-consolidated-report" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('consolidated-report')" id="btn-consolidated-report" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-600"></i>
                     <span>4. एकजाई शाला परिणाम रिपोर्ट</span>
                 </button>
-                <button onclick="showSection('class-exam-report')" id="btn-class-exam-report" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('class-exam-report')" id="btn-class-exam-report" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-600"></i>
                     <span>5. कक्षा-सेक्शन विस्तृत रिपोर्ट</span>
                 </button>
-                <button onclick="showSection('book-master')" id="btn-book-master" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('book-master')" id="btn-book-master" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="library" class="w-4 h-4 text-amber-700"></i>
                     <span>6. पुस्तकालय व पाठ्यपुस्तक मास्टर</span>
                 </button>
-                <button onclick="showSection('cloud-settings')" id="btn-cloud-settings" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700">
+                <button onclick="showSection('cloud-settings')" id="btn-cloud-settings" class="tab-btn w-full flex items-center space-x-2 px-2.5 py-2 rounded-lg text-left transition text-slate-700 hover:bg-slate-100">
                     <i data-lucide="cloud" class="w-4 h-4 text-sky-600"></i>
                     <span>7. क्लाउड व बैकअप सेटिंग्स</span>
                 </button>
@@ -250,9 +250,9 @@
 
             <div class="border-t border-slate-200 pt-2 text-[10px] text-slate-500 font-bold space-y-1">
                 <p class="text-indigo-900 uppercase tracking-wider font-extrabold">आधिकारिक प्रिंट फ़ॉर्म्स:</p>
-                <button onclick="showSection('form-mp-board')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">1. म.प्र. बोर्ड हाईस्कूल �[...]</button>
-                <button onclick="showSection('form-sssm')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">2. समग्र छात्रवृत्ति यो[...]</button>
-                <button onclick="showSection('form-pm-shri')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">3. पीएमश्री बेगमगंज प्र[...]</button>
+                <button onclick="showSection('form-mp-board')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">1. म.प्र. बोर्ड हाईस्कूल फॉर्म</button>
+                <button onclick="showSection('form-sssm')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">2. समग्र छात्रवृत्ति योजना फॉर्म</button>
+                <button onclick="showSection('form-pm-shri')" class="block text-slate-700 hover:text-indigo-700 truncate w-full text-left">3. पीएमश्री बेगमगंज प्रवेश फॉर्म</button>
             </div>
         </aside>
 
@@ -293,65 +293,417 @@
                 </div>
             </div>
 
-            <!-- (Sections omitted for brevity in this commit body) -->
+            <!-- DASHBOARD SECTION -->
+            <section id="section-dashboard" class="content-section space-y-4">
+                <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-slate-950 p-4 rounded-2xl shadow-xl border-2 border-yellow-300 gold-glow relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img id="dashTopperPhoto" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-24 h-28 object-cover rounded-xl border-4 border-white shadow-2xl bg-white">
+                            <span class="absolute -top-3 -right-3 bg-red-600 text-white font-black text-xs px-2 py-0.5 rounded-full shadow border-2 border-white flex items-center space-x-1">
+                                <span>👑 #1 ओवरऑल स्कूल टॉपर</span>
+                            </span>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="bg-slate-950 text-yellow-400 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest shadow">सर्वोच्च अंकधारक</span>
+                            <h2 class="text-xl font-black text-slate-950 tracking-wide" id="dashTopperName">राहुल शर्मा</h2>
+                            <p class="text-xs font-bold text-slate-900" id="dashTopperDetails">पिता: श्री राम शर्मा | कक्षा: 10th - A | स्कॉलर क्र.: 101</p>
+                            <p class="text-xs font-semibold text-slate-800" id="dashTopperSchool">पीएमश्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय बेगमगंज (रायसेन)</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950/90 text-white p-3.5 rounded-xl border border-yellow-400 text-center min-w-[160px] shadow-2xl">
+                        <span class="text-[10px] text-yellow-300 font-bold block uppercase">कुल प्राप्त प्राप्तांक:</span>
+                        <span class="text-2xl font-black text-yellow-400 block font-mono" id="dashTopperMarks">424 / 500</span>
+                        <div class="mt-1 pt-1 border-t border-slate-800 flex justify-between items-center text-xs">
+                            <span class="text-emerald-400 font-bold" id="dashTopperPercent">84.8%</span>
+                            <span class="bg-yellow-500 text-slate-950 font-black px-2 py-0.5 rounded text-[10px]" id="dashTopperGrade">A+ GRADE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 space-y-2">
+                    <div class="flex flex-wrap items-center justify-between border-b border-slate-200 pb-2">
+                        <h3 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
+                            <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i>
+                            <span>टॉप 10 मेधावी छात्र सूची (Top 10 Performers Grid)</span>
+                        </h3>
+
+                        <div class="flex flex-wrap items-center gap-2 text-xs">
+                            <div>
+                                <select id="dashClassFilter" onchange="renderDashboardTop10Cards()" class="border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
+                                    <option value="ALL">समस्त कक्षाएं</option>
+                                    <option value="10th">कक्षा 10वीं</option>
+                                    <option value="9th">कक्षा 9वीं</option>
+                                    <option value="11th">कक्षा 11वीं</option>
+                                    <option value="12th">कक्षा 12वीं</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select id="dashSectionFilter" onchange="renderDashboardTop10Cards()" class="border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
+                                    <option value="ALL">समस्त सेक्शन</option>
+                                    <option value="A">सेक्शन A</option>
+                                    <option value="B">सेक्शन B</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select id="dashExamFilter" onchange="renderDashboardTop10Cards()" class="border rounded px-2 py-1 font-bold bg-amber-50 text-amber-950 border-amber-300">
+                                    <option value="annual">वार्षिक परीक्षा</option>
+                                    <option value="preboard">प्री-बोर्ड परीक्षा</option>
+                                    <option value="halfYearly">अर्द्धवार्षिक परीक्षा</option>
+                                    <option value="quarterly">त्रैमासिक परीक्षा</option>
+                                    <option value="monthly">मासिक टेस्ट</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="dashTop10CardsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 pt-1">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: CLOUD & EXTERNAL BACKUP SETTINGS -->
+            <section id="section-cloud-settings" class="content-section space-y-4 hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+                    <h2 class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5 border-b pb-2">
+                        <i data-lucide="cloud" class="w-4 h-4 text-sky-600"></i>
+                        <span>7. एक्सटर्नल व क्लाउड स्टोरेज सेटिंग्स (External & Cloud Storage Integration)</span>
+                    </h2>
+                    
+                    <!-- Real-time Cloud API Server Integration Panel -->
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3 text-xs">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h3 class="text-indigo-900 font-extrabold uppercase flex items-center space-x-1.5">
+                                <i data-lucide="server" class="w-4 h-4 text-indigo-600"></i>
+                                <span>1. ऑनलाइन क्लाउड एपीआई / सर्वर कनेक्शन (REST API / Webhook)</span>
+                            </h3>
+                            <span id="cloudStatusBadge" class="bg-rose-100 text-rose-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-rose-200">अप्रत्यक्ष (Disconnected)</span>
+                        </div>
+                        
+                        <p class="text-slate-600 text-[11px]">यहाँ अपने गूगल ऐप स्क्रिप्ट (Google Sheet Endpoint), फ़ायरबेस (Firebase), Supabase या प्राइवेट सर्वर की API लिंक जोड़ें। इससे नया फ़ॉर्म भरते ही डेटा सीधा लाइव सर्वर पर चला जाएगा।</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="md:col-span-2">
+                                <label class="block text-slate-700 font-bold mb-1">Cloud Endpoint / API URL:</label>
+                                <input type="text" id="cloudApiUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full border rounded px-2.5 py-1.5 font-mono text-xs outline-none focus:ring-1 focus:ring-indigo-600">
+                            </div>
+                            <div>
+                                <label class="block text-slate-700 font-bold mb-1">API Key / Auth Token (ऐच्छिक):</label>
+                                <input type="password" id="cloudApiKey" placeholder="Secret Auth Key" class="w-full border rounded px-2.5 py-1.5 font-mono text-xs outline-none">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-200">
+                            <label class="flex items-center space-x-2 cursor-pointer font-bold text-indigo-950">
+                                <input type="checkbox" id="autoSyncToggle" onchange="toggleAutoSync(this.checked)" class="w-4 h-4 text-indigo-600 rounded">
+                                <span>फ़ॉर्म सबमिट करते ही स्वतः क्लाउड पर भेजें (Auto-Sync to Cloud on Save)</span>
+                            </label>
+
+                            <div class="flex items-center space-x-2">
+                                <button onclick="saveCloudSettings()" class="bg-indigo-900 hover:bg-indigo-950 text-white font-bold px-3 py-1.5 rounded-lg shadow">सेटिंग्स सेव करें</button>
+                                <button onclick="testCloudConnection()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-3 py-1.5 rounded-lg shadow">कनेक्शन टेस्ट करें</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cloud Data Sync Actions -->
+                    <div class="bg-indigo-50/60 p-3.5 rounded-xl border border-indigo-200 space-y-3 text-xs">
+                        <h3 class="text-indigo-950 font-extrabold uppercase flex items-center space-x-1.5 border-b border-indigo-200 pb-2">
+                            <i data-lucide="refresh-cw" class="w-4 h-4 text-indigo-700"></i>
+                            <span>2. क्लाउड सिंक एक्शन (Manual Push & Pull Data)</span>
+                        </h3>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button onclick="pushDataToCloud()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-lg shadow flex items-center space-x-1.5">
+                                <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+                                <span>☁️ पूरा डेटा क्लाउड पर अपलोड करें (Push All)</span>
+                            </button>
+                            <button onclick="pullDataFromCloud()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3.5 py-2 rounded-lg shadow flex items-center space-x-1.5">
+                                <i data-lucide="download-cloud" class="w-4 h-4"></i>
+                                <span>📥 क्लाउड से डेटा वापस लाएं (Pull All)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Local & External Drive Backup/Restore -->
+                    <div class="bg-amber-50/60 p-3.5 rounded-xl border border-amber-200 space-y-3 text-xs">
+                        <h3 class="text-amber-950 font-extrabold uppercase flex items-center space-x-1.5 border-b border-amber-200 pb-2">
+                            <i data-lucide="hard-drive" class="w-4 h-4 text-amber-700"></i>
+                            <span>3. एक्सटर्नल ड्राइव / पेनड्राइव स्थानीय बैकअप (USB Drive JSON File)</span>
+                        </h3>
+                        <p class="text-slate-600 text-[11px]">अपने कंप्यूटर, पेनड्राइव या बाहरी ड्राइव में डेटा की बैकअप फ़ाइल डाउनलोड करें और कभी भी पुनर्प्राप्त करें।</p>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="downloadJsonBackup()" class="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-2 rounded-lg font-bold shadow flex items-center space-x-1">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                <span>JSON बैकअप फाइल सेव करें</span>
+                            </button>
+                            <label class="bg-slate-800 hover:bg-slate-900 text-white px-3.5 py-2 rounded-lg font-bold shadow cursor-pointer flex items-center space-x-1">
+                                <i data-lucide="upload" class="w-4 h-4"></i>
+                                <span>फाइल चुनें और रीस्टोर करें</span>
+                                <input type="file" onchange="restoreJsonBackup(this)" class="hidden" accept=".json">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
         </main>
     </div>
 
-    <!-- Navigation handler script: shows/hides sections and updates active buttons -->
+    <!-- CUSTOM TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 no-print"></div>
+
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      window.showSection = function (name) {
-        // hide all sections
-        document.querySelectorAll('.content-section').forEach(function (sec) {
-          sec.classList.add('hidden');
-        });
+        let activeSection = "dashboard";
+        let currentStudentId = "101";
 
-        // show requested section
-        var target = document.getElementById('section-' + name);
-        if (target) {
-          target.classList.remove('hidden');
-          // optional: scroll to top of main area
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // CLOUD INTEGRATION SETTINGS STATE
+        let cloudConfig = {
+            apiUrl: localStorage.getItem('sdms_cloud_url') || '',
+            apiKey: localStorage.getItem('sdms_cloud_key') || '',
+            autoSync: localStorage.getItem('sdms_auto_sync') === 'true'
+        };
+
+        // MASTER STUDENTS DATABASE WITH FULL COLUMNS DATA
+        let studentsData = {
+            "101": {
+                id: "101", scholarNo: "16626", rollNo: "9266510060201", enrollmentNo: "A25/651006/197",
+                srNo: "SR-501", targetClass: "9th", section: "A", applicantType: "1", applicantType2: "सामान्य",
+                applicantType3: "स्थाई", provisionalResult: "Pass", tcStatus: "YES", gapCertificate: "NO",
+                lastYearPassType: "Regular", medium: "Hindi", admissionDate: "2025-07-01", nameHindi: "तपस्या तिवारी",
+                nameEng: "TAPASYA TIWARI", fatherName: "श्री राजेश तिवारी", motherName: "श्रीमती रचना तिवारी",
+                dob: "2012-08-28", gender: "FEMALE", category: "GEN", caste: "ब्राह्मण", mobile: "9826012345",
+                email: "tapasya@gmail.com", bloodGroup: "O+", address: "बेगमगंज वार्ड 4 (रायसेन)", apaarId: "APAAR-9012-3456",
+                childId: "155076454", familyId: "987654321", aadhaar: "1234-5678-9012", bankName: "भारतीय स्टेट बैंक बेगमगंज",
+                bankAccount: "30123456789", bankIfsc: "SBIN0001234", annualIncome: "60000", bplStatus: "NO",
+                ladliLaxmi: "NO", ladliLaxmiNo: "", cwsnStatus: "NO", hostelStatus: "NO", covidStatus: "NO",
+                mpTassStatus: "NO", mpTassNo: "", scholarshipStatus: "NO", sambalStatus: "NO", sambalNo: "",
+                area: "ग्रामीण", feesPaid: "100", remarks: "उत्कृष्ट प्रदर्शन",
+                photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+                sub1: "401 - Hindi", sub2: "411 - English", sub3: "512 - Sanskrit", sub4: "100 - Maths (Standard)",
+                sub5: "200 - Science", sub6: "300 - Social Science", receivedBooks: ["NCERT हिन्दी", "NCERT गणित"]
+            }
+        };
+
+        let teachersData = {
+            "T101": { id: "T101", name: "डॉ. राजेश शर्मा", designation: "संस्था प्रमुख / प्राचार्य", code: "EMP-2026-901", dob: "1978-08-15", subject: "उच्च माध्यमिक शिक्षक (गणित)", mobile: "9826001122", email: "rajesh@school.in", isClassTeacher: "YES", inchargeClass: "10th - A" }
+        };
+
+        window.onload = function() {
+            if (window.lucide) lucide.createIcons();
+            populateSidebarSelectors();
+            loadCloudSettingsUI();
+            showSection("dashboard");
+        };
+
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toastContainer");
+            if (!container) return;
+            const toast = document.createElement("div");
+            toast.className = `p-3 rounded-lg text-xs font-bold text-white shadow-lg transition transform duration-300 ${type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'}`;
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
         }
 
-        // update active class on sidebar buttons
-        document.querySelectorAll('.tab-btn').forEach(function (b) {
-          b.classList.remove('active');
-        });
-        var btn = document.getElementById('btn-' + name);
-        if (btn) btn.classList.add('active');
+        function populateSidebarSelectors() {
+            const studentSelect = document.getElementById("sidebarStudentSelect");
+            const teacherSelect = document.getElementById("sidebarTeacherSelect");
+            
+            if (studentSelect) {
+                studentSelect.innerHTML = Object.values(studentsData).map(st => 
+                    `<option value="${st.id}">${st.scholarNo} - ${st.nameHindi || st.nameEng} (${st.targetClass}-${st.section})</option>`
+                ).join('');
+                document.getElementById("quickStudentCountBadge").innerText = `${Object.keys(studentsData).length} छात्र`;
+            }
 
-        // update toolbar title (use button text if available)
-        var titleElem = document.getElementById('currentActiveSectionTitle');
-        if (titleElem) {
-          var label = name;
-          if (btn) {
-            var span = btn.querySelector('span');
-            if (span && span.innerText.trim()) label = span.innerText.trim();
-          }
-          titleElem.innerText = 'अनुभाग: ' + label;
+            if (teacherSelect) {
+                teacherSelect.innerHTML = Object.values(teachersData).map(tc => 
+                    `<option value="${tc.id}">${tc.name} (${tc.code})</option>`
+                ).join('');
+                document.getElementById("quickTeacherCountBadge").innerText = `${Object.keys(teachersData).length} शिक्षक`;
+            }
         }
 
-        // re-render icons if lucide is present
-        if (window.lucide && typeof lucide.replace === 'function') {
-          try { lucide.replace(); } catch (e) { /* ignore */ }
-        }
-      };
+        function showSection(secId) {
+            activeSection = secId;
+            document.querySelectorAll(".content-section").forEach(sec => sec.classList.add("hidden"));
+            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+            
+            const targetSec = document.getElementById(`section-${secId}`);
+            if (targetSec) targetSec.classList.remove("hidden");
 
-      // show dashboard by default on load
-      if (!document.querySelectorAll('.tab-btn.active').length) {
-        showSection('dashboard');
-      } else {
-        var activeBtn = document.querySelector('.tab-btn.active');
-        if (activeBtn && activeBtn.id && activeBtn.id.startsWith('btn-')) {
-          var name = activeBtn.id.replace(/^btn-/, '');
-          showSection(name);
-        } else {
-          showSection('dashboard');
+            const activeBtn = document.getElementById(`btn-${secId}`);
+            if (activeBtn) activeBtn.classList.add("active");
+
+            if (window.lucide) lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-      }
-    });
+
+        /* --- CLOUD INTEGRATION FUNCTIONS --- */
+        function loadCloudSettingsUI() {
+            const urlInput = document.getElementById("cloudApiUrl");
+            const keyInput = document.getElementById("cloudApiKey");
+            const autoSyncCheck = document.getElementById("autoSyncToggle");
+
+            if (urlInput) urlInput.value = cloudConfig.apiUrl;
+            if (keyInput) keyInput.value = cloudConfig.apiKey;
+            if (autoSyncCheck) autoSyncCheck.checked = cloudConfig.autoSync;
+
+            updateCloudStatusBadge();
+        }
+
+        function saveCloudSettings() {
+            cloudConfig.apiUrl = document.getElementById("cloudApiUrl").value.trim();
+            cloudConfig.apiKey = document.getElementById("cloudApiKey").value.trim();
+            cloudConfig.autoSync = document.getElementById("autoSyncToggle").checked;
+
+            localStorage.setItem('sdms_cloud_url', cloudConfig.apiUrl);
+            localStorage.setItem('sdms_cloud_key', cloudConfig.apiKey);
+            localStorage.setItem('sdms_auto_sync', cloudConfig.autoSync);
+
+            updateCloudStatusBadge();
+            showToast("क्लाउड सेटिंग्स सफलतापूर्वक सुरक्षित की गईं!");
+        }
+
+        function toggleAutoSync(val) {
+            cloudConfig.autoSync = val;
+            localStorage.setItem('sdms_auto_sync', val);
+            showToast(val ? "ऑटो-सिंक चालू किया गया" : "ऑटो-सिंक बंद किया गया");
+        }
+
+        function updateCloudStatusBadge() {
+            const badge = document.getElementById("cloudStatusBadge");
+            if (!badge) return;
+            if (cloudConfig.apiUrl) {
+                badge.className = "bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-emerald-200";
+                badge.innerText = "संयोजित (Connected)";
+            } else {
+                badge.className = "bg-rose-100 text-rose-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-rose-200";
+                badge.innerText = "अप्रत्यक्ष (Disconnected)";
+            }
+        }
+
+        function testCloudConnection() {
+            const url = document.getElementById("cloudApiUrl").value.trim();
+            if (!url) {
+                showToast("कृपया पहले Endpoint URL दर्ज करें!", "error");
+                return;
+            }
+            showToast("क्लाउड कनेक्शन जाँच रहे हैं...");
+            fetch(url, { method: 'GET' })
+            .then(res => {
+                showToast("क्लाउड सर्वर कनेक्शन सफल रहा!");
+                updateCloudStatusBadge();
+            })
+            .catch(err => {
+                showToast("कनेक्शन में समस्या आई या CORS ब्लॉक है!", "error");
+            });
+        }
+
+        function pushDataToCloud() {
+            if (!cloudConfig.apiUrl) {
+                showToast("कृपया क्लाउड सेटिंग्स में URL जोड़ें!", "error");
+                return;
+            }
+            showToast("डेटा क्लाउड पर भेजा जा रहा है...");
+            const payload = {
+                students: studentsData,
+                teachers: teachersData,
+                timestamp: new Date().toISOString()
+            };
+
+            fetch(cloudConfig.apiUrl, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': cloudConfig.apiKey ? `Bearer ${cloudConfig.apiKey}` : ''
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                showToast("पूरा डेटा क्लाउड पर सफलतापूर्वक अपलोड हो गया!");
+            })
+            .catch(err => {
+                showToast("क्लाउड अपलोड में त्रुटि हुई!", "error");
+            });
+        }
+
+        function pullDataFromCloud() {
+            if (!cloudConfig.apiUrl) {
+                showToast("कृपया क्लाउड सेटिंग्स में URL जोड़ें!", "error");
+                return;
+            }
+            showToast("क्लाउड से डेटा डाउनलोड हो रहा है...");
+            fetch(cloudConfig.apiUrl, {
+                method: 'GET',
+                headers: { 'Authorization': cloudConfig.apiKey ? `Bearer ${cloudConfig.apiKey}` : '' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.students) studentsData = data.students;
+                if (data.teachers) teachersData = data.teachers;
+                populateSidebarSelectors();
+                showToast("क्लाउड से डेटा सफलतापूर्वक वापस आ गया!");
+            })
+            .catch(err => {
+                showToast("क्लाउड से डेटा प्राप्त नहीं हो सका!", "error");
+            });
+        }
+
+        function handleMasterStudentSave(e) {
+            e.preventDefault();
+            const scholar = document.getElementById("f_scholarNo").value;
+            studentsData[scholar] = {
+                id: scholar,
+                scholarNo: scholar,
+                rollNo: document.getElementById("f_rollNo").value,
+                targetClass: document.getElementById("f_targetClass").value,
+                section: document.getElementById("f_section").value,
+                nameHindi: document.getElementById("f_nameHindi").value,
+                nameEng: document.getElementById("f_nameEng").value,
+                fatherName: document.getElementById("f_fatherName").value,
+                motherName: document.getElementById("f_motherName").value,
+                mobile: document.getElementById("f_mobile").value,
+                photoUrl: document.getElementById("formPhotoPreview").src
+            };
+            populateSidebarSelectors();
+            showToast("छात्र रिकॉर्ड सुरक्षित हो गया!");
+
+            // Auto-Sync Feature Execution
+            if (cloudConfig.autoSync && cloudConfig.apiUrl) {
+                pushDataToCloud();
+            }
+        }
+
+        function downloadJsonBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ students: studentsData, teachers: teachersData }));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `SDMS_Backup_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+            showToast("JSON बैकअप फ़ाइल एक्सटर्नल ड्राइव हेतु डाउनलोड हो गई!");
+        }
+
+        function restoreJsonBackup(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const parsed = JSON.parse(e.target.result);
+                        if (parsed.students) studentsData = parsed.students;
+                        if (parsed.teachers) teachersData = parsed.teachers;
+                        populateSidebarSelectors();
+                        showToast("एक्सटर्नल बैकअप फ़ाइल से डेटा सफलतापूर्वक रीस्टोर हो गया!");
+                    } catch (err) {
+                        showToast("अमान्य बैकअप फ़ाइल!", "error");
+                    }
+                };
+                reader.readAsText(input.files[0]);
+            }
+        }
     </script>
 </body>
 </html>
